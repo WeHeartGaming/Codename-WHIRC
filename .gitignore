@@ -18,3 +18,8 @@ local.properties
 # Eclipse project files
 .classpath
 .project
+
+# Android studio
+WHIRC.iws
+.idea/workspace.xml
+.idea/tasks.xml
