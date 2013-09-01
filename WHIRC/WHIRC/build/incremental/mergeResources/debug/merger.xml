@@ -4,14 +4,59 @@
     <dataSet config="main" >
         <source path="C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\WHIRC\src\main\res" >
             <file
+                name="action_search"
+                path="C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\WHIRC\src\main\res\drawable-hdpi\action_search.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="drawer_shadow"
+                path="C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\WHIRC\src\main\res\drawable-hdpi\drawer_shadow.9.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="ic_drawer"
+                path="C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\WHIRC\src\main\res\drawable-hdpi\ic_drawer.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
                 name="ic_launcher"
                 path="C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\WHIRC\src\main\res\drawable-hdpi\ic_launcher.png"
                 qualifiers="hdpi"
                 type="drawable" />
             <file
+                name="action_search"
+                path="C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\WHIRC\src\main\res\drawable-mdpi\action_search.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="drawer_shadow"
+                path="C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\WHIRC\src\main\res\drawable-mdpi\drawer_shadow.9.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="ic_drawer"
+                path="C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\WHIRC\src\main\res\drawable-mdpi\ic_drawer.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
                 name="ic_launcher"
                 path="C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\WHIRC\src\main\res\drawable-mdpi\ic_launcher.png"
                 qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="action_search"
+                path="C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\WHIRC\src\main\res\drawable-xhdpi\action_search.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="drawer_shadow"
+                path="C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\WHIRC\src\main\res\drawable-xhdpi\drawer_shadow.9.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="ic_drawer"
+                path="C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\WHIRC\src\main\res\drawable-xhdpi\ic_drawer.png"
+                qualifiers="xhdpi"
                 type="drawable" />
             <file
                 name="ic_launcher"
@@ -29,8 +74,13 @@
                 qualifiers=""
                 type="layout" />
             <file
-                name="fragment_main_dummy"
-                path="C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\WHIRC\src\main\res\layout\fragment_main_dummy.xml"
+                name="drawer_list_item"
+                path="C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\WHIRC\src\main\res\layout\drawer_list_item.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="fragment_main"
+                path="C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\WHIRC\src\main\res\layout\fragment_main.xml"
                 qualifiers=""
                 type="layout" />
             <file
@@ -58,6 +108,10 @@
                 <string name="title_section2" >Section 2
                 </string>
                 <string name="app_name" >WHIRC
+                </string>
+                <string name="drawer_open" >Open navigation drawer
+                </string>
+                <string name="drawer_close" >Close navigation drawer
                 </string>
             </file>
             <file

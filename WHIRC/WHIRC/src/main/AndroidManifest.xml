@@ -22,6 +22,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="no.whg.whirc.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName="no.whg.whirc.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="no.whg.whirc.MainActivity" />
+        </activity>
     </application>
 
 </manifest>
