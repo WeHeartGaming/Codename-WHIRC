@@ -1,4 +1,4 @@
-package no.whg.whirc;
+package no.whg.whirc.activities;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -20,6 +20,10 @@ import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
 
 import java.util.List;
+
+import no.whg.whirc.R;
+import no.whg.whirc.R.string;
+import no.whg.whirc.R.xml;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On

@@ -42,4 +42,14 @@
         android:divider="#111"
         android:dividerHeight="1dp"
         android:background="#111"/>
+    
+    <ListView
+        android:id="@+id/right_drawer"
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:choiceMode="singleChoice"
+        android:divider="#111"
+        android:dividerHeight="1dp"
+        android:background="#111"/>
 </android.support.v4.widget.DrawerLayout>

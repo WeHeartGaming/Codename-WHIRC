@@ -1,15 +1,33 @@
-package no.whg.whirc;
+package no.whg.whirc.activities;
 
 import java.util.Locale;
 
+import no.whg.whirc.R;
+import no.whg.whirc.R.drawable;
+import no.whg.whirc.R.id;
+import no.whg.whirc.R.layout;
+import no.whg.whirc.R.menu;
+import no.whg.whirc.R.string;
 
+import jerklib.ConnectionManager;
+import jerklib.Profile;
+import jerklib.Session;
+import jerklib.events.IRCEvent;
+import jerklib.events.IRCEvent.Type;
+import jerklib.events.JoinCompleteEvent;
+import jerklib.events.MessageEvent;
+import jerklib.listeners.IRCEventListener;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v4.app.*;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,15 +37,18 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.content.res.Configuration;
 
 public class MainActivity extends FragmentActivity {
-    private DrawerLayout mDrawerLayout;
-    private ListView mDrawerList;
-    private ActionBarDrawerToggle mDrawerToggle;
+    private DrawerLayout mDrawerLayoutLeft;
+    private DrawerLayout mDrawerLayoutRight;
+    private ListView mDrawerListRight;
+    private ListView mDrawerListLeft;
+    private ActionBarDrawerToggle mDrawerToggleLeft;
 
-    private CharSequence mDrawerTitle;
+    private CharSequence mDrawerTitleLeft;
     private CharSequence mTitle;
+    
+    private ConnectionManager manager;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -49,25 +70,32 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        
+        
         // Set placeholder title
-        mTitle = mDrawerTitle = getTitle();
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerList = (ListView) findViewById(R.id.left_drawer);
+        mTitle = mDrawerTitleLeft = getTitle();
+        mDrawerLayoutLeft = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerLayoutRight = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerListLeft = (ListView) findViewById(R.id.left_drawer);
+        mDrawerListRight = (ListView) findViewById(R.id.right_drawer);
 
         // set shadow to overlay main content when we pull out drawer
-        mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+        mDrawerLayoutLeft.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+        mDrawerLayoutRight.setDrawerShadow(R.drawable.drawer_shadow_right, GravityCompat.END);
         // set up the drawers  list view with items and click listener
-        mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, new String[]{"List 1", "List 2", "List 3", "List 4"}));
-        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+        mDrawerListLeft.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, new String[]{"List 1", "List 2", "List 3", "List 4"}));
+        mDrawerListLeft.setOnItemClickListener(new DrawerItemClickListener());
+        mDrawerListRight.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, new String[]{"lol 1", "lol 2", "lol 3", "lol 4"}));
+        mDrawerListRight.setOnItemClickListener(new DrawerItemClickListener());
 
         // enable actionbar up button
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
 
         // actionbardrawertoggle ties together the proper interactions between the sliding drawer and the action bar app icon
-        mDrawerToggle = new ActionBarDrawerToggle(
+        mDrawerToggleLeft = new ActionBarDrawerToggle(
                 this,
-                mDrawerLayout,
+                mDrawerLayoutLeft,
                 R.drawable.ic_drawer,
                 R.string.drawer_open,
                 R.string.drawer_close
@@ -77,7 +105,7 @@ public class MainActivity extends FragmentActivity {
                 invalidateOptionsMenu();
             }
         };
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        mDrawerLayoutLeft.setDrawerListener(mDrawerToggleLeft);
 
         if (savedInstanceState == null) {
             selectItem(0);
@@ -93,6 +121,35 @@ public class MainActivity extends FragmentActivity {
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+        
+//        /*
+//         * ####################### TEST IRC BEGIN ###############################
+//         */
+//        
+//        manager = new ConnectionManager(new Profile("scripty"));
+//        
+//        Session session = manager.requestConnection("irc.quakenet.org");
+//        
+//        session.addIRCEventListener(new IRCEventListener() {
+//        	@Override
+//        	public void receiveEvent(IRCEvent irce) {
+//        		if (irce.getType() == Type.CONNECT_COMPLETE) {
+//        			irce.getSession().join("#whg");
+//        		} else if (irce.getType() == Type.CHANNEL_MESSAGE) {
+//        			MessageEvent me = (MessageEvent) irce;
+//        			System.out.println("<"+me.getNick() + ">"+":"+me.getMessage());
+//        		} else if (irce.getType() == Type.JOIN_COMPLETE) {
+//        			JoinCompleteEvent jce = (JoinCompleteEvent) irce;
+//        			jce.getChannel().say("test");
+//        		} else {
+//        			System.out.println(irce.getType() + " " + irce.getRawEventData());
+//        		}
+//        	}
+//        });
+//        
+//        /*
+//         * ####################### TEST IRC END ##################################
+//         */
 
     }
 
@@ -105,7 +162,7 @@ public class MainActivity extends FragmentActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+        boolean drawerOpen = mDrawerLayoutLeft.isDrawerOpen(mDrawerListLeft);
         // Since we are (probably) going to move the settings button to the navigation drawer while it's open,
         //  lets hide the settings button when we open the drawer
         menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
@@ -114,7 +171,7 @@ public class MainActivity extends FragmentActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
+        if (mDrawerToggleLeft.onOptionsItemSelected(item)) {
             return true;
         }
         // tell program what to do when you press a certain actionbar button, e.g. settings button
@@ -149,13 +206,13 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        mDrawerToggle.syncState();
+        mDrawerToggleLeft.syncState();
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        mDrawerToggle.onConfigurationChanged(newConfig);
+        mDrawerToggleLeft.onConfigurationChanged(newConfig);
     }
 
     /**
@@ -224,5 +281,4 @@ public class MainActivity extends FragmentActivity {
             return rootView;
         }
     }
-
 }
