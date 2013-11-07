@@ -7,4 +7,23 @@
     <string name="title_section3">Section 3</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
+    <string name="networkList">Network list</string>
+    <string name="quit">Quit</string>
+    <string name="Help">Help</string>
+    <string name="diconnectServer">Disconnect</string>
+    <string name="reconnectServer">Reconnect</string>
+    <string name="channelList">Get channel list</string>
+  	<string name="joinChannel">Join channel</string>
+  	<string name="joinNetwork">Join network</string>
+    <string name="enterChannel">Now talking on </string>
+    <string name="channelTopic">Topic for </string>
+    <string name="changedTopic"> changed topic to </string>
+    <string name="user">User</string>
+    <string name="userJoinChannel"> has joined the channel</string>
+    <string name="userLeftChannel"> has quit</string>
+    <string name="userKicked"> was kicked by </string>
+    <string name="userBanned"> was banned by</string>
+    <string name="userPromoted"> was promoted to </string>
+    <string name="userChangeName"> is now known as </string>
+    
 </resources>
