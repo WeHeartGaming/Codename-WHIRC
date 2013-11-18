@@ -42,6 +42,9 @@ public class ConnectionService extends Service implements IRCEventListener {
 	public IBinder onBind(Intent intent) {
 		// TODO Auto-generated method stub
 		System.out.println("ConnectionService::onBind ran");
+		
+		// lets see if shit keeps running or not now
+		startService(new Intent(this, ConnectionService.class));
 		return this.binder;
 	}
 	
@@ -120,9 +123,6 @@ public class ConnectionService extends Service implements IRCEventListener {
 		
 		if (e.getType() == Type.CONNECT_COMPLETE) {
 			e.getSession().join("#whg");
-		} else if (e.getType() == Type.JOIN_COMPLETE) {
-			JoinCompleteEvent jce = (JoinCompleteEvent) e;
-			jce.getChannel().say("I just joined " + jce.getChannel().getName());
 		} else {
 			System.out.println(e.getType() + " : " + e.getRawEventData());
 		}

@@ -1,12 +1,14 @@
 package no.whg.whirc.activities;
 
-import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Locale;
 
 import jerklib.ConnectionManager;
 import no.whg.whirc.R;
+import no.whg.whirc.adapters.MessageAdapter;
 import no.whg.whirc.helpers.ConnectionService;
 import no.whg.whirc.helpers.ConnectionServiceBinder;
+import no.whg.whirc.models.Messages;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -30,7 +32,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 public class MainActivity extends FragmentActivity implements ServiceConnection {
     private DrawerLayout mDrawerLayoutLeft;
@@ -120,10 +121,8 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
         mViewPager.setAdapter(mSectionsPagerAdapter);
         
        cService = null;
-       Intent intent = new Intent(this, ConnectionService.class);
-       startService(intent);
-       bindService(intent, this, Context.BIND_ABOVE_CLIENT);
-
+//       Intent intent = new Intent(this, ConnectionService.class);
+//       startService(intent);
     }
 
     
@@ -146,7 +145,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
-		unbindService(this);
+		
 	}
 
 
@@ -158,8 +157,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		Intent intent = new Intent(this, ConnectionService.class);
-	    bindService(intent, this, Context.BIND_ABOVE_CLIENT);
+		
 	}
 
 
@@ -171,6 +169,8 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
 	protected void onStart() {
 		// TODO Auto-generated method stub
 		super.onStart();
+		Intent intent = new Intent(this, ConnectionService.class);
+	    bindService(intent, this, Context.BIND_ABOVE_CLIENT);
 	}
 
 
@@ -182,6 +182,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
 	protected void onStop() {
 		// TODO Auto-generated method stub
 		super.onStop();
+		unbindService(this);
 	}
 
 
@@ -301,6 +302,9 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
          * fragment.
          */
         public static final String ARG_SECTION_NUMBER = "section_number";
+        ListView msgList;
+        ArrayList<Messages> msgs;
+        AdapterView.AdapterContextMenuInfo info;
 
         public SectionFragment() {
         }
@@ -309,10 +313,51 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            TextView dummyTextView = (TextView) rootView.findViewById(R.id.section_label);
-            dummyTextView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
+            
             return rootView;
         }
+
+		/* (non-Javadoc)
+		 * @see android.support.v4.app.Fragment#onActivityCreated(android.os.Bundle)
+		 */
+		@Override
+		public void onActivityCreated(Bundle savedInstanceState) {
+			// TODO Auto-generated method stub
+			super.onActivityCreated(savedInstanceState);
+			
+			Bundle args = getArguments();
+			int position = args.getInt(ARG_SECTION_NUMBER);
+			
+			switch (position) {
+			case 1:
+				msgList = (ListView) getActivity().findViewById(R.id.lw_chat);
+				msgs = new ArrayList<Messages>();
+				Messages msg;
+				
+				for (int i = 0; i < 7; i++) {
+					msg = new Messages();
+					msg.setName("Fredrik"+i);
+					msg.setMessage("Derpasdpasdpapsdpasdpaspdpasdpasp"+i);
+					msg.setTime("22:0"+i);
+					msgs.add(msg);
+				}
+				
+				msgList.setAdapter(new MessageAdapter(msgs, getActivity()));
+				break;
+			case 2:
+				
+				break;
+				
+			case 3:
+				
+				break;
+				
+	
+					
+			}
+		}
+        
+        
     }
 
 	@Override
