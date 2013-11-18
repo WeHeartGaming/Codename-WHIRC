@@ -1,25 +1,19 @@
 package no.whg.whirc.activities;
 
+import java.io.Serializable;
 import java.util.Locale;
 
-import no.whg.whirc.R;
-import no.whg.whirc.R.drawable;
-import no.whg.whirc.R.id;
-import no.whg.whirc.R.layout;
-import no.whg.whirc.R.menu;
-import no.whg.whirc.R.string;
-
 import jerklib.ConnectionManager;
-import jerklib.Profile;
-import jerklib.Session;
-import jerklib.events.IRCEvent;
-import jerklib.events.IRCEvent.Type;
-import jerklib.events.JoinCompleteEvent;
-import jerklib.events.MessageEvent;
-import jerklib.listeners.IRCEventListener;
+import no.whg.whirc.R;
+import no.whg.whirc.helpers.ConnectionService;
+import no.whg.whirc.helpers.ConnectionServiceBinder;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -38,7 +32,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity implements ServiceConnection {
     private DrawerLayout mDrawerLayoutLeft;
     private DrawerLayout mDrawerLayoutRight;
     private ListView mDrawerListRight;
@@ -49,6 +43,9 @@ public class MainActivity extends FragmentActivity {
     private CharSequence mTitle;
     
     private ConnectionManager manager;
+    
+    private ConnectionService cService;
+    private boolean mBound = false;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -122,38 +119,74 @@ public class MainActivity extends FragmentActivity {
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         
-//        /*
-//         * ####################### TEST IRC BEGIN ###############################
-//         */
-//        
-//        manager = new ConnectionManager(new Profile("scripty"));
-//        
-//        Session session = manager.requestConnection("irc.quakenet.org");
-//        
-//        session.addIRCEventListener(new IRCEventListener() {
-//        	@Override
-//        	public void receiveEvent(IRCEvent irce) {
-//        		if (irce.getType() == Type.CONNECT_COMPLETE) {
-//        			irce.getSession().join("#whg");
-//        		} else if (irce.getType() == Type.CHANNEL_MESSAGE) {
-//        			MessageEvent me = (MessageEvent) irce;
-//        			System.out.println("<"+me.getNick() + ">"+":"+me.getMessage());
-//        		} else if (irce.getType() == Type.JOIN_COMPLETE) {
-//        			JoinCompleteEvent jce = (JoinCompleteEvent) irce;
-//        			jce.getChannel().say("test");
-//        		} else {
-//        			System.out.println(irce.getType() + " " + irce.getRawEventData());
-//        		}
-//        	}
-//        });
-//        
-//        /*
-//         * ####################### TEST IRC END ##################################
-//         */
+       cService = null;
+       Intent intent = new Intent(this, ConnectionService.class);
+       startService(intent);
+       bindService(intent, this, Context.BIND_ABOVE_CLIENT);
 
     }
 
-    @Override
+    
+    
+    /* (non-Javadoc)
+	 * @see android.support.v4.app.FragmentActivity#onDestroy()
+	 */
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+	}
+
+
+
+	/* (non-Javadoc)
+	 * @see android.support.v4.app.FragmentActivity#onPause()
+	 */
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		unbindService(this);
+	}
+
+
+
+	/* (non-Javadoc)
+	 * @see android.support.v4.app.FragmentActivity#onResume()
+	 */
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		Intent intent = new Intent(this, ConnectionService.class);
+	    bindService(intent, this, Context.BIND_ABOVE_CLIENT);
+	}
+
+
+
+	/* (non-Javadoc)
+	 * @see android.support.v4.app.FragmentActivity#onStart()
+	 */
+	@Override
+	protected void onStart() {
+		// TODO Auto-generated method stub
+		super.onStart();
+	}
+
+
+
+	/* (non-Javadoc)
+	 * @see android.support.v4.app.FragmentActivity#onStop()
+	 */
+	@Override
+	protected void onStop() {
+		// TODO Auto-generated method stub
+		super.onStop();
+	}
+
+
+
+	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
@@ -281,4 +314,26 @@ public class MainActivity extends FragmentActivity {
             return rootView;
         }
     }
+
+	@Override
+	public void onServiceConnected(ComponentName name, IBinder binder) {
+		cService = ((ConnectionServiceBinder) binder).getService();
+		
+	}
+
+
+
+	@Override
+	public void onServiceDisconnected(ComponentName name) {
+//		Intent intent = new Intent(this, ConnectionService.class);
+//		
+//		Bundle b = new Bundle();
+//		b.putSerializable("object", cService);
+//		b.putString("exit", "exit");
+//		
+//		intent.putExtras(b);
+//		startService(intent);
+		cService = null;
+		
+	}
 }
