@@ -1,14 +1,11 @@
 package no.whg.whirc.activities;
 
-import java.util.ArrayList;
-import java.util.Locale;
-
 import jerklib.ConnectionManager;
+import jerklib.Session;
 import no.whg.whirc.R;
-import no.whg.whirc.adapters.MessageAdapter;
+import no.whg.whirc.adapters.ConversationPagerAdapter;
 import no.whg.whirc.helpers.ConnectionService;
 import no.whg.whirc.helpers.ConnectionServiceBinder;
-import no.whg.whirc.models.Messages;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -17,18 +14,14 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -47,6 +40,8 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
     
     public ConnectionService cService;
     private boolean mBound = false;
+    
+    private Session s = null;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -56,7 +51,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
      * intensive, it may be best to switch to a
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
-    SectionsPagerAdapter mSectionsPagerAdapter;
+    ConversationPagerAdapter mConversationPagerAdapter;
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -111,55 +106,17 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
 
 
 
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the app.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        
 
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.pager);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.setAdapter(mConversationPagerAdapter);
         
        cService = null;
        Intent intent = new Intent(this, ConnectionService.class);
        startService(intent);
     }
-
-    
-    
-    /* (non-Javadoc)
-	 * @see android.support.v4.app.FragmentActivity#onDestroy()
-	 */
-	@Override
-	protected void onDestroy() {
-		// TODO Auto-generated method stub
-		super.onDestroy();
-	}
-
-
-
-	/* (non-Javadoc)
-	 * @see android.support.v4.app.FragmentActivity#onPause()
-	 */
-	@Override
-	protected void onPause() {
-		// TODO Auto-generated method stub
-		super.onPause();
-		
-	}
-
-
-
-	/* (non-Javadoc)
-	 * @see android.support.v4.app.FragmentActivity#onResume()
-	 */
-	@Override
-	protected void onResume() {
-		// TODO Auto-generated method stub
-		super.onResume();
-		
-	}
-
 
 
 	/* (non-Javadoc)
@@ -249,136 +206,29 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
         mDrawerToggleLeft.onConfigurationChanged(newConfig);
     }
 
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
-        public SectionsPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a SectionFragment (defined as a static inner class
-            // below) with the page number as its lone argument.
-            Fragment fragment = new SectionFragment();
-            Bundle args = new Bundle();
-            args.putInt(SectionFragment.ARG_SECTION_NUMBER, position + 1);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        @Override
-        public int getCount() {
-            // Show 3 total pages.
-            return 3;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            Locale l = Locale.getDefault();
-            switch (position) {
-                case 0:
-                    return getString(R.string.title_section1).toUpperCase(l);
-                case 1:
-                    return getString(R.string.title_section2).toUpperCase(l);
-                case 2:
-                    return getString(R.string.title_section3).toUpperCase(l);
-            }
-            return null;
-        }
-    }
-
-    /**
-     * A fragment representing current "section" in use by the app, which in this specific app will contain the currently selected IRC channel
-     *
-     */
-    public static class SectionFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        public static final String ARG_SECTION_NUMBER = "section_number";
-        ListView msgList;
-        ArrayList<Messages> msgs;
-        AdapterView.AdapterContextMenuInfo info;
-
-        public SectionFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            
-            return rootView;
-        }
-
-		/* (non-Javadoc)
-		 * @see android.support.v4.app.Fragment#onActivityCreated(android.os.Bundle)
-		 */
-		@Override
-		public void onActivityCreated(Bundle savedInstanceState) {
-			// TODO Auto-generated method stub
-			super.onActivityCreated(savedInstanceState);
-			
-			Bundle args = getArguments();
-			int position = args.getInt(ARG_SECTION_NUMBER);
-			
-			switch (position) {
-			case 1:
-				msgList = (ListView) getActivity().findViewById(R.id.lw_chat);
-				msgs = new ArrayList<Messages>();
-				Messages msg;
-				
-				for (int i = 0; i < 7; i++) {
-					msg = new Messages();
-					msg.setName("Fredrik"+i);
-					msg.setMessage("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Message id: "+i);
-					msg.setTime("22:0"+i);
-					msgs.add(msg);
-				}
-				
-				msgList.setAdapter(new MessageAdapter(msgs, getActivity()));
-				break;
-			case 2:
-				
-				break;
-				
-			case 3:
-				
-				break;
-				
-	
-					
-			}
-		}
-        
-        
-    }
 
 	@Override
 	public void onServiceConnected(ComponentName name, IBinder binder) {
 		cService = ((ConnectionServiceBinder) binder).getService();
-		
+		s = cService.getSessions().get(0);
+
+
+		// Create the adapter that will return a fragment for each of the three
+        // primary sections of the app.
+		if (s.isConnected()) {
+			mConversationPagerAdapter = new ConversationPagerAdapter(getSupportFragmentManager(), s);
+		} else {
+			Log.e("MainActivity", "ConversationPagerAdapter not started because no active connection at time of call");
+		}
 	}
-
-
 
 	@Override
 	public void onServiceDisconnected(ComponentName name) {
-//		Intent intent = new Intent(this, ConnectionService.class);
-//		
-//		Bundle b = new Bundle();
-//		b.putSerializable("object", cService);
-//		b.putString("exit", "exit");
-//		
-//		intent.putExtras(b);
-//		startService(intent);
 		cService = null;
 		
+	}
+	
+	public ConnectionService getConnectionServiceObject() {
+		return cService;
 	}
 }

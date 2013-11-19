@@ -4,7 +4,9 @@
 package no.whg.whirc.helpers;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import jerklib.Channel;
 import jerklib.ConnectionManager;
 import jerklib.Profile;
 import jerklib.Session;
@@ -138,12 +140,26 @@ public class ConnectionService extends Service implements IRCEventListener {
 		}
 		stopSelf();
 	}
+	
+	public List<Channel> getChannelsForSession(String name) {
+		return connection.getSession(name).getChannels();
+
+	}
+	
+	public List<Session> getSessions() {
+		return connection.getSessions();
+	}
+	
+	public boolean isSessionConnected(String name) {
+		return connection.getSession(name).isConnected();
+	}
 
 	@Override
 	public void receiveEvent(IRCEvent e) {
 		
 		if (e.getType() == Type.CONNECT_COMPLETE) {
 			e.getSession().join("#whg");
+			Log.d(TAG, "Server: irc.quakenet.org [as string] - Session name: " + qnet.getConnectedHostName());
 		} else {
 			System.out.println(e.getType() + " : " + e.getRawEventData());
 		}
