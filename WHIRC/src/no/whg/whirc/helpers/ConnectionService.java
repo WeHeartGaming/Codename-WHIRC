@@ -3,7 +3,6 @@
  */
 package no.whg.whirc.helpers;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 import jerklib.ConnectionManager;
@@ -11,15 +10,20 @@ import jerklib.Profile;
 import jerklib.Session;
 import jerklib.events.IRCEvent;
 import jerklib.events.IRCEvent.Type;
-import jerklib.events.JoinCompleteEvent;
 import jerklib.listeners.IRCEventListener;
+import no.whg.whirc.activities.MainActivity;
+import android.R;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
-import android.widget.Toast;
+import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 public class ConnectionService extends Service implements IRCEventListener {
+	private static final String TAG = "ConnectionService";
 	private Handler handler;
 	private final ConnectionServiceBinder binder;
 	private ArrayList<Runnable> threads;
@@ -41,7 +45,7 @@ public class ConnectionService extends Service implements IRCEventListener {
 	@Override
 	public IBinder onBind(Intent intent) {
 		// TODO Auto-generated method stub
-		System.out.println("ConnectionService::onBind ran");
+		Log.d(TAG, "Service bound! [onBind() called]");
 		
 		// lets see if shit keeps running or not now
 		startService(new Intent(this, ConnectionService.class));
@@ -66,8 +70,25 @@ public class ConnectionService extends Service implements IRCEventListener {
 	public void onCreate() {
 		// TODO Auto-generated method stub
 		super.onCreate();
-		System.out.println("Service created");
+		Log.d("ConnectionService", "Service created! [onCreate() called]");
 		connect("irc.quakenet.org", this);
+		
+		Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        
+        PendingIntent pending = PendingIntent.getActivity(getApplicationContext(), 0, intent, 0);
+        
+        Notification notification = 
+                        new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.drawable.ic_menu_info_details)
+                        .setTicker("Starting IRC")
+                        
+                        .setContentTitle("WHIRC")
+                        .setContentText("You are connected to IRC [This should show hilight or some shit]")
+                        .setContentIntent(pending)
+                        .build();
+        
+        startForeground(1337, notification);
 	}
 
 	/* (non-Javadoc)
@@ -77,9 +98,10 @@ public class ConnectionService extends Service implements IRCEventListener {
 	public void onDestroy() {
 		// TODO Auto-generated method stub
 		super.onDestroy();
-		Toast.makeText(this, "service stopping", Toast.LENGTH_SHORT).show();
+		Log.d(TAG, "Service destroyed! [onDestroy() called]");
 		for(Runnable t : threads) {
 			handler.removeCallbacks(t);
+			Log.d(TAG, "Removed callback on thread " + t.toString() + " (" + t.hashCode() + ")");
 		}
 		stopSelf();
 	}
@@ -90,7 +112,7 @@ public class ConnectionService extends Service implements IRCEventListener {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		// TODO Auto-generated method stub
-		System.out.println("service started");
+		Log.d(TAG, "Service started! [onStartCommand() called]");
 		return START_STICKY;
 	}
 	
@@ -99,7 +121,6 @@ public class ConnectionService extends Service implements IRCEventListener {
 		final Runnable thread = new Runnable() {
 			@Override
 			public void run() {
-				System.out.println("Thread created, and run function has run");
 				qnet = connection.requestConnection(server);
 				qnet.addIRCEventListener(service);
 
@@ -107,7 +128,7 @@ public class ConnectionService extends Service implements IRCEventListener {
 		};
 		threads.add(thread);
 		handler.postDelayed(thread, 1000);
-
+		Log.d(TAG, "Thread created! toString: " + thread.toString() + " - hash: " + thread.hashCode());
 		
 	}
 	

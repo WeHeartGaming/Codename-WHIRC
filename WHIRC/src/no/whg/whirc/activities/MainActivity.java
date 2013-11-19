@@ -45,7 +45,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
     
     private ConnectionManager manager;
     
-    private ConnectionService cService;
+    public ConnectionService cService;
     private boolean mBound = false;
 
     /**
@@ -121,8 +121,8 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
         mViewPager.setAdapter(mSectionsPagerAdapter);
         
        cService = null;
-//       Intent intent = new Intent(this, ConnectionService.class);
-//       startService(intent);
+       Intent intent = new Intent(this, ConnectionService.class);
+       startService(intent);
     }
 
     
@@ -337,7 +337,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
 				for (int i = 0; i < 7; i++) {
 					msg = new Messages();
 					msg.setName("Fredrik"+i);
-					msg.setMessage("Derpasdpasdpapsdpasdpaspdpasdpasp"+i);
+					msg.setMessage("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Message id: "+i);
 					msg.setTime("22:0"+i);
 					msgs.add(msg);
 				}
