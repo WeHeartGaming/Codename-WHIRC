@@ -6,28 +6,48 @@
     
     <string name="app_name">WHIRC</string>
     <string name="action_settings">Settings</string>
+    <string name="changedTopic">%s changed topic to %s</string> <!-- user, topic -->
+    <string name="channel">Channel</string>
+    <string name="channelList">Get channel list</string>
+    <string name="channelTopic">Topic for %s : %s </string> <!-- channel name, topic -->
+    <string name="dataSync">Data and Sync</string>
+    <string name="diconnectServer">Disconnect</string>
+    <string name="displayName">Display name</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="enterChannel">Now talking on %s </string>	<!-- channel name -->
+  	<string name="joinChannel">Join channel</string>
+  	<string name="joinNetwork">Join network</string>
+    <string name="Help">Help</string>
+    <string name="networkList">Network list</string>
+    <string name="quit">Quit</string>
+    <string name="reconnectServer">Reconnect</string>
+    <!-- Settings fragment strings -->
+    <string name="settingsAddFriends">Add friends to messages</string>
+    <string name="settingsAddFriendsAlways">Always</string>
+    <string name="settingsAddFriendsPossible">When possible</string>
+    <string name="settingsAddFriendsNever">Never</string>
+    <string name="settingsEnableSocialRec">Enable social recommendations</string>
+    <string name="settingsNewNotifications">New mesage notifications</string>
+    <string name="settingsNotificationsTitle">Notifications</string>
+    <string name="settingsRingtone">Ringtone</string>
+    <string name="settingsSocialRec">Recommendations for people to contact based on your message history</string>
+    <string name="settingsSyncFrequency">Sync frequency</string>
+    <string name="settingsVibrate">Vibrate</string>
+   
+    <string name="syncMinutes"> %i minutes</string>	<!-- number of minutes -->
+    <string name="syncHours"> %i hours</string> <!--  number of hours -->
+
     <string name="title_section1">Section 1</string>
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>
-    <string name="drawer_open">Open navigation drawer</string>
-    <string name="drawer_close">Close navigation drawer</string>
-    <string name="networkList">Network list</string>
-    <string name="quit">Quit</string>
-    <string name="Help">Help</string>
-    <string name="diconnectServer">Disconnect</string>
-    <string name="reconnectServer">Reconnect</string>
-    <string name="channelList">Get channel list</string>
-  	<string name="joinChannel">Join channel</string>
-  	<string name="joinNetwork">Join network</string>
-    <string name="enterChannel">Now talking on </string>
-    <string name="channelTopic">Topic for </string>
-    <string name="changedTopic"> changed topic to </string>
+    
     <string name="user">User</string>
-    <string name="userJoinChannel"> has joined the channel</string>
-    <string name="userLeftChannel"> has quit</string>
-    <string name="userKicked"> was kicked by </string>
-    <string name="userBanned"> was banned by</string>
-    <string name="userPromoted"> was promoted to </string>
-    <string name="userChangeName"> is now known as </string>
+    <string name="userJoinChannel">%s has joined the channel</string>	<!-- username -->
+    <string name="userLeftChannel">%s has quit</string> <!-- username -->
+    <string name="userBanned">%s was banned by %s</string> <!-- username, admin name -->
+    <string name="userChangeName">%s is now known as %s</string> <!-- old username, new username -->
+    <string name="userKicked">%s was kicked by %s</string> <!-- username, admin name -->
+    <string name="userPromoted">%s was promoted to %s</string> <!-- username, title -->
     
 </resources>
