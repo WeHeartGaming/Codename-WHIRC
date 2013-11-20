@@ -6,7 +6,7 @@ package no.whg.whirc.adapters;
 import java.util.ArrayList;
 
 import no.whg.whirc.R;
-import no.whg.whirc.models.Messages;
+import no.whg.whirc.models.Message;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,14 +20,14 @@ import android.widget.TextView;
  *
  */
 public class MessageAdapter extends BaseAdapter {
-	private ArrayList<Messages> data;
+	private ArrayList<Message> data;
 	Context c;
 	
 	/**
 	 * @param data
 	 * @param c
 	 */
-	public MessageAdapter(ArrayList<Messages> data, Context c) {
+	public MessageAdapter(ArrayList<Message> data, Context c) {
 		super();
 		this.data = data;
 		this.c = c;
@@ -62,7 +62,7 @@ public class MessageAdapter extends BaseAdapter {
 		TextView text = (TextView) v.findViewById(R.id.tv_text);
 		TextView time = (TextView) v.findViewById(R.id.tv_clock);
 		
-		Messages msg = data.get(position);
+		Message msg = data.get(position);
 		
 		name.setText(msg.getName());
 		time.setText(msg.getTime());

@@ -7,7 +7,7 @@ package no.whg.whirc.models;
  * @author Fredrik
  *
  */
-public class Messages {
+public class Message {
 	String name;
 	String message;
 	String time;
