@@ -12,6 +12,11 @@ public class Message {
 	String message;
 	String time;
 	
+	public Message(String name, String message, String time){
+		this.name = name;
+		this.message = message;
+		this.time = time;
+	}
 
 	/**
 	 * @return the name
