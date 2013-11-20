@@ -6,10 +6,11 @@
     
     <string name="app_name">WHIRC</string>
     <string name="action_settings">Settings</string>
-    <string name="changedTopic">%s changed topic to %s</string> <!-- user, topic -->
+    <string name="changedTopic">%s changed topic to</string> <!-- user -->
+    <string name="topic"> %s</string> <!-- topic -->
     <string name="channel">Channel</string>
     <string name="channelList">Get channel list</string>
-    <string name="channelTopic">Topic for %s : %s </string> <!-- channel name, topic -->
+    <string name="channelTopic">Topic for %s :</string> <!-- channel name -->
     <string name="dataSync">Data and Sync</string>
     <string name="diconnectServer">Disconnect</string>
     <string name="displayName">Display name</string>
@@ -45,9 +46,11 @@
     <string name="user">User</string>
     <string name="userJoinChannel">%s has joined the channel</string>	<!-- username -->
     <string name="userLeftChannel">%s has quit</string> <!-- username -->
-    <string name="userBanned">%s was banned by %s</string> <!-- username, admin name -->
-    <string name="userChangeName">%s is now known as %s</string> <!-- old username, new username -->
-    <string name="userKicked">%s was kicked by %s</string> <!-- username, admin name -->
-    <string name="userPromoted">%s was promoted to %s</string> <!-- username, title -->
+    <string name="userBanned">%s was banned by</string> <!-- username -->
+    <string name="userChangeName">%s is now known as</string> <!-- old username -->
+    <string name="userKicked">%s was kicked by</string> <!-- username -->
+    <string name="userName"> %s</string> <!-- username -->
+    <string name="userPromoted">%s was promoted to </string> <!-- username -->
+    <string name="title"> %s</string> <!-- title -->
     
 </resources>
