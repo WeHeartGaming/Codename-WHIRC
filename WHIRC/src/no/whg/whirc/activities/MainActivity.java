@@ -209,13 +209,18 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
 
 	@Override
 	public void onServiceConnected(ComponentName name, IBinder binder) {
-		cService = ((ConnectionServiceBinder) binder).getService();
-		s = cService.getSessions().get(0);
+		
+		try {
+			cService = ((ConnectionServiceBinder) binder).getService();
+			s = cService.getSessions().get(0);
+		} catch (Exception e){
+			Log.e("MainActivity", e.getMessage());
+		}
 
 
 		// Create the adapter that will return a fragment for each of the three
         // primary sections of the app.
-		if (s.isConnected()) {
+		if (s != null && s.isConnected()) {
 			mConversationPagerAdapter = new ConversationPagerAdapter(getSupportFragmentManager(), s);
 		} else {
 			Log.e("MainActivity", "ConversationPagerAdapter not started because no active connection at time of call");
