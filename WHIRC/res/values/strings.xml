@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- IRC CHANNEL FRAGMENTS  -->
-    <string name="sendMessage">Send a message</string>
     
     
     <string name="app_name">WHIRC</string>
@@ -23,6 +22,7 @@
     <string name="networkList">Network list</string>
     <string name="quit">Quit</string>
     <string name="reconnectServer">Reconnect</string>
+    <string name="sendMessage">Send a message</string>
     <!-- Settings fragment strings -->
     <string name="settingsAddFriends">Add friends to messages</string>
     <string name="settingsAddFriendsAlways">Always</string>
