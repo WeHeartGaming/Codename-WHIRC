@@ -3,7 +3,7 @@ package no.whg.whirc.fragments;
 import java.util.ArrayList;
 
 import no.whg.whirc.R;
-import no.whg.whirc.models.Messages;
+import no.whg.whirc.models.Message;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -25,7 +25,7 @@ import android.widget.ListView;
          */
         public static final String ARG_SECTION_NUMBER = "section_number";
         ListView msgList;
-        ArrayList<Messages> msgs;
+        ArrayList<Message> msgs;
         AdapterView.AdapterContextMenuInfo info;
 
         public ConversationFragment() {
