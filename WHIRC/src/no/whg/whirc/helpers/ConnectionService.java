@@ -5,6 +5,7 @@ package no.whg.whirc.helpers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import jerklib.Channel;
 import jerklib.ConnectionManager;
@@ -32,12 +33,17 @@ public class ConnectionService extends Service implements IRCEventListener {
 	
 	
 	// irc object
-	ConnectionManager connection = new ConnectionManager(new Profile("whirc"));
+	ConnectionManager connection;
 	Session qnet;
 	
 
 	public ConnectionService() {
 		super();
+		
+		Random random = new Random();
+		String name = "whirc";
+		name += (String.valueOf(random.nextInt(9)) + String.valueOf(random.nextInt(9)) + String.valueOf(random.nextInt(9)));
+		connection = new ConnectionManager(new Profile(name));
 		
 		this.handler = new Handler();
 		this.threads = new ArrayList<Runnable>();
