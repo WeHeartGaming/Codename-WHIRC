@@ -13,6 +13,7 @@ import jerklib.Profile;
 import jerklib.Session;
 import jerklib.events.IRCEvent;
 import jerklib.events.IRCEvent.Type;
+import jerklib.events.MessageEvent;
 import jerklib.listeners.IRCEventListener;
 import no.whg.whirc.activities.MainActivity;
 import android.R;
@@ -166,6 +167,9 @@ public class ConnectionService extends Service implements IRCEventListener {
 		if (e.getType() == Type.CONNECT_COMPLETE) {
 			e.getSession().join("#whg");
 			Log.d(TAG, "Server: irc.quakenet.org [as string] - Session name: " + qnet.getConnectedHostName());
+		} else if (e.getType() == Type.CHANNEL_MESSAGE) {
+			MessageEvent me = (MessageEvent)e;
+			Log.d(TAG, "Name: " + me.getNick() + "\nUsername: " + me.getUserName() + "\nChannel: " + me.getChannel() + "\nMessage: " + me.getMessage());
 		} else {
 			System.out.println(e.getType() + " : " + e.getRawEventData());
 		}
