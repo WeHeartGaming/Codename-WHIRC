@@ -17,7 +17,7 @@ public class WhircDB extends SQLiteOpenHelper {
 	public static final String USER_TABLE = "userTable";
 	public static final String USER_COLUMNID = "id";
 	public static final String COLUMN_USERONE = "userNameOne";
-	public static final String COLUMN_USERTWO = "userNameTwo";
+	public static final String COLUMN_USERTWO = "userNaWmeTwo";
 	public static final String COLUMN_USERTHREE = "userNameThree";
 	public static final String COLUMN_NAME = "userRealName";
 	public static final String COLUMN_ADDRESS = "address";
