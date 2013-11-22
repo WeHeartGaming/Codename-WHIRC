@@ -18,6 +18,8 @@ public class Conversation {
 	Channel channel;
 	String channelID;
 	MainActivity activity;
+	ListView messageView;
+	MessageAdapter messageAdapter;
 	
 	public Conversation(Channel channel, String channelID){
 		this.channel = channel;
@@ -27,10 +29,13 @@ public class Conversation {
 		
 		Message topic = new Message(channel.getTopicSetter(), channel.getTopic(), channel.getTopicSetTime().toString());
 		messages.add(topic);
+		
+		messageAdapter = new MessageAdapter(messages, activity);
 
-		ListView messageView = (ListView) activity.findViewById(R.id.lw_chat);
-		messageView.setAdapter(new MessageAdapter(messages, activity));
+		messageView = (ListView) activity.findViewById(R.id.lw_chat);
+		messageView.setAdapter(messageAdapter);
 	}
+	
 	
 	public String getChannelID(){
 		return channelID;
@@ -42,5 +47,6 @@ public class Conversation {
 	
 	public void addMessage(Message m){
 		messages.add(m);
+		messageAdapter.notifyDataSetChanged();
 	}
 }
