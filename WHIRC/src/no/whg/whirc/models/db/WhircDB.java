@@ -1,4 +1,4 @@
-package no.whg.whirc.models;
+package no.whg.whirc.models.db;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
