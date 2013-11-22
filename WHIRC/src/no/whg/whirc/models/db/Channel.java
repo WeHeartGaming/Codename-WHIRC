@@ -4,6 +4,7 @@ public class Channel {
 	private long id;
 	private String channel;
 	private String server;
+	private String password;
 	
 	public long getId() {
 		return id;
@@ -27,6 +28,14 @@ public class Channel {
 	
 	public void setServer(String server) {
 		this.server = server;
+	}
+	
+	public String getPassword() {
+		return password;
+	}
+	
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	
 	@Override
