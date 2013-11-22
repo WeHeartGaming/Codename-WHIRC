@@ -50,13 +50,14 @@ public class WhircDB extends SQLiteOpenHelper {
 		super(context, DATABASE_NAME , null, DATABASE_VERSION);
 	}
 	
-	
+	@Override
 	public void onCreate(SQLiteDatabase database)
 	{
 		database.execSQL(DATABASE_CREATE);
 		database.execSQL(CREATE_USERTABLE);
 	}
 	
+	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
 	{
 		Log.w(WhircDB.class.getName(), "Upgreading database from version " + oldVersion + " to "
