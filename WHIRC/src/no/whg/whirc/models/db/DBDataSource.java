@@ -9,7 +9,9 @@ public class DBDataSource {
 	private WhircDB dbHelper;
 	private String[] whircAllColumns = { WhircDB.COLUMNID, WhircDB.COLUMN_CHANNELNAME, 
 			WhircDB.COLUMN_CHANNELSERVER, WhircDB.COLUMN_CHANNELPASS, WhircDB.COLUMN_SERVER };
-	private String[] userAllColumns = {  }; // Currently empty
+	private String[] userAllColumns = { WhircDB.USER_COLUMNID, WhircDB.COLUMN_USERONE,
+			WhircDB.COLUMN_USERTWO, WhircDB.COLUMN_USERTHREE, WhircDB.COLUMN_NAME,
+			WhircDB.COLUMN_ADDRESS, WhircDB.COLUMN_USERPASS };
 	
 	public DBDataSource(Context context) {
 		dbHelper = new WhircDB(context);
