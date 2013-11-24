@@ -14,12 +14,13 @@ import android.widget.ListView;
  *
  */
 public class Conversation {
-	ArrayList<Message> messages;
-	Channel channel;
-	String channelID;
-	MainActivity activity;
-	ListView messageView;
-	MessageAdapter messageAdapter;
+	private ArrayList<Message> messages;
+	private Channel channel;
+	private ListView messageView;
+	private MainActivity activity;
+	private MessageAdapter messageAdapter;
+	private String channelID;
+	private String channelTitle;
 	
 	public Conversation(Channel channel, String channelID){
 		this.channel = channel;
