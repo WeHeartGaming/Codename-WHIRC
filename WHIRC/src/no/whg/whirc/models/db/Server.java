@@ -7,6 +7,7 @@ public class Server {
 	private String password;
 	private String channelServer;
 	private String channelName;
+	private int port;
 	
 	public long getId() {
 		return id;
@@ -69,5 +70,13 @@ public class Server {
 		return channelName;
 	}
 	
+	public void setPort(int port)
+	{
+		this.port = port;
+	}
 	
+	public int getPort()
+	{
+		return port;
+	}
 }

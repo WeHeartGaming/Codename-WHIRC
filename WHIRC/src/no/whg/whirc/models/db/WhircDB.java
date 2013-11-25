@@ -17,6 +17,7 @@ public class WhircDB extends SQLiteOpenHelper {
 	public static final String COLUMN_CHANNELPASS = "channelPass";
 	public static final String COLUMN_SERVER = "serverName";
 	public static final String COLUMN_HOSTNAME = "hostName";
+	public static final String COLUMN_PORT = "port";
 	
 	/**
 	 * 
@@ -41,8 +42,9 @@ public class WhircDB extends SQLiteOpenHelper {
 			+ COLUMN_CHANNELNAME + " text not null, "
 			+ COLUMN_CHANNELSERVER + " text not null, "
 			+ COLUMN_SERVER + " text not null, "
-			+ COLUMN_CHANNELPASS + " text,"
-			+ COLUMN_HOSTNAME + "text not null" + ");";
+			+ COLUMN_CHANNELPASS + " text, "
+			+ COLUMN_HOSTNAME + "text not null, "
+			+ COLUMN_PORT + "integer" + ");";
 			
 	private static final String CREATE_USERTABLE = "Create table "
 			+ USER_TABLE + "(" 
