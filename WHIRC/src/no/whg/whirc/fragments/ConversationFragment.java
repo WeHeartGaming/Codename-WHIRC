@@ -22,6 +22,7 @@ import android.widget.ListView;
      */
     @SuppressLint("ValidFragment")
 	public class ConversationFragment extends Fragment {
+    	private static final String TAG = "ConversationFragment";
         /**
          * The fragment argument representing the section number for this
          * fragment.
