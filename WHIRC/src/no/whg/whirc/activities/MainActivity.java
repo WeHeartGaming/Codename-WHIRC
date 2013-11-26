@@ -14,6 +14,7 @@ import no.whg.whirc.fragments.ConversationFragment;
 import no.whg.whirc.helpers.ConnectionService;
 import no.whg.whirc.helpers.ConnectionServiceBinder;
 import no.whg.whirc.models.Conversation;
+import no.whg.whirc.helpers.ServerListDownload;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -72,8 +73,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        
-        
+        new ServerListDownload().execute("http://www.mirc.com/servers.ini", null, "");
         // Set placeholder title
         mTitle = mDrawerTitleLeft = getTitle();
         mDrawerLayoutLeft = (DrawerLayout) findViewById(R.id.drawer_layout);
