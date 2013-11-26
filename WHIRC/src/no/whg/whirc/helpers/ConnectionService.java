@@ -166,7 +166,7 @@ public class ConnectionService extends Service implements IRCEventListener {
 					} else if (qnet.isConnected()) {
 						Log.d(TAG, "Connected! [(qnet.isConnected())]");
 
-						qnet.join("#whg");
+						//qnet.join("#whg");
 					}
 				}
 			}
