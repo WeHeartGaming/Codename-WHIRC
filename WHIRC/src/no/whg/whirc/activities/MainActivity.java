@@ -1,15 +1,20 @@
 package no.whg.whirc.activities;
 
+import jerklib.Channel;
 import jerklib.ConnectionManager;
 import jerklib.Session;
 import jerklib.events.IRCEvent;
 import jerklib.events.IRCEvent.Type;
+import jerklib.events.JoinCompleteEvent;
 import jerklib.events.MessageEvent;
 import jerklib.listeners.IRCEventListener;
 import no.whg.whirc.R;
 import no.whg.whirc.adapters.ConversationPagerAdapter;
+import no.whg.whirc.fragments.ConversationFragment;
 import no.whg.whirc.helpers.ConnectionService;
 import no.whg.whirc.helpers.ConnectionServiceBinder;
+import no.whg.whirc.models.Conversation;
+import no.whg.whirc.helpers.ServerListDownload;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -31,6 +36,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 public class MainActivity extends FragmentActivity implements ServiceConnection, IRCEventListener {
+	private static final String TAG = "MainActivity";
     private DrawerLayout mDrawerLayoutLeft;
     private DrawerLayout mDrawerLayoutRight;
     private ListView mDrawerListRight;
@@ -45,7 +51,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
     public ConnectionService cService;
     private boolean mBound = false;
     
-    private Session s = null;
+    //private Session s = null;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -67,8 +73,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        
-        
+        new ServerListDownload().execute("http://www.mirc.com/servers.ini", null, "");
         // Set placeholder title
         mTitle = mDrawerTitleLeft = getTitle();
         mDrawerLayoutLeft = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -112,10 +117,11 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mConversationPagerAdapter);
-        
-       cService = null;
-       Intent intent = new Intent(this, ConnectionService.class);
-       startService(intent);
+	    
+		cService = null;
+		Intent intent = new Intent(this, ConnectionService.class);
+		startService(intent);
+		//bindService(intent, this, Context.BIND_ABOVE_CLIENT);
     }
 
 
@@ -210,25 +216,25 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 	@Override
 	public void onServiceConnected(ComponentName name, IBinder binder) {
 		cService = ((ConnectionServiceBinder) binder).getService();
-		
-		try {
-			s = cService.getSessions().get(0);
-		} catch (Exception e){
-			Log.e("MainActivity", e.getMessage());
-		}
 
+		for (Session s : cService.getSessions()){
+			s.addIRCEventListener(this);
+		}
 
 		// Create the adapter that will return a fragment for each of the three
         // primary sections of the app.
-		if (s != null && s.isConnected()) {
-			mConversationPagerAdapter = new ConversationPagerAdapter(getSupportFragmentManager(), s);
-		} else {
-			Log.e("MainActivity", "ConversationPagerAdapter not started because no active connection at time of call");
-		}
+//		if (s != null && s.isConnected()) {
+//			mConversationPagerAdapter = new ConversationPagerAdapter(getSupportFragmentManager(), s);
+//		} else {
+//			Log.e("MainActivity", "ConversationPagerAdapter not started because no active connection at time of call");
+//		}
 	}
 
 	@Override
 	public void onServiceDisconnected(ComponentName name) {
+		for (Session s : cService.getSessions()){
+			s.removeIRCEventListener(this);
+		}
 		cService = null;
 		
 	}
@@ -239,6 +245,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 	
 	@Override
 	public void receiveEvent(IRCEvent e) {
+		System.out.println("WHOOOOOOOOOOOA");
 		if (e.getType() == Type.CONNECT_COMPLETE) {
 
 		} else if (e.getType() == Type.CHANNEL_MESSAGE) {
@@ -247,6 +254,16 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			
 		} else {
 			System.out.println(e.getType() + " : " + e.getRawEventData());
+		}
+
+		if (e.getType() == Type.JOIN_COMPLETE){
+			Session s = e.getSession();
+			JoinCompleteEvent jce = (JoinCompleteEvent) e;
+			Channel c = jce.getChannel();
+        	Log.d(TAG, "JOIN_COMPLETE");
+        	Conversation conversation = new Conversation(c, s.getConnectedHostName() + c.getName());
+        	Log.d(TAG, "Created conversation " + s.getConnectedHostName() + c.getName() + ", making a fragment.");
+        	mConversationPagerAdapter.addFragment(new ConversationFragment(conversation)); // derp..
 		}
 	}
 }

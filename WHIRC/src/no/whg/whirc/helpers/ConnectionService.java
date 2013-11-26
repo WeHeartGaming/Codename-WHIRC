@@ -16,6 +16,8 @@ import jerklib.events.IRCEvent.Type;
 import jerklib.events.MessageEvent;
 import jerklib.listeners.IRCEventListener;
 import no.whg.whirc.activities.MainActivity;
+import no.whg.whirc.fragments.ConversationFragment;
+import no.whg.whirc.models.Conversation;
 import android.R;
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -162,8 +164,9 @@ public class ConnectionService extends Service implements IRCEventListener {
 					if ((qnet == null) || (!qnet.isConnected())){
 						Log.d(TAG, "Retrying connect! [if (qnet == null) || (!qnet.isConnected())]");
 					} else if (qnet.isConnected()) {
-						//qnet.join("#whg");
 						Log.d(TAG, "Connected! [(qnet.isConnected())]");
+
+						qnet.join("#whg");
 					}
 				}
 			}
