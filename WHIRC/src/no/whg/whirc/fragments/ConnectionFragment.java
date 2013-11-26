@@ -51,7 +51,7 @@ public class ConnectionFragment extends Fragment {
 		super.onActivityCreated(savedInstanceState);
 		
 		TextView addServer = (TextView) getActivity().findViewById(R.id.tv_addConnection);
-		addServer.setText(R.string.joinNetwork);
+		addServer.setText("test");
 		addServer.setClickable(true);
 		addServer.setOnClickListener(new OnClickListener() {
 

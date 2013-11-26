@@ -42,8 +42,10 @@ public class ConversationPagerAdapter extends FragmentPagerAdapter {
         // Return a ConversationFragment (defined as a static inner class
         // below) with the page number as its lone argument.
         if (fragments != null && fragments.size() >= index) {
+        	Log.d("ConversationPagerAdapter", "fragments != null && fragments.size() >= index has run");
         	return fragments.get(index);
         } else {
+        	Log.d("ConversationPagerAdapter", "new ConnectionFragment has been created");
         	return new ConnectionFragment();
         }
     }
@@ -51,11 +53,12 @@ public class ConversationPagerAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() {
         // Show 3 total pages.
-        if (fragments.size() == 0) {
-        	return 1;
-        } else {
-        	return fragments.size();
-        }
+//        if (fragments.size() == 0) {
+//        	return 1;
+//        } else {
+//        	return fragments.size();
+//        }
+    	return 1;
     }
 
     @Override
@@ -66,6 +69,7 @@ public class ConversationPagerAdapter extends FragmentPagerAdapter {
 
 	@Override
 	public int getItemPosition(Object object) {
+		Log.d("ConversationPagerAdapter", "getItemPosition ran");
 		//int position = fragments.indexOf(object);
 		//if (position >= 0) {
 		//	return position;
