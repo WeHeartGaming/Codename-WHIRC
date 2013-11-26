@@ -6,6 +6,7 @@ import jerklib.Channel;
 import jerklib.Session;
 import no.whg.whirc.fragments.ConnectionFragment;
 import no.whg.whirc.fragments.ConversationFragment;
+import no.whg.whirc.models.Conversation;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -29,7 +30,8 @@ public class ConversationPagerAdapter extends FragmentPagerAdapter {
         this.fragments = new ArrayList<Fragment>();
         
         for (Channel c : session.getChannels()) {
-        	fragments.add(new ConversationFragment()); // derp..
+        	Conversation conversation = new Conversation(c, session.getConnectedHostName() + c.getName());
+        	fragments.add(new ConversationFragment(conversation)); // derp..
         }
     }
 
@@ -64,12 +66,12 @@ public class ConversationPagerAdapter extends FragmentPagerAdapter {
 
 	@Override
 	public int getItemPosition(Object object) {
-		int position = fragments.indexOf(object);
-		if (position >= 0) {
-			return position;
-		} else {
-			return POSITION_NONE;
-		}
+		//int position = fragments.indexOf(object);
+		//if (position >= 0) {
+		//	return position;
+		//} else {
+		return POSITION_NONE;
+		//}
 	}
 
 	public void addFragment(ConversationFragment f) {

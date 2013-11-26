@@ -50,4 +50,8 @@ public class Conversation {
 		messages.add(m);
 		messageAdapter.notifyDataSetChanged();
 	}
+	
+	public ListView getView(){
+		return messageView;
+	}
 }
