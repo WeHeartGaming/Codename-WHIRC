@@ -16,6 +16,8 @@ import jerklib.events.IRCEvent.Type;
 import jerklib.events.MessageEvent;
 import jerklib.listeners.IRCEventListener;
 import no.whg.whirc.activities.MainActivity;
+import no.whg.whirc.fragments.ConversationFragment;
+import no.whg.whirc.models.Conversation;
 import android.R;
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -36,7 +38,7 @@ public class ConnectionService extends Service implements IRCEventListener {
 	
 	// irc object
 	ConnectionManager connection;
-	Session qnet;
+	Session qnet = null;
 	
 
 	public ConnectionService() {
@@ -95,6 +97,8 @@ public class ConnectionService extends Service implements IRCEventListener {
 		// TODO Auto-generated method stub
 		super.onCreate();
 		Log.d("ConnectionService", "Service created! [onCreate() called]");
+		
+		
 		connect("irc.quakenet.org", this);
 		
 		Intent intent = new Intent(getApplicationContext(), MainActivity.class);
@@ -145,9 +149,26 @@ public class ConnectionService extends Service implements IRCEventListener {
 		final Runnable thread = new Runnable() {
 			@Override
 			public void run() {
-				qnet = connection.requestConnection(server);
-				qnet.addIRCEventListener(service);
+				Log.d(TAG, "Connection thread started! [connect() called]");
+				while ((qnet == null) || (!qnet.isConnected())){
+					Log.d(TAG, "Attempting to connect! [if (qnet == null) || (!qnet.isConnected())]");
+					qnet = connection.requestConnection(server);
+					qnet.addIRCEventListener(service);
+					try {
+						Log.d(TAG, "Sleeping connection thread! [if (!qnet.isConnected()) called]");
+						Thread.sleep(15000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					if ((qnet == null) || (!qnet.isConnected())){
+						Log.d(TAG, "Retrying connect! [if (qnet == null) || (!qnet.isConnected())]");
+					} else if (qnet.isConnected()) {
+						Log.d(TAG, "Connected! [(qnet.isConnected())]");
 
+						//qnet.join("#whg");
+					}
+				}
 			}
 		};
 		threads.add(thread);

@@ -28,9 +28,10 @@ public class Conversation {
 		
 		messages = new ArrayList<Message>();
 		
-		Message topic = new Message(channel.getTopicSetter(), channel.getTopic(), channel.getTopicSetTime().toString());
-		messages.add(topic);
-		
+		if (!channel.getTopic().equals("")){
+			Message topic = new Message(channel.getTopicSetter(), channel.getTopic(), channel.getTopicSetTime().toString());
+			messages.add(topic);
+		}
 		messageAdapter = new MessageAdapter(messages, activity);
 
 		messageView = (ListView) activity.findViewById(R.id.lw_chat);
@@ -49,5 +50,9 @@ public class Conversation {
 	public void addMessage(Message m){
 		messages.add(m);
 		messageAdapter.notifyDataSetChanged();
+	}
+	
+	public ListView getView(){
+		return messageView;
 	}
 }
