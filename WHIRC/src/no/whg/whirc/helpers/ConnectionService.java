@@ -31,6 +31,7 @@ public class ConnectionService extends Service implements IRCEventListener {
 	private Handler handler;
 	private final ConnectionServiceBinder binder;
 	private ArrayList<Runnable> threads;
+	Notification notification;
 	
 	
 	// irc object
@@ -58,6 +59,13 @@ public class ConnectionService extends Service implements IRCEventListener {
 		
 		// lets see if shit keeps running or not now
 		startService(new Intent(this, ConnectionService.class));
+		
+		if (!connection.getSessions().isEmpty()) {
+			for(Session s : connection.getSessions()) {
+				s.removeIRCEventListener(this);
+			}
+		}
+		
 		return this.binder;
 	}
 	
@@ -69,6 +77,13 @@ public class ConnectionService extends Service implements IRCEventListener {
 	@Override
 	public boolean onUnbind(Intent intent) {
 		// TODO Auto-generated method stub
+		
+		if (!connection.getSessions().isEmpty()) {
+			for(Session s : connection.getSessions()) {
+				s.addIRCEventListener(this);
+			}
+		}
+		
 		return super.onUnbind(intent);
 	}
 
@@ -87,13 +102,13 @@ public class ConnectionService extends Service implements IRCEventListener {
         
         PendingIntent pending = PendingIntent.getActivity(getApplicationContext(), 0, intent, 0);
         
-        Notification notification = 
+        notification = 
                         new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.ic_menu_info_details)
                         .setTicker("Starting IRC")
                         
                         .setContentTitle("WHIRC")
-                        .setContentText("You are connected to IRC [This should show hilight or some shit]")
+                        .setContentText("Not connected.")
                         .setContentIntent(pending)
                         .build();
         
@@ -137,6 +152,7 @@ public class ConnectionService extends Service implements IRCEventListener {
 		};
 		threads.add(thread);
 		handler.postDelayed(thread, 1000);
+		//notification.tickerText = "Connected to " + qnet.getConnectedHostName();
 		Log.d(TAG, "Thread created! toString: " + thread.toString() + " - hash: " + thread.hashCode());
 		
 	}
@@ -165,10 +181,13 @@ public class ConnectionService extends Service implements IRCEventListener {
 	public void receiveEvent(IRCEvent e) {
 		
 		if (e.getType() == Type.CONNECT_COMPLETE) {
-			e.getSession().join("#whg");
 			Log.d(TAG, "Server: irc.quakenet.org [as string] - Session name: " + qnet.getConnectedHostName());
 		} else if (e.getType() == Type.CHANNEL_MESSAGE) {
 			MessageEvent me = (MessageEvent)e;
+			
+			if (me.getMessage().contains(me.getSession().getNick())) {
+				//TODO: Highlight in notification
+			}
 			Log.d(TAG, "Name: " + me.getNick() + "\nUsername: " + me.getUserName() + "\nChannel: " + me.getChannel() + "\nMessage: " + me.getMessage());
 		} else {
 			System.out.println(e.getType() + " : " + e.getRawEventData());

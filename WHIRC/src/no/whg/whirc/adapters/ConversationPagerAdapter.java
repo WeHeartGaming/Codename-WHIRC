@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import jerklib.Channel;
 import jerklib.Session;
+import no.whg.whirc.fragments.ConnectionFragment;
 import no.whg.whirc.fragments.ConversationFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -41,14 +42,18 @@ public class ConversationPagerAdapter extends FragmentPagerAdapter {
         if (fragments != null && fragments.size() >= index) {
         	return fragments.get(index);
         } else {
-        	return null;
+        	return new ConnectionFragment();
         }
     }
 
     @Override
     public int getCount() {
         // Show 3 total pages.
-        return fragments.size();
+        if (fragments.size() == 0) {
+        	return 1;
+        } else {
+        	return fragments.size();
+        }
     }
 
     @Override

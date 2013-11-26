@@ -2,6 +2,10 @@
 <resources>
     <!-- IRC CHANNEL FRAGMENTS  -->
     
+    <!-- LEFT MENU -->
+    <string name="menu_networks">Networks</string>
+    <string name="menu_settings">Settings</string>
+    
     
     <string name="app_name">WHIRC</string>
     <string name="action_settings">Settings</string>

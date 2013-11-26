@@ -2,6 +2,10 @@ package no.whg.whirc.activities;
 
 import jerklib.ConnectionManager;
 import jerklib.Session;
+import jerklib.events.IRCEvent;
+import jerklib.events.IRCEvent.Type;
+import jerklib.events.MessageEvent;
+import jerklib.listeners.IRCEventListener;
 import no.whg.whirc.R;
 import no.whg.whirc.adapters.ConversationPagerAdapter;
 import no.whg.whirc.helpers.ConnectionService;
@@ -26,7 +30,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-public class MainActivity extends FragmentActivity implements ServiceConnection {
+public class MainActivity extends FragmentActivity implements ServiceConnection, IRCEventListener {
     private DrawerLayout mDrawerLayoutLeft;
     private DrawerLayout mDrawerLayoutRight;
     private ListView mDrawerListRight;
@@ -205,9 +209,9 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
 
 	@Override
 	public void onServiceConnected(ComponentName name, IBinder binder) {
+		cService = ((ConnectionServiceBinder) binder).getService();
 		
 		try {
-			cService = ((ConnectionServiceBinder) binder).getService();
 			s = cService.getSessions().get(0);
 		} catch (Exception e){
 			Log.e("MainActivity", e.getMessage());
@@ -231,5 +235,18 @@ public class MainActivity extends FragmentActivity implements ServiceConnection 
 	
 	public ConnectionService getConnectionServiceObject() {
 		return cService;
+	}
+	
+	@Override
+	public void receiveEvent(IRCEvent e) {
+		if (e.getType() == Type.CONNECT_COMPLETE) {
+
+		} else if (e.getType() == Type.CHANNEL_MESSAGE) {
+			MessageEvent me = (MessageEvent)e;
+			
+			
+		} else {
+			System.out.println(e.getType() + " : " + e.getRawEventData());
+		}
 	}
 }
