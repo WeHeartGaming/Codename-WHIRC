@@ -23,7 +23,7 @@ public class ConversationPagerAdapter extends FragmentPagerAdapter {
 	private FragmentManager manager;
 	
 
-    public ConversationPagerAdapter(FragmentManager fm, Session s) {
+    public ConversationPagerAdapter(FragmentManager fm) {
         super(fm);
         this.manager = fm;
         this.fragments = new ArrayList<Fragment>();
