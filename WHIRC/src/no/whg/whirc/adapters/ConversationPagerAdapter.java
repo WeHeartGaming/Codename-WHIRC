@@ -18,21 +18,15 @@ import android.util.Log;
  * one of the sections/tabs/pages.
  */
 public class ConversationPagerAdapter extends FragmentPagerAdapter {
+	private static final String TAG = "ConversationFragmentAdapter";
 	private ArrayList<Fragment> fragments;
 	private FragmentManager manager;
-	private Session session;
 	
 
     public ConversationPagerAdapter(FragmentManager fm, Session s) {
         super(fm);
-        this.session = s;
         this.manager = fm;
         this.fragments = new ArrayList<Fragment>();
-        
-        for (Channel c : session.getChannels()) {
-        	Conversation conversation = new Conversation(c, session.getConnectedHostName() + c.getName());
-        	fragments.add(new ConversationFragment(conversation)); // derp..
-        }
     }
 
 	@Override
