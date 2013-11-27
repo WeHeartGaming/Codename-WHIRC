@@ -52,7 +52,8 @@ public class SettingsActivity extends PreferenceActivity {
 			addPreferencesFromResource(R.xml.preferences);
 			populateServerList();
 		}
-		/*
+		
+		/**
 		 * Populates the list of usernames based on which servers the user has visited.
 		 */
 		private void populateServerList() {
@@ -69,6 +70,7 @@ public class SettingsActivity extends PreferenceActivity {
 		    XmlPullParser parser = resources.getXml(R.layout.user_edit_dialog);
 		    AttributeSet attributes = Xml.asAttributeSet(parser);
 			
+		    // TEMPORAY
 			for (int i = 0; i < 6; i++) {
 				UserEditDialog temp = new UserEditDialog(getActivity(), attributes);
 				
