@@ -54,6 +54,7 @@ public class ConnectionService extends Service implements IRCEventListener {
 		this.handler = new Handler();
 		this.threads = new ArrayList<Runnable>();
 		this.binder = new ConnectionServiceBinder(this);
+		Log.e(TAG, "constructor");
 	}
 	
 	@Override
@@ -69,7 +70,7 @@ public class ConnectionService extends Service implements IRCEventListener {
 				s.removeIRCEventListener(this);
 			}
 		}
-		
+		Log.d(TAG, "onBind()");
 		return this.binder;
 	}
 	
@@ -87,7 +88,7 @@ public class ConnectionService extends Service implements IRCEventListener {
 				s.addIRCEventListener(this);
 			}
 		}
-		
+		Log.d(TAG, "onUnbind()");
 		return super.onUnbind(intent);
 	}
 
@@ -99,7 +100,7 @@ public class ConnectionService extends Service implements IRCEventListener {
 		// TODO Load servers from file
 		super.onCreate();
 		Log.d("ConnectionService", "Service created! [onCreate() called]");
-		
+		serverList = new ArrayList <Server>();
 		
 		connect("irc.quakenet.org", this);
 		
@@ -146,32 +147,61 @@ public class ConnectionService extends Service implements IRCEventListener {
 		return START_STICKY;
 	}
 	
+	public void connect(String server){
+		connect(server, this);
+	}
+	
 	public void connect(final String server, final ConnectionService service) {
 		
 		final Runnable thread = new Runnable() {
 			@Override
 			public void run() {
 				Log.d(TAG, "Connection thread started! [connect() called]");
-				while ((qnet == null) || (!qnet.isConnected())){
-					Log.d(TAG, "Attempting to connect! [if (qnet == null) || (!qnet.isConnected())]");
-					qnet = connection.requestConnection(server);
-					qnet.addIRCEventListener(service);
-					try {
-						Log.d(TAG, "Sleeping connection thread! [if (!qnet.isConnected()) called]");
-						Thread.sleep(15000);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+//				while ((qnet == null) || (!qnet.isConnected())){
+//					Log.d(TAG, "Attempting to connect! [if (qnet == null) || (!qnet.isConnected())]");
+//					qnet = connection.requestConnection(server);
+//					qnet.addIRCEventListener(service);
+//					try {
+//						Log.d(TAG, "Sleeping connection thread! [if (!qnet.isConnected()) called]");
+//						Thread.sleep(15000);
+//					} catch (InterruptedException e) {
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//					}
+//					if ((qnet == null) || (!qnet.isConnected())){
+////						Log.d(TAG, "Retrying connect! [if (qnet == null) || (!qnet.isConnected())]");
+//					} 
+//					else if (qnet.isConnected()) {
+//						Log.d(TAG, "Connected! [(qnet.isConnected())]");
+//						addServer(qnet);
+//
+//						//qnet.join("#whg");
+//					}
+//				}
+				int i;
+				//for (i = 0; i < 3; i++){
 					if ((qnet == null) || (!qnet.isConnected())){
-						Log.d(TAG, "Retrying connect! [if (qnet == null) || (!qnet.isConnected())]");
-					} else if (qnet.isConnected()) {
-						Log.d(TAG, "Connected! [(qnet.isConnected())]");
-						addServer(qnet);
-
-						//qnet.join("#whg");
+						qnet = connection.requestConnection(server);
+						qnet.addIRCEventListener(service);
+//						try {
+//							Log.d(TAG, "Sleeping connection thread! [if (!qnet.isConnected()) called]");
+//							Thread.sleep(15000);
+//						} catch (InterruptedException e) {
+//							// TODO Auto-generated catch block
+//							e.printStackTrace();
+//						}
+//						if (qnet.isConnected()) {
+//							Log.d(TAG, "Connected! [(qnet.isConnected())]");
+//							//addServer(qnet);
+//							i = 9000;
+//							//qnet.join("#whg");
+//						} else {
+//							qnet.removeIRCEventListener(service);
+//							qnet = null;
+//							Log.e(TAG, "Did not connect.");
+//						}
 					}
-				}
+				//}
 			}
 		};
 		threads.add(thread);
@@ -220,7 +250,7 @@ public class ConnectionService extends Service implements IRCEventListener {
 	
 	public Server getCurrentServer(){
 		if (serverList.size() > 0){
-			return serverList.get(currentServer);
+			return serverList.get(0);
 		} else {
 			return null;
 		}
@@ -230,15 +260,27 @@ public class ConnectionService extends Service implements IRCEventListener {
 		return serverList;
 	}
 	
-	private void addServer (Session s){
-		boolean exists = false;
-		for (Server serv : serverList){
-			if (serv.getName().equals(s.getServerInformation().getServerName())){
-				exists = true;
+	public Server getServer(int i){
+		if (i >= serverList.size()){
+			return null;
+		} else {
+			return serverList.get(i);
+		}
+	}
+	
+	public Server getServer(String s){
+		if (!serverList.isEmpty()){
+			for (Server serv : serverList){
+				if (serv.getName().equals(s)){
+					return serv;
+				}
 			}
 		}
-		
-		if (!exists){
+		return null;
+	}
+	
+	private void addServer (Session s){
+		if (getServer(s.getServerInformation().getServerName()) == null){
 			Server myServer = new Server (s);
 			serverList.add(myServer);
 		}

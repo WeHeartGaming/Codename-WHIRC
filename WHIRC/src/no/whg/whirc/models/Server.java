@@ -1,7 +1,5 @@
 package no.whg.whirc.models;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 
 import jerklib.Session;
@@ -46,6 +44,7 @@ public class Server {
 	public Server(Session session){
 		this.simpleName = session.getServerInformation().getServerName();
 		this.session = session;
+		this.conversations = new HashMap<String, Conversation>();
 	}
 
 
@@ -69,5 +68,7 @@ public class Server {
 		return simpleName;
 	}
 	
-	
+	public Session getSession(){
+		return session;
+	}
 }
