@@ -16,8 +16,7 @@ import jerklib.events.IRCEvent.Type;
 import jerklib.events.MessageEvent;
 import jerklib.listeners.IRCEventListener;
 import no.whg.whirc.activities.MainActivity;
-import no.whg.whirc.fragments.ConversationFragment;
-import no.whg.whirc.models.Conversation;
+import no.whg.whirc.models.Server;
 import android.R;
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -39,6 +38,9 @@ public class ConnectionService extends Service implements IRCEventListener {
 	// irc object
 	ConnectionManager connection;
 	Session qnet = null;
+	
+	private ArrayList <Server> serverList;
+	private int currentServer;
 	
 
 	public ConnectionService() {
@@ -94,7 +96,7 @@ public class ConnectionService extends Service implements IRCEventListener {
 	 */
 	@Override
 	public void onCreate() {
-		// TODO Auto-generated method stub
+		// TODO Load servers from file
 		super.onCreate();
 		Log.d("ConnectionService", "Service created! [onCreate() called]");
 		
@@ -165,6 +167,7 @@ public class ConnectionService extends Service implements IRCEventListener {
 						Log.d(TAG, "Retrying connect! [if (qnet == null) || (!qnet.isConnected())]");
 					} else if (qnet.isConnected()) {
 						Log.d(TAG, "Connected! [(qnet.isConnected())]");
+						addServer(qnet);
 
 						//qnet.join("#whg");
 					}
@@ -214,5 +217,30 @@ public class ConnectionService extends Service implements IRCEventListener {
 			System.out.println(e.getType() + " : " + e.getRawEventData());
 		}
 	}
-
+	
+	public Server getCurrentServer(){
+		if (serverList.size() > 0){
+			return serverList.get(currentServer);
+		} else {
+			return null;
+		}
+	}
+	
+	public ArrayList<Server> getServerList(){
+		return serverList;
+	}
+	
+	private void addServer (Session s){
+		boolean exists = false;
+		for (Server serv : serverList){
+			if (serv.getName().equals(s.getServerInformation().getServerName())){
+				exists = true;
+			}
+		}
+		
+		if (!exists){
+			Server myServer = new Server (s);
+			serverList.add(myServer);
+		}
+	}
 }

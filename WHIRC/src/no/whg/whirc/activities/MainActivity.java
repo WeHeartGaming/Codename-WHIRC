@@ -1,5 +1,7 @@
 package no.whg.whirc.activities;
 
+import java.util.ArrayList;
+
 import jerklib.Channel;
 import jerklib.ConnectionManager;
 import jerklib.Session;
@@ -13,8 +15,9 @@ import no.whg.whirc.adapters.ConversationPagerAdapter;
 import no.whg.whirc.fragments.ConversationFragment;
 import no.whg.whirc.helpers.ConnectionService;
 import no.whg.whirc.helpers.ConnectionServiceBinder;
-import no.whg.whirc.models.Conversation;
 import no.whg.whirc.helpers.ServerListDownload;
+import no.whg.whirc.models.Conversation;
+import no.whg.whirc.models.Server;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -52,6 +55,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
     private boolean mBound = false;
     
     //private Session s = null;
+    //private ArrayList <Session> sessions;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -134,6 +138,8 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		super.onStart();
 		Intent intent = new Intent(this, ConnectionService.class);
 	    bindService(intent, this, Context.BIND_ABOVE_CLIENT);
+	    mConversationPagerAdapter.removeFragments();
+	    generateFragments(cService.getCurrentServer());
 	}
 
 
@@ -245,7 +251,6 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 	
 	@Override
 	public void receiveEvent(IRCEvent e) {
-		System.out.println("WHOOOOOOOOOOOA");
 		if (e.getType() == Type.CONNECT_COMPLETE) {
 
 		} else if (e.getType() == Type.CHANNEL_MESSAGE) {
@@ -264,6 +269,13 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
         	Conversation conversation = new Conversation(c, s.getConnectedHostName() + c.getName());
         	Log.d(TAG, "Created conversation " + s.getConnectedHostName() + c.getName() + ", making a fragment.");
         	mConversationPagerAdapter.addFragment(new ConversationFragment(conversation)); // derp..
+		}
+	}
+	
+	private void generateFragments(Server s){
+		for (Conversation c : s.getConversations().values()){
+        	Log.d(TAG, "Created conversation " + c.getChannelID() + ", making a fragment.");
+        	mConversationPagerAdapter.addFragment(new ConversationFragment(c)); // derp..
 		}
 	}
 }

@@ -16,6 +16,7 @@ public class Server {
 	private String host;
 	private String port;
 	private String password;
+	private String simpleName;
 	
 	
 	
@@ -41,6 +42,11 @@ public class Server {
 		this.port = port;
 		this.password = password;
 	}
+	
+	public Server(Session session){
+		this.simpleName = session.getServerInformation().getServerName();
+		this.session = session;
+	}
 
 
 	public Conversation getConversation(String title) {
@@ -59,7 +65,9 @@ public class Server {
 		return conversations;
 	}
 	
-	
+	public String getName(){
+		return simpleName;
+	}
 	
 	
 }

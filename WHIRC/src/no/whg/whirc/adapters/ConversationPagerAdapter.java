@@ -76,6 +76,10 @@ public class ConversationPagerAdapter extends FragmentPagerAdapter {
     	fragments.add(f);
     	notifyDataSetChanged();
     }
+	
+	public void removeFragments(){
+		fragments.clear();
+	}
     
     public void removeFragment(int position) {
     	FragmentTransaction t = manager.beginTransaction();
