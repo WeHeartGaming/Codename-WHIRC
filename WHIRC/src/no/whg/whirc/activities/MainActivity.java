@@ -1,9 +1,7 @@
 package no.whg.whirc.activities;
 
-import java.util.ArrayList;
-
-
-import org.ini4j.InvalidFileFormatException;
+import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 
 import jerklib.Channel;
 import jerklib.ConnectionManager;
@@ -22,6 +20,9 @@ import no.whg.whirc.helpers.ServerListDownload;
 import no.whg.whirc.helpers.ServerParser;
 import no.whg.whirc.models.Conversation;
 import no.whg.whirc.models.Server;
+
+import org.ini4j.InvalidFileFormatException;
+
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
