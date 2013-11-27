@@ -1,12 +1,22 @@
 package no.whg.whirc.activities;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+import org.xmlpull.v1.XmlPullParser;
+
 import no.whg.whirc.R;
 import no.whg.whirc.preferenceDialogs.UserEditDialog;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceGroup;
 import android.preference.PreferenceScreen;
+import android.util.AttributeSet;
+import android.util.Log;
+import android.util.Xml;
 
 
 /**
@@ -42,20 +52,38 @@ public class SettingsActivity extends PreferenceActivity {
 			addPreferencesFromResource(R.xml.preferences);
 			populateServerList();
 		}
-		
+		/*
+		 * Populates the list of usernames based on which servers the user has visited.
+		 */
 		private void populateServerList() {
 			PreferenceGroup testGroup = (PreferenceGroup)findPreference("settings_userEditCat");
 			
-			// Extracting the temp dialog and removing it from the view
+			// Extracting the temp dialog and removing0, it from the view
 			UserEditDialog testDialog = (UserEditDialog)getPreferenceScreen().findPreference("settings_userEditDialogTemp");
 			testGroup.removePreference(findPreference("settings_userEditDialogTemp"));
 			
-			// Modifying dialog and putting it back in
-			testDialog.setTitle("TEST");
-			testDialog.setKey("TESTKEY");
-			testDialog.setSummary("summary of shit");
+			List<UserEditDialog> dialogList = new ArrayList<UserEditDialog>();
 			
-			testGroup.addPreference(testDialog);
+			// Extracts the resources which allows generation of new UserEditDialog objects
+			Resources resources = this.getResources();
+		    XmlPullParser parser = resources.getXml(R.layout.user_edit_dialog);
+		    AttributeSet attributes = Xml.asAttributeSet(parser);
+			
+			for (int i = 0; i < 6; i++) {
+				UserEditDialog temp = new UserEditDialog(getActivity(), attributes);
+				
+				temp.setTitle("Nummer" + String.valueOf(i));
+				temp.setKey("key" + String.valueOf(i));
+				temp.setSummary("summary" + String.valueOf(i));
+				temp.setData("Tittel" + String.valueOf(i));
+				temp.setOrder(i);
+				
+				dialogList.add(temp);
+			}
+			
+			for (int j = 0; j < dialogList.size(); j++) {
+				testGroup.addPreference(dialogList.get(j));
+			}
 		}
 	}
 }

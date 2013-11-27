@@ -28,10 +28,12 @@ public class ServerListDownload extends AsyncTask<String, Integer, String>
 	
 	private MainActivity activity;
 	private Context context;
+	String filePath;
 	
 	public ServerListDownload(Context c)
 	{
 		context = c;
+		filePath = "none";
 	}
 	
 	public static boolean isDownloadManagerAvailable(Context context)
@@ -59,8 +61,8 @@ public class ServerListDownload extends AsyncTask<String, Integer, String>
 	@Override
 	protected String doInBackground(String... arg0)
 	{
-			try
-			{
+		try
+		{
 			String url = "http://www.mirc.com/servers.ini";
 			Log.d("ServerListDownload", url);
 			DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
@@ -70,9 +72,12 @@ public class ServerListDownload extends AsyncTask<String, Integer, String>
 				request.allowScanningByMediaScanner();
 				request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
 			}
+			request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
 			request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "servers.ini");
 			DownloadManager manager = (DownloadManager)context.getSystemService(Context.DOWNLOAD_SERVICE);
 			manager.enqueue(request);
+			filePath = Environment.DIRECTORY_DOWNLOADS + "/servers.ini";			
+			
 		}
 		catch(Exception E)
 		{
@@ -80,7 +85,8 @@ public class ServerListDownload extends AsyncTask<String, Integer, String>
 		}
 			
 		// TODO Auto-generated method stub
-		return null;
+		
+		return filePath;
 	}
 	
 	@Override

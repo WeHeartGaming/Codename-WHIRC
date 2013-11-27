@@ -32,6 +32,8 @@
 	<string name="settings_userCat">User info</string>
 	<string name="settings_userEdit">Edit user info</string>
 	<string name="settings_userEditServers">Select server</string>
+	<string name="settings_userDelete">Delete user data</string>
+	<string name="settings_userDeleteSum">Deletes all user data</string>
 	
 	<!-- SETTINGSDIALOGS -->
 	<string name="setDialog_userEdit_nick">Nickname</string>

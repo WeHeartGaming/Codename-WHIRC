@@ -5,27 +5,15 @@
     android:orientation="vertical" >
     
 	<TextView 
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:layout_marginLeft="15dp"
-	    android:layout_marginRight="15dp"
-	    android:text="@string/setDialog_userEdit_nick"
-	    android:textSize="12sp"/>
+	    style="@style/dialog_header"
+	    android:text="@string/setDialog_userEdit_nick"/>
 	
 	<View 
-	    android:layout_width="match_parent"
-	    android:layout_height="1dp"
-	    android:layout_marginLeft="10dp"
-	    android:layout_marginRight="10dp"
-	    android:background="@color/black"/>
+	    style="@style/dialog_black_line"/>
 	
 	<EditText 
+	    style="@style/dialog_edit_text"
 	    android:id="@+id/setDialog_edit_nickOne"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:layout_marginLeft="15dp"
-	    android:layout_marginRight="15dp"
-	    android:hint="@string/setDialog_userEdit_nick_hint"
-	    android:inputType="text" />
+	    android:hint="@string/setDialog_userEdit_nick_hint"/>
     
 </LinearLayout>
