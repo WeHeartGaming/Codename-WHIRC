@@ -13,8 +13,8 @@
             	android:title="@string/settings_userEditServers"
             	android:key="settings_userEditCat">
                 
-                <no.whg.whirc.preferenceDialogs.UserEditDialog
-                    android:key="settings_userEditDialogTemp"/>
+                <!-- The contents of this group is generated programmatically
+                     See the populateServerList method in SettingsActivity.java for more information. -->
                 
             </PreferenceCategory>
             
