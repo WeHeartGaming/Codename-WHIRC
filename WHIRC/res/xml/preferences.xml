@@ -26,5 +26,19 @@
  		    android:summary="@string/settings_userDeleteSum"/>
     
     </PreferenceCategory>
+    
+    <PreferenceCategory
+        android:title="@string/settings_systemCat"
+        android:key="settings_systemCat">
+        
+        <PreferenceScreen 
+            android:title="@string/settings_notifications"
+            android:key="settings_notifications">
+            
+            
+            
+        </PreferenceScreen>
+        
+    </PreferenceCategory>
 
 </PreferenceScreen>
