@@ -6,6 +6,8 @@
     <string name="menu_networks">Networks</string>
     <string name="menu_settings">Settings</string>
     
+    <string name="addNetwork">Add network</string>
+    
     
     <string name="app_name">WHIRC</string>
     <string name="action_settings">Settings</string>
