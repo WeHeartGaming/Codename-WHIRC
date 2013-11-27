@@ -1,5 +1,10 @@
 package no.whg.whirc.activities;
 
+import java.io.IOException;
+import java.util.concurrent.ExecutionException;
+
+import org.ini4j.InvalidFileFormatException;
+
 import jerklib.Channel;
 import jerklib.ConnectionManager;
 import jerklib.Session;
@@ -14,6 +19,7 @@ import no.whg.whirc.fragments.ConversationFragment;
 import no.whg.whirc.helpers.ConnectionService;
 import no.whg.whirc.helpers.ConnectionServiceBinder;
 import no.whg.whirc.helpers.ServerListDownload;
+import no.whg.whirc.helpers.ServerParser;
 import no.whg.whirc.models.Conversation;
 import android.content.ComponentName;
 import android.content.Context;
@@ -42,13 +48,15 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
     private ListView mDrawerListRight;
     private ListView mDrawerListLeft;
     private ActionBarDrawerToggle mDrawerToggleLeft;
-
+    private String filePath;
+    
     private CharSequence mDrawerTitleLeft;
     private CharSequence mTitle;
     
     private ConnectionManager manager;
     
-    ServerListDownload downloadServer;
+    private ServerListDownload downloadServer;
+    private ServerParser iniParser;
     public ConnectionService cService;
     private boolean mBound = false;
     
@@ -75,8 +83,37 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
         setContentView(R.layout.activity_main);
         
         downloadServer = new ServerListDownload(this.getApplicationContext());
-        Log.d("ServerListDownload", "async task started");
-        downloadServer.execute("http://www.mirc.com/servers.ini", null, "");
+        iniParser = new ServerParser();
+    
+        try 
+        {
+			filePath = downloadServer.execute("http://www.mirc.com/servers.ini", null, "").get();
+		}
+        catch (InterruptedException e)
+        {
+			e.printStackTrace();
+		}
+        catch (ExecutionException e)
+		{
+			e.printStackTrace();
+		}
+        
+        try 
+        {
+			iniParser.parseIni(filePath);
+		} 
+        catch (InvalidFileFormatException e)
+		{
+			e.printStackTrace();
+			Log.d("parserInfo", e.toString());
+		} 
+        catch (IOException e)
+        {
+			e.printStackTrace();
+			Log.d("parserInfo", e.toString());
+		}
+        
+        Log.d("ServerListDownload", filePath);
         // Set placeholder title
         mTitle = mDrawerTitleLeft = getTitle();
         mDrawerLayoutLeft = (DrawerLayout) findViewById(R.id.drawer_layout);
