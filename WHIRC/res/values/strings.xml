@@ -27,21 +27,18 @@
     <string name="quit">Quit</string>
     <string name="reconnectServer">Reconnect</string>
     <string name="sendMessage">Send a message</string>
-    <!-- Settings fragment strings -->
-    <string name="settingsAddFriends">Add friends to messages</string>
-    <string name="settingsAddFriendsAlways">Always</string>
-    <string name="settingsAddFriendsPossible">When possible</string>
-    <string name="settingsAddFriendsNever">Never</string>
-    <string name="settingsEnableSocialRec">Enable social recommendations</string>
-    <string name="settingsNewNotifications">New mesage notifications</string>
-    <string name="settingsNotificationsTitle">Notifications</string>
-    <string name="settingsRingtone">Ringtone</string>
-    <string name="settingsSocialRec">Recommendations for people to contact based on your message history</string>
-    <string name="settingsSyncFrequency">Sync frequency</string>
-    <string name="settingsVibrate">Vibrate</string>
-   
-    <string name="syncMinutes"> %i minutes</string>	<!-- number of minutes -->
-    <string name="syncHours"> %i hours</string> <!--  number of hours -->
+    
+    <!-- SETTINGSACTIVITY -->
+	<string name="settings_userCat">User info</string>
+	<string name="settings_userEdit">Edit user info</string>
+	<string name="settings_userEditServers">Select server</string>
+	
+	<!-- SETTINGSDIALOGS -->
+	<string name="setDialog_userEdit_nick">Nickname</string>
+	<string name="setDialog_userEdit_nickTwo">Nickname #2</string>
+	<string name="setDialog_userEdit_nickThree">Nickname #3</string>
+	<string name="setDialog_userEdit_name">Name</string>
+	<string name="setDialog_userEdit_nick_hint">Your desired nickname</string>
 
     <string name="title_section1">Section 1</string>
     <string name="title_section2">Section 2</string>
