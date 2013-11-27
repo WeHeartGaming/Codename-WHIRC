@@ -43,6 +43,17 @@ public class SettingsActivity extends PreferenceActivity {
 		getFragmentManager().beginTransaction().replace(android.R.id.content, new SettingsFragment()).commit();
 	}
 	
+	
+	
+	@Override
+	protected void onStop() {
+		super.onStop();
+		
+		// MAKE SURE STUFF IS SAVED HERE
+	}
+
+
+
 	public static class SettingsFragment extends PreferenceFragment {
 		
 		@Override
@@ -52,16 +63,13 @@ public class SettingsActivity extends PreferenceActivity {
 			addPreferencesFromResource(R.xml.preferences);
 			populateServerList();
 		}
-		/*
+		
+		/**
 		 * Populates the list of usernames based on which servers the user has visited.
 		 */
 		private void populateServerList() {
 			PreferenceGroup testGroup = (PreferenceGroup)findPreference("settings_userEditCat");
-			
-			// Extracting the temp dialog and removing0, it from the view
-			UserEditDialog testDialog = (UserEditDialog)getPreferenceScreen().findPreference("settings_userEditDialogTemp");
-			testGroup.removePreference(findPreference("settings_userEditDialogTemp"));
-			
+
 			List<UserEditDialog> dialogList = new ArrayList<UserEditDialog>();
 			
 			// Extracts the resources which allows generation of new UserEditDialog objects
@@ -69,6 +77,7 @@ public class SettingsActivity extends PreferenceActivity {
 		    XmlPullParser parser = resources.getXml(R.layout.user_edit_dialog);
 		    AttributeSet attributes = Xml.asAttributeSet(parser);
 			
+		    // TEMPORAY
 			for (int i = 0; i < 6; i++) {
 				UserEditDialog temp = new UserEditDialog(getActivity(), attributes);
 				
