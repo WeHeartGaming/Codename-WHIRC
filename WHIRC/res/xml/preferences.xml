@@ -35,8 +35,23 @@
             android:title="@string/settings_notifications"
             android:key="settings_notifications">
             
+            <CheckBoxPreference 
+                android:title="@string/settings_notificationsOn"
+                android:key="settings_notificationsOn"
+                android:defaultValue="true"/>
             
-            
+            <PreferenceCategory 
+                android:title="@string/settings_options"
+                android:key="settings_notificationOptions">
+                
+                <CheckBoxPreference 
+	                android:title="@string/settings_notificationsPM"
+	                android:key="settings_notificationsPM"
+	                android:defaultValue="true"
+	                android:dependency="settings_notificationsOn"/>
+                
+            </PreferenceCategory>
+
         </PreferenceScreen>
         
     </PreferenceCategory>

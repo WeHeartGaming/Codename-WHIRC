@@ -58,11 +58,7 @@ public class SettingsActivity extends PreferenceActivity {
 		 */
 		private void populateServerList() {
 			PreferenceGroup testGroup = (PreferenceGroup)findPreference("settings_userEditCat");
-			
-			// Extracting the temp dialog and removing0, it from the view
-			UserEditDialog testDialog = (UserEditDialog)getPreferenceScreen().findPreference("settings_userEditDialogTemp");
-			testGroup.removePreference(findPreference("settings_userEditDialogTemp"));
-			
+
 			List<UserEditDialog> dialogList = new ArrayList<UserEditDialog>();
 			
 			// Extracts the resources which allows generation of new UserEditDialog objects

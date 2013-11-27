@@ -36,6 +36,9 @@
 	<string name="settings_userDeleteSum">Deletes all user data</string>
 	<string name="settings_systemCat">System</string>
 	<string name="settings_notifications">Notifications</string>
+	<string name="settings_notificationsOn">Turn on notifications</string>
+	<string name="settings_notificationsPM">Notifiy when private messaged</string>
+	<string name="settings_options">Options</string>
 	
 	<!-- SETTINGSDIALOGS -->
 	<string name="setDialog_userEdit_nick">Nickname</string>
