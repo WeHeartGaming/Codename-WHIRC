@@ -35,7 +35,8 @@ public class ConversationPagerAdapter extends FragmentPagerAdapter {
         // getItem is called to instantiate the fragment for the given page.
         // Return a ConversationFragment (defined as a static inner class
         // below) with the page number as its lone argument.
-        if (fragments != null && fragments.size() >= index) {
+        if (fragments != null && fragments.size() > 0) {
+        	Log.d(TAG, "FRAGMENTS ARRAY: " + fragments.toString());
         	Log.d("ConversationPagerAdapter", "fragments != null && fragments.size() >= index has run");
         	return fragments.get(index);
         } else {
@@ -46,18 +47,17 @@ public class ConversationPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        // Show 3 total pages.
-//        if (fragments.size() == 0) {
-//        	return 1;
-//        } else {
-//        	return fragments.size();
-//        }
-    	return 1;
+        if (fragments.size() == 0) {
+        	return 1;
+        } else {
+        	return fragments.size();
+        }
+
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return null;
+        return "derp";
     }
     
 

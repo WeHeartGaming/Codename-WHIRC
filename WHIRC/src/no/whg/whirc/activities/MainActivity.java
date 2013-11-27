@@ -51,6 +51,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
     
     private ConnectionManager manager;
     
+    ServerListDownload downloadServer;
     public ConnectionService cService;
     private boolean mBound = false;
     
@@ -76,8 +77,10 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        new ServerListDownload().execute("http://www.mirc.com/servers.ini", null, "");
+        
+        downloadServer = new ServerListDownload(this.getApplicationContext());
+        Log.d("ServerListDownload", "async task started");
+        downloadServer.execute("http://www.mirc.com/servers.ini", null, "");
         // Set placeholder title
         mTitle = mDrawerTitleLeft = getTitle();
         mDrawerLayoutLeft = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -120,6 +123,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.pager);
+        mConversationPagerAdapter = new ConversationPagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mConversationPagerAdapter);
 	    
 		cService = null;

@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
+import android.util.Log;
 import no.whg.whirc.activities.MainActivity;
 
 /**
@@ -26,9 +27,16 @@ public class ServerListDownload extends AsyncTask<String, Integer, String>
 {
 	
 	private MainActivity activity;
+	private Context context;
+	
+	public ServerListDownload(Context c)
+	{
+		context = c;
+	}
 	
 	public static boolean isDownloadManagerAvailable(Context context)
 	{
+		
 		try
 		{
 			if(Build.VERSION.SDK_INT < Build.VERSION_CODES.GINGERBREAD)
@@ -51,9 +59,10 @@ public class ServerListDownload extends AsyncTask<String, Integer, String>
 	@Override
 	protected String doInBackground(String... arg0)
 	{
-		if(isDownloadManagerAvailable(activity))
-		{
-			String url = arg0.toString();
+			try
+			{
+			String url = "http://www.mirc.com/servers.ini";
+			Log.d("ServerListDownload", url);
 			DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
 			
 			if(Build.VERSION.SDK_INT  >= Build.VERSION_CODES.HONEYCOMB)
@@ -62,10 +71,14 @@ public class ServerListDownload extends AsyncTask<String, Integer, String>
 				request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
 			}
 			request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "servers.ini");
-		
-			DownloadManager manager = (DownloadManager)activity.getSystemService(Context.DOWNLOAD_SERVICE);
+			DownloadManager manager = (DownloadManager)context.getSystemService(Context.DOWNLOAD_SERVICE);
 			manager.enqueue(request);
 		}
+		catch(Exception E)
+		{
+			Log.d("ServerListDownload", E.toString());
+		}
+			
 		// TODO Auto-generated method stub
 		return null;
 	}
