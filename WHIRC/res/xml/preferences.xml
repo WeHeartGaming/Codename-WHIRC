@@ -19,6 +19,11 @@
             </PreferenceCategory>
             
         </PreferenceScreen>
+        
+ 		<no.whg.whirc.preferenceDialogs.UserDeleteDialog 
+ 		    android:title="@string/settings_userDelete"
+ 		    android:key="settings_userDelete"
+ 		    android:summary="@string/settings_userDeleteSum"/>
     
     </PreferenceCategory>
 

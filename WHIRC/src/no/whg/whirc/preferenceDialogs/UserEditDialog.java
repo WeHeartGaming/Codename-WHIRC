@@ -14,7 +14,7 @@ public class UserEditDialog extends DialogPreference {
 	public UserEditDialog(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		
-		extraStuff();
+		initData();
 		
 		// Set the correct layout, buttons, title and icon
 		setDialogLayoutResource(R.layout.user_edit_dialog);
@@ -32,13 +32,16 @@ public class UserEditDialog extends DialogPreference {
 		return super.onCreateDialogView();
 	}	
 	
-	private void extraStuff() {
-		if (!getExtras().isEmpty()) {
-			Bundle extras = getExtras();
-			title = extras.getString("TITLE");
-		}
-		else {
-			title = "OOPS";
-		}
+	/*
+	 * Initializes the data to make sure they hold some information
+	 */
+	private void initData() {
+		title = "null";
+	}
+	
+	
+	public void setData(String title) {
+		this.title = title;
+		setDialogTitle(title);
 	}
 }
