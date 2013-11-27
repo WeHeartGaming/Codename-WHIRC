@@ -13,8 +13,8 @@ import no.whg.whirc.adapters.ConversationPagerAdapter;
 import no.whg.whirc.fragments.ConversationFragment;
 import no.whg.whirc.helpers.ConnectionService;
 import no.whg.whirc.helpers.ConnectionServiceBinder;
-import no.whg.whirc.models.Conversation;
 import no.whg.whirc.helpers.ServerListDownload;
+import no.whg.whirc.models.Conversation;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -119,6 +119,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.pager);
+        mConversationPagerAdapter = new ConversationPagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mConversationPagerAdapter);
 	    
 		cService = null;
@@ -137,6 +138,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		super.onStart();
 		Intent intent = new Intent(this, ConnectionService.class);
 	    bindService(intent, this, Context.BIND_ABOVE_CLIENT);
+	    
 	}
 
 
