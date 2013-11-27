@@ -47,7 +47,6 @@ public class SettingsActivity extends PreferenceActivity {
 	
 	@Override
 	protected void onStop() {
-		// TODO Auto-generated method stub
 		super.onStop();
 		
 		// MAKE SURE STUFF IS SAVED HERE

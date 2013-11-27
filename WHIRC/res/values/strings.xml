@@ -42,10 +42,12 @@
 	
 	<!-- SETTINGSDIALOGS -->
 	<string name="setDialog_userEdit_nick">Nickname</string>
+	<string name="setDialog_userEdit_nick_hint">Your desired nickname</string>
 	<string name="setDialog_userEdit_nickTwo">Nickname #2</string>
 	<string name="setDialog_userEdit_nickThree">Nickname #3</string>
 	<string name="setDialog_userEdit_name">Name</string>
-	<string name="setDialog_userEdit_nick_hint">Your desired nickname</string>
+	<string name="setDialog_userEdit_name_hint">Your name (Optional)</string>
+	<string name="setDialog_userEdit_password">Password</string>
 	<string name="setDialog_userDeleteWarning">WARNING! All user data will be deleted. Are you sure?</string>
 
     <string name="title_section1">Section 1</string>
