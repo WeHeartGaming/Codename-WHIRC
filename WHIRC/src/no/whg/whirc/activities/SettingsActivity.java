@@ -43,6 +43,18 @@ public class SettingsActivity extends PreferenceActivity {
 		getFragmentManager().beginTransaction().replace(android.R.id.content, new SettingsFragment()).commit();
 	}
 	
+	
+	
+	@Override
+	protected void onStop() {
+		// TODO Auto-generated method stub
+		super.onStop();
+		
+		// MAKE SURE STUFF IS SAVED HERE
+	}
+
+
+
 	public static class SettingsFragment extends PreferenceFragment {
 		
 		@Override
