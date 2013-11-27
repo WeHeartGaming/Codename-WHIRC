@@ -2,22 +2,27 @@ package no.whg.whirc.preferenceDialogs;
 
 import no.whg.whirc.R;
 import android.content.Context;
+import android.os.Bundle;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
 import android.view.View;
 
 public class UserEditDialog extends DialogPreference {
 	
+	private String title;
+	
 	public UserEditDialog(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		
-		// Set the correct layout, buttons and icon
+		extraStuff();
+		
+		// Set the correct layout, buttons, title and icon
 		setDialogLayoutResource(R.layout.user_edit_dialog);
-		
-		setDialogTitle("TITTEL");
-		
+				
 		setPositiveButtonText(android.R.string.ok);
 		setNegativeButtonText(android.R.string.cancel);
+		
+		setDialogTitle(title);
 		
 		setDialogIcon(null);
 	}
@@ -27,4 +32,13 @@ public class UserEditDialog extends DialogPreference {
 		return super.onCreateDialogView();
 	}	
 	
+	private void extraStuff() {
+		if (!getExtras().isEmpty()) {
+			Bundle extras = getExtras();
+			title = extras.getString("TITLE");
+		}
+		else {
+			title = "OOPS";
+		}
+	}
 }
