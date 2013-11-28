@@ -4,6 +4,7 @@
 package no.whg.whirc.helpers;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -17,6 +18,7 @@ import jerklib.events.MessageEvent;
 import jerklib.listeners.IRCEventListener;
 import no.whg.whirc.activities.MainActivity;
 import no.whg.whirc.models.Conversation;
+import no.whg.whirc.models.Message;
 import no.whg.whirc.models.Server;
 import android.R;
 import android.app.Notification;
@@ -206,9 +208,15 @@ public class ConnectionService extends Service implements IRCEventListener {
 			addServer(e.getSession());
 		} else if (e.getType() == Type.CHANNEL_MESSAGE) {
 			MessageEvent me = (MessageEvent)e;
-			Server s = getServer(me.getSession());
-			Conversation c = s.getConversation(me.getChannel().getName());
-			c.addMessage(me);
+			Server server = getServer(me.getSession());
+			Conversation conversation = server.getConversation(me.getChannel().getName());
+			if (!conversation.hasMessage(me.hashCode())){
+				conversation.addMessage(me);
+				Log.d(TAG, "receiveEvent() CHANNEL_MESSAGE: Added Message to Conversation.");
+			} else {
+				Log.e(TAG, "receiveEvent() CHANNEL_MESSAGE: Message already exists, did not add it to Conversation.");
+			}
+			
 			if (me.getMessage().contains(me.getSession().getNick())) {
 				//TODO: Highlight in notification
 			}

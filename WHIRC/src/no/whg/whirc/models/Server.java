@@ -49,7 +49,7 @@ public class Server {
 	}
 	
 	public Server(Session session){
-		this.simpleName = session.getServerInformation().getServerName();
+		this.simpleName = session.getRequestedConnection().getHostName();
 		this.session = session;
 		//this.conversations = new HashMap<String, Conversation>();
 		this.conversations = new ArrayList<Conversation>();

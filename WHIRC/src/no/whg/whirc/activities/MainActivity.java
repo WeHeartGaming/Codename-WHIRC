@@ -1,5 +1,6 @@
 package no.whg.whirc.activities;
 
+import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
 import jerklib.Channel;
@@ -10,6 +11,7 @@ import jerklib.events.IRCEvent.Type;
 import jerklib.events.JoinCompleteEvent;
 import jerklib.events.MessageEvent;
 import jerklib.events.MotdEvent;
+import jerklib.events.TopicEvent;
 import jerklib.listeners.IRCEventListener;
 import no.whg.whirc.R;
 import no.whg.whirc.adapters.ConnectionPagerAdapter;
@@ -19,6 +21,7 @@ import no.whg.whirc.helpers.ConnectionService;
 import no.whg.whirc.helpers.ConnectionServiceBinder;
 import no.whg.whirc.helpers.ServerListDownload;
 import no.whg.whirc.models.Conversation;
+import no.whg.whirc.models.Message;
 import no.whg.whirc.models.Server;
 import android.content.ComponentName;
 import android.content.Context;
@@ -148,8 +151,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		cService = null;
 		Intent intent = new Intent(this, ConnectionService.class);
 		startService(intent);
-		//bindService(intent, this, Context.BIND_ABOVE_CLIENT);
-		Log.d(TAG, "onCreate()");
+		Log.d(TAG, "onCreate() has been run.");
     }
 
 
@@ -162,15 +164,13 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		super.onStart();
 		Intent intent = new Intent(this, ConnectionService.class);
 	    bindService(intent, this, Context.BIND_ABOVE_CLIENT);
-	    Log.d(TAG, "onStart()");
+	    Log.d(TAG, "onStart(): Added IRCEventListeners.");
 	}
 	
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		//Intent intent = new Intent(this, ConnectionService.class);
-	    //bindService(intent, this, Context.BIND_ABOVE_CLIENT);
 		Log.d(TAG, "onResume()");
 	}
 	
@@ -186,14 +186,13 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		for (Session s : cService.getSessions()){
 			s.removeIRCEventListener(this);
 		}
-		Log.d(TAG, "onStop()");
+		Log.d(TAG, "onStop(): Decoupled IRCEventListeners.");
 	}
 	
 	@Override
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
-		//unbindService(this);
 		Log.d(TAG, "onPause()");
 	}
 
@@ -264,24 +263,21 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 
 	@Override
 	public void onServiceConnected(ComponentName name, IBinder binder) {
+		Log.d(TAG, "onServiceConnected()");
 		cService = ((ConnectionServiceBinder) binder).getService();
 		if (cService.getSessions().isEmpty()){
 			//Session temp = cService.connect("irc.quakenet.org");
 			//cService.getSessions().get(cService.getSessions().indexOf(temp)).addIRCEventListener(this);
 			cService.connect("irc.quakenet.org", this);
+			Log.d(TAG, "onServiceConnected(): Forced a connection to quakenet for debug purposes.");
 		}
-		Log.d(TAG, "onServiceConnected()");
-		//cService.connect("irc.quakenet.org");
-
+		
 		for (Session s : cService.getSessions()){
 			s.addIRCEventListener(this);
 			if (!s.isConnected()){
 				cService.connect(s.getServerInformation().getServerName(), this);
 			}
 		}
-		
-
-	    //mConversationPagerAdapter.removeFragments();
 	    
 	    Server s = cService.getCurrentServer();
 	    if (s != null){
@@ -291,16 +287,8 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 	    		Log.d(TAG, "Not connected to current Server [" + s.getName() + "].");
 	    	}
 	    } else {
-	    	Log.d(TAG, "s==null onServiceConnected()");
+	    	Log.d(TAG, "onServiceConnected(): There is no current Server.");
 	    }
-
-		// Create the adapter that will return a fragment for each of the three
-        // primary sections of the app.
-//		if (s != null && s.isConnected()) {
-//			mConversationPagerAdapter = new ConversationPagerAdapter(getSupportFragmentManager(), s);
-//		} else {
-//			Log.e("MainActivity", "ConversationPagerAdapter not started because no active connection at time of call");
-//		}
 	}
 
 	@Override
@@ -309,7 +297,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			s.removeIRCEventListener(this);
 		}
 		cService = null;
-		Log.d(TAG, "onServiceDisconnected()");
+		Log.e(TAG, "onServiceDisconnected(): Unexpected UnBind. Decoupled IRCEventListeners. This is not supposed to happen, you know.");
 		
 	}
 	
@@ -320,63 +308,73 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 	@Override
 	public void receiveEvent(IRCEvent e) {
 		if (e.getType() == Type.CONNECT_COMPLETE) {
-			//mConversationPagerAdapter.removeFragments();
 			cService.addServer(e.getSession());
-		    Server s = cService.getCurrentServer();
-		    if (s != null){
-		    	generateFragments(s);
+		    Server server = cService.getCurrentServer();
+		    if (server != null){
+		    	Log.d(TAG, "receiveEvent() CONNECT_COMPLETE: There is a server object. Running generateFragments().");
+		    	generateFragments(server);
 		    } else {
-		    	Log.d(TAG, "s==null receiveEvent()");
+		    	Log.e(TAG, "receiveEvent() CONNECT_COMPLETE: There is no server object. If this shows up, we're fucked.");
 		    }
 		    
 		    e.getSession().join("#whg");
-		    Log.d(TAG, "Joined channel #whg.");
+		    Log.d(TAG, "receiveEvent() CONNECT_COMPLETE: Forced a join on channel #whg for debugging purposes.");
+		} else if (e.getType() == Type.TOPIC) {
+			// TODO: Only generate fragments if this is current server.
+			TopicEvent te = (TopicEvent)e;
+			Server server = cService.getServer(te.getSession());
+			Conversation conversation = server.getConversation(te.getChannel().getName());
+			conversation.addTopic(te);
+			Log.d(TAG, "receiveEvent() TOPIC: Added topic to channel " + conversation.getChannelTitle() + ": " + te.getTopic());
 		} else if (e.getType() == Type.CHANNEL_MESSAGE) {
+			// TODO: Only generate fragments if this is current server.
 			MessageEvent me = (MessageEvent)e;
-			Server s = cService.getServer(me.getSession());
-			Conversation c = s.getConversation(me.getChannel().getName());
-			c.addMessage(me);
-//			runOnUiThread(new Runnable(){
-//				public void run(){
-//					mConversationPagerAdapter.notifyDataSetChanged();
-//				}
-//			});
-			generateFragments(s);
-			Log.d(TAG, "Added message to channel " + c.getChannelTitle() + ": " + me.getMessage());
+			Server server = cService.getServer(me.getSession());
+			Conversation conversation = server.getConversation(me.getChannel().getName());
+			if (!conversation.hasMessage(me.hashCode())){
+				conversation.addMessage(me);
+				Log.d(TAG, "receiveEvent() CHANNEL_MESSAGE: Added Message to Conversation.");
+			} else {
+				Log.e(TAG, "receiveEvent() CHANNEL_MESSAGE: Message already exists, did not add it to conversation.");
+			}
+			generateFragments(server);
+			Log.d(TAG, "receiveEvent() CHANNEL_MESSAGE: Added message to channel " + conversation.getChannelTitle() + ": " + me.getMessage());
 			
 		} else if (e.getType() == Type.MOTD) {
-//			MotdEvent me = (MotdEvent)e;
-//			Server s = cService.getServer(me.getSession());
-//			Conversation c = s.getConversation(s.getName());
-//			c.addMessage(me);
+			// TODO: Only generate fragments if this is current server.
+			MotdEvent me = (MotdEvent)e;
+			Server server = cService.getServer(me.getSession());
+			Conversation conversation = server.getConversation(0); // 0 is always the position of the server conversation. 
+			if (!conversation.hasMessage(me.hashCode())){
+				conversation.addMessage(me);
+				Log.d(TAG, "receiveEvent() MOTD: Added Message to Conversation.");
+			} else {
+				Log.e(TAG, "receiveEvent() MOTD: Message already exists, did not add it to conversation.");
+			}
+			Log.d(TAG, "receiveEvent() MOTD: Received MOTD event. Running generateFragments().");
+			generateFragments(server);
 		} else if (e.getType() == Type.JOIN_COMPLETE){
-			Session s = e.getSession();
+			// TODO: Only generate fragments if this is current server.
+			Session session = e.getSession();
 			JoinCompleteEvent jce = (JoinCompleteEvent) e;
 			Channel channel = jce.getChannel();
 			Conversation conversation = null;
-			//Server tempServ = cService.getServer(s.getServerInformation().getServerName());
-			Server tempServ = cService.getCurrentServer();
-			
-			if (tempServ != null){
-				conversation = tempServ.getConversation(channel.getName());
+			Server server = cService.getServer(session.getRequestedConnection().getHostName());
+			if (server != null){
+				conversation = server.getConversation(channel.getName());
 				if (conversation == null){
 			    	conversation = new Conversation(channel);
-			    	tempServ.addConversation(conversation);
-			    	Log.d(TAG, "Created conversation " + s.getServerInformation().getServerName() + channel.getName() + ".");
+			    	server.addConversation(conversation);
+			    	Log.d(TAG, "receiveEvent() JOIN_COMPLETE: Created conversation " + session.getRequestedConnection().getHostName() + channel.getName() + ".");
 			    	
 					mConversationPagerAdapter.addFragment(new ConversationFragment(conversation, getApplicationContext()));
-//					runOnUiThread(new Runnable(){
-//						public void run(){
-//							mConversationPagerAdapter.notifyDataSetChanged();
-//						}
-//					});
-			    	Log.d(TAG, "Added " + s.getServerInformation().getServerName() + channel.getName() + " fragment.");
+			    	Log.d(TAG, "receiveEvent() JOIN_COMPLETE: Added " + session.getRequestedConnection().getHostName() + channel.getName() + " fragment.");
 				} else {
-			    	Log.d(TAG, "Conversation " + s.getServerInformation().getServerName() + channel.getName() + "already exists.");
+			    	Log.d(TAG, "receiveEvent() JOIN_COMPLETE: Conversation " + session.getRequestedConnection().getHostName() + channel.getName() + "already exists.");
 				}
-				generateFragments(tempServ);
+				generateFragments(server);
 			} else {
-				Log.e(TAG, "This server does not exist");
+				Log.e(TAG, "receiveEvent() JOIN_COMPLETE: This server does not exist");
 			}
 		} else {
 			System.out.println(e.getType() + " : " + e.getRawEventData());
@@ -385,24 +383,24 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 	
 	private void generateFragments(Server s){
 		if (s != null){
-
 	        mConversationPagerAdapter = new ConversationPagerAdapter(getSupportFragmentManager());
 			if (!s.getConversations().isEmpty()){
 				for (Conversation c : s.getConversations()){
-		        	Log.d(TAG, "Found Conversation " + c.getChannelTitle() + ", making a fragment.");
+		        	Log.d(TAG, "generateFragments(): Found Conversation " + c.getChannelTitle() + ", making a fragment.");
 		        	mConversationPagerAdapter.addFragment(new ConversationFragment(c, getApplicationContext()));
 				}
 			} else {
-				Log.d(TAG, "No conversations to add for Server.");
+				Log.d(TAG, "generateFragments(): No conversations to add for Server.");
 			}
 			runOnUiThread(new Runnable(){
 				public void run(){
 					mConversationPagerAdapter.notifyDataSetChanged();
 					mViewPager.setAdapter(mConversationPagerAdapter);
+					Log.d(TAG, "generateFragments(): Forced an update to the adapter.");
 				}
 			});
 		} else {
-			Log.e(TAG, "Server is null, cannot look for conversations.");
+			Log.e(TAG, "generateFragments(): Server is null, cannot look for conversations.");
 		}
 	}
 }

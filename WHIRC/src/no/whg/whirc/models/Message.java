@@ -8,14 +8,16 @@ package no.whg.whirc.models;
  *
  */
 public class Message {
-	String name;
-	String message;
-	String time;
+	private String name;
+	private String message;
+	private String time;
+	private int hashcode;
 	
-	public Message(String name, String message, String time){
+	public Message(String name, String message, String time, int hashcode){
 		this.name = name;
 		this.message = message;
 		this.time = time;
+		this.hashcode = hashcode;
 	}
 
 	/**
@@ -55,6 +57,8 @@ public class Message {
 		this.time = time;
 	}
 	
-	
+	public int getHashcode(){
+		return hashcode;
+	}
 
 }
