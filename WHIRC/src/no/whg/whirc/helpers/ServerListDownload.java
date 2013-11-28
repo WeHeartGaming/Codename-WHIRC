@@ -82,8 +82,9 @@ public class ServerListDownload extends AsyncTask<String, Integer, String>
 			request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "servers.ini");
 			DownloadManager manager = (DownloadManager)context.getSystemService(Context.DOWNLOAD_SERVICE);
 			
+			Log.d("ServerListDownload", Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString());
 			manager.enqueue(request);
-			filePath = Environment.DIRECTORY_DOWNLOADS + "/servers.ini";			
+			filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/servers.ini";			
 		}
 		catch(Exception E)
 		{
@@ -98,9 +99,11 @@ public class ServerListDownload extends AsyncTask<String, Integer, String>
 	protected void onPostExecute(String result)
 	{
 		Log.d("parserInfo", result);
+		Log.d("parserInfo", filePath);
+		
 		try 
         {
-			iniParser.parseIni(filePath);
+			iniParser.parseIni(result);
 		} 
         catch (InvalidFileFormatException e)
 		{
