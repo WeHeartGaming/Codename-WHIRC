@@ -40,6 +40,7 @@ import no.whg.whirc.fragments.ConversationFragment;
 import no.whg.whirc.helpers.ConnectionService;
 import no.whg.whirc.helpers.ConnectionServiceBinder;
 import no.whg.whirc.helpers.ServerListDownload;
+import no.whg.whirc.helpers.WhircDB;
 import no.whg.whirc.models.Conversation;
 import no.whg.whirc.models.Server;
 import android.content.ComponentName;
@@ -75,6 +76,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
     private CharSequence mTitle;
     
     private ConnectionManager manager;
+    private WhircDB server;
     
     private ServerListDownload downloadServer;
     public ConnectionService cService;
@@ -105,19 +107,26 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
         setContentView(R.layout.activity_main);
         
         downloadServer = new ServerListDownload(this.getApplicationContext());
-    
-        try 
+        server = new WhircDB(this.getApplicationContext());
+        int l = server.getSize();
+        
+        String t = "" + l;
+        Log.d("ServerListDownload", t );
+        if(server.getSize() == 0)
         {
-			filePath = downloadServer.execute("http://www.mirc.com/servers.ini", null, "").get();
-		}
-        catch (InterruptedException e)
-        {
-			e.printStackTrace();
-		}
-        catch (ExecutionException e)
-		{
-			e.printStackTrace();
-		}
+	        try 
+	        {
+				filePath = downloadServer.execute("http://www.mirc.com/servers.ini", null, "").get();
+			}
+	        catch (InterruptedException e)
+	        {
+				e.printStackTrace();
+			}
+	        catch (ExecutionException e)
+			{
+				e.printStackTrace();
+			}
+        }
         
         
         Log.d("ServerListDownload", filePath);
@@ -330,7 +339,6 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			cService.addServer(e.getSession());
 		    Server server = cService.getCurrentServer();
 		    if (server != null){
-		    	Log.d(TAG, "receiveEvent() CONNECT_COMPLETE: There is a server object. Running generateFragments().");
 		    	if (server == cService.getCurrentServer()){
 					generateFragments(server);
 				}
@@ -339,7 +347,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		    }
 		    
 		    e.getSession().join("#whg");
-		    Log.d(TAG, "receiveEvent() CONNECT_COMPLETE: Forced a join on channel #whg for debugging purposes.");
+		    Log.e(TAG, "receiveEvent() CONNECT_COMPLETE: Forced a join on channel #whg for debugging purposes.");
 		} else if (e.getType() == Type.TOPIC) {
 			TopicEvent te = (TopicEvent)e;
 			Server server = cService.getServer(te.getSession());
@@ -354,7 +362,6 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			Conversation conversation = server.getConversation(me.getChannel().getName());
 			if (!conversation.hasMessage(me.hashCode())){
 				conversation.addMessage(me);
-				Log.d(TAG, "receiveEvent() CHANNEL_MESSAGE: Added Message to Conversation.");
 			} else {
 				Log.e(TAG, "receiveEvent() CHANNEL_MESSAGE: Message already exists, did not add it to Conversation.");
 			}
@@ -367,7 +374,6 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			Conversation conversation = server.getConversation(je.getChannel().getName());
 			if (!conversation.hasMessage(je.hashCode())){
 				conversation.addMessage(je);
-				Log.d(TAG, "receiveEvent() JOIN: Added JOIN Message to Conversation.");
 			} else {
 				Log.e(TAG, "receiveEvent() JOIN: JOIN Message already exists, did not add it to Conversation.");
 			}
@@ -380,7 +386,6 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			Conversation conversation = server.getConversation(pe.getChannel().getName());
 			if (!conversation.hasMessage(pe.hashCode())){
 				conversation.addMessage(pe);
-				Log.d(TAG, "receiveEvent() PART: Added PART Message to Conversation.");
 			} else {
 				Log.e(TAG, "receiveEvent() PART: PART Message already exists, did not add it to Conversation.");
 			}
@@ -393,14 +398,12 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			Conversation conversation = server.getConversation(ke.getChannel().getName());
 			if (!conversation.hasMessage(ke.hashCode())){
 				conversation.addMessage(ke);
-				Log.d(TAG, "receiveEvent() KICK: Added KICK Message to Conversation.");
 			} else {
 				Log.e(TAG, "receiveEvent() KICK: KICK Message already exists, did not add it to Conversation.");
 			}
 			if (server == cService.getCurrentServer()){
 				generateFragments(server);
 			}
-			Log.d(TAG, "receiveEvent() KICK: Added KICK Message to channel " + conversation.getChannelTitle() + ": " + ke.getRawEventData());
 		} else if (e.getType() == Type.MODE_EVENT){
 			ModeEvent me = (ModeEvent)e;
 			Server server = cService.getServer(me.getSession());
@@ -412,7 +415,6 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			}
 			if (!conversation.hasMessage(me.hashCode())){
 				conversation.addMessage(me);
-				Log.d(TAG, "receiveEvent() MODE_EVENT: Added MODE_EVENT Message to Conversation.");
 			} else {
 				Log.e(TAG, "receiveEvent() MODE_EVENT: MODE_EVENT Message already exists, did not add it to Conversation.");
 			}
@@ -425,14 +427,12 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			Conversation conversation = server.getConversation(0); // 0 is always the position of the server conversation. 
 			if (!conversation.hasMessage(ae.hashCode())){
 				conversation.addMessage(ae);
-				Log.d(TAG, "receiveEvent() AWAY_EVENT: Added AWAY_EVENT Message to Conversation.");
 			} else {
 				Log.e(TAG, "receiveEvent() AWAY_EVENT: AWAY_EVENT Message already exists, did not add it to Conversation.");
 			}
 			if (server == cService.getCurrentServer()){
 				generateFragments(server);
 			}
-			Log.d(TAG, "receiveEvent() AWAY_EVENT: Added AWAY_EVENT Message to channel " + conversation.getChannelTitle() + ": " + ae.getRawEventData());
 		} else if (e.getType() == Type.PRIVATE_MESSAGE){
 			MessageEvent me = (MessageEvent)e;
 			Server server = cService.getServer(me.getSession());
@@ -446,25 +446,21 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			}
 			if (!conversation.hasMessage(me.hashCode())){
 				conversation.addMessage(me);
-				Log.d(TAG, "receiveEvent() PRIVATE_MESSAGE: Added PRIVATE_MESSAGE Message to Conversation.");
 			} else {
 				Log.e(TAG, "receiveEvent() PRIVATE_MESSAGE: PRIVATE_MESSAGE Message already exists, did not add it to Conversation.");
 			}
 			if (server == cService.getCurrentServer()){
 				generateFragments(server);
 			}
-			Log.d(TAG, "receiveEvent() PRIVATE_MESSAGE: Added PRIVATE_MESSAGE Message to channel " + conversation.getChannelTitle() + ": " + me.getRawEventData());
 		} else if (e.getType() == Type.MOTD) {
 			MotdEvent me = (MotdEvent)e;
 			Server server = cService.getServer(me.getSession());
 			Conversation conversation = server.getConversation(0); // 0 is always the position of the server conversation. 
 			if (!conversation.hasMessage(me.hashCode())){
 				conversation.addMessage(me);
-				Log.d(TAG, "receiveEvent() MOTD: Added Message to Conversation.");
 			} else {
 				Log.e(TAG, "receiveEvent() MOTD: Message already exists, did not add it to Conversation.");
 			}
-			Log.d(TAG, "receiveEvent() MOTD: Received MOTD event. Running generateFragments().");
 			if (server == cService.getCurrentServer()){
 				generateFragments(server);
 			}
@@ -479,12 +475,8 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 				if (conversation == null){
 			    	conversation = new Conversation(channel);
 			    	server.addConversation(conversation);
-			    	Log.d(TAG, "receiveEvent() JOIN_COMPLETE: Created conversation " + session.getRequestedConnection().getHostName() + channel.getName() + ".");
-			    	
-					//mConversationPagerAdapter.addFragment(new ConversationFragment(conversation, getApplicationContext()));
-			    	//Log.d(TAG, "receiveEvent() JOIN_COMPLETE: Added " + session.getRequestedConnection().getHostName() + channel.getName() + " fragment.");
 				} else {
-			    	Log.d(TAG, "receiveEvent() JOIN_COMPLETE: Conversation " + session.getRequestedConnection().getHostName() + channel.getName() + "already exists.");
+			    	Log.e(TAG, "receiveEvent() JOIN_COMPLETE: Conversation " + session.getRequestedConnection().getHostName() + channel.getName() + "already exists.");
 				}
 				if (server == cService.getCurrentServer()){
 					generateFragments(server);
@@ -492,27 +484,36 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			} else {
 				Log.e(TAG, "receiveEvent() JOIN_COMPLETE: This server does not exist.");
 			}
-		} else if (e.getType() == Type.INVITE_EVENT){
-			InviteEvent ie = (InviteEvent)e;
-			inviteDialog(ie);
-			Log.d(TAG, "receiveEvent() INVITE_EVENT: Called INVITE_EVENT dialog for channel " + ie.getChannelName() + ": " + ie.getRawEventData());
-		} else if (e.getType() == Type.SERVER_VERSION_EVENT){
-			ServerVersionEvent sve = (ServerVersionEvent)e;
-			System.out.println(e.getType() + " : " + e.getRawEventData());
-		} else if (e.getType() == Type.CHANNEL_LIST_EVENT){
-			ChannelListEvent cle = (ChannelListEvent)e;
-			System.out.println(e.getType() + " : " + e.getRawEventData());
 		} else if (e.getType() == Type.CTCP_EVENT){
 			CtcpEvent ce = (CtcpEvent)e;
-			System.out.println(e.getType() + " : " + e.getRawEventData());
-		} else if (e.getType() == Type.DCC_EVENT){
-			DccEvent de = (DccEvent)e;
-			System.out.println(e.getType() + " : " + e.getRawEventData());
-		} else if (e.getType() == Type.ERROR){
-			ErrorEvent ee = (ErrorEvent)e;
-			System.out.println(e.getType() + " : " + e.getRawEventData());
-		} else if (e.getType() == Type.EXCEPTION){
-			// TODO: I don't even pretend to know
+			String cm = ce.getCtcpString();
+			String[] ctcp = cm.split(" ", 2);
+			if(ctcp[0].equals("ACTION")){
+				Server server = cService.getServer(ce.getSession());
+				Conversation conversation = server.getConversation(ce.getChannel().getName());
+				if (!conversation.hasMessage(ce.hashCode())){
+					conversation.addMessage(ce, ctcp[1]);
+				} else {
+					Log.e(TAG, "receiveEvent() CTCP_EVENT: CTCP ACTION already exists, did not add it to Conversation.");
+				}
+				if (server == cService.getCurrentServer()){
+					generateFragments(server);
+				}
+			}
+		} else if (e.getType() == Type.SERVER_VERSION_EVENT){
+			ServerVersionEvent sve = (ServerVersionEvent)e;
+			Server server = cService.getServer(sve.getSession());
+			Conversation conversation = server.getConversation(0); // 0 is always the position of the server conversation. 
+			if (!conversation.hasMessage(sve.hashCode())){
+				conversation.addMessage(sve);
+			} else {
+				Log.e(TAG, "receiveEvent() SERVER_VERSION_EVENT: Message already exists, did not add it to Conversation.");
+			}
+			if (server == cService.getCurrentServer()){
+				generateFragments(server);
+			}
+		} else if (e.getType() == Type.CHANNEL_LIST_EVENT){
+			ChannelListEvent cle = (ChannelListEvent)e;
 			System.out.println(e.getType() + " : " + e.getRawEventData());
 		} else if (e.getType() == Type.NICK_CHANGE){
 			NickChangeEvent nce = (NickChangeEvent)e;
@@ -529,12 +530,6 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		} else if (e.getType() == Type.QUIT){
 			QuitEvent qe = (QuitEvent)e;
 			System.out.println(e.getType() + " : " + e.getRawEventData());
-		} else if (e.getType() == Type.SERVER_INFORMATION){
-			ServerInformationEvent sie = (ServerInformationEvent)e;
-			System.out.println(e.getType() + " : " + e.getRawEventData());
-		} else if (e.getType() == Type.UPDATE_HOST_NAME){
-			//
-			System.out.println(e.getType() + " : " + e.getRawEventData());
 		} else if (e.getType() == Type.WHO_EVENT){
 			WhoEvent we = (WhoEvent)e;
 			System.out.println(e.getType() + " : " + e.getRawEventData());
@@ -544,15 +539,36 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		} else if (e.getType() == Type.WHOWAS_EVENT){
 			WhowasEvent we = (WhowasEvent)e;
 			System.out.println(e.getType() + " : " + e.getRawEventData());
+		}
+			
+
+		// This should work, but jerklib dies if we try inviting the client somewhere
+		else if (e.getType() == Type.INVITE_EVENT){
+			InviteEvent ie = (InviteEvent)e;
+			Log.d(TAG, "receiveEvent() INVITE_EVENT: Calling INVITE_EVENT dialog for channel " + ie.getChannelName() + ": " + ie.getRawEventData());
+			inviteDialog(ie.getChannelName(), ie.getNick());
+		}	
+		// Everything under here is being ignored.
+		else if (e.getType() == Type.UPDATE_HOST_NAME){
+			// We don't need this
+			System.out.println(e.getType() + " : " + e.getRawEventData());
+		} else if (e.getType() == Type.SERVER_INFORMATION){
+			// Fuck this
+		} else if (e.getType() == Type.DCC_EVENT){
+			// We don't need this
+		} else if (e.getType() == Type.ERROR){
+			// We don't need this
+		} else if (e.getType() == Type.EXCEPTION){
+			// We don't need this
+			// TODO: I don't even pretend to know
 		} else if (e.getType() == Type.DEFAULT){
 			// TODO: Nothing to do, really.
-			System.out.println(e.getType() + " : " + e.getRawEventData());
+		} else {
+			// This is just for show
 		}
 	}
 	
-	private void inviteDialog(InviteEvent ie){
-		final String channel = ie.getChannelName();
-		final String nick = ie.getNick();
+	private void inviteDialog(final String channel, final String nick){
 		runOnUiThread(new Runnable(){
 			public void run(){
 				InviteDialog invite = new InviteDialog(nick, channel);

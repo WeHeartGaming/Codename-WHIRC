@@ -2,7 +2,6 @@ package no.whg.whirc.models;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 import jerklib.Channel;
 import jerklib.events.AwayEvent;
@@ -12,6 +11,8 @@ import jerklib.events.KickEvent;
 import jerklib.events.MessageEvent;
 import jerklib.events.MotdEvent;
 import jerklib.events.PartEvent;
+import jerklib.events.ServerInformationEvent;
+import jerklib.events.ServerVersionEvent;
 import jerklib.events.TopicEvent;
 import jerklib.events.modes.ModeEvent;
 import no.whg.whirc.activities.MainActivity;
@@ -37,10 +38,6 @@ public class Conversation {
         messages = new ArrayList<Message>();
         Message topic = new Message("none", "no topic", "never", 0);
         messages.add(topic);
-//      if (!channel.getTopic().equals("")){
-//          Message topic = new Message(channel.getTopicSetter(), channel.getTopic(), channel.getTopicSetTime().toString());
-//          messages.add(topic);
-//      }
     }
 
     public Conversation(Channel channel, String priv){
@@ -111,6 +108,10 @@ public class Conversation {
 	public void addMessage(CtcpEvent ce, String ctcp){
 		addMessage(new Message("", ce.getNick() + " " + ctcp, getTime(), ce.hashCode()));
     }
+	
+	public void addMessage(ServerVersionEvent sve){
+		addMessage(new Message(sve.getHostName(), sve.getComment(), getTime(), sve.hashCode()));
+	}
 
     public String getChannelTitle(){
         return channelTitle;
