@@ -557,8 +557,6 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			public void run(){
 				InviteDialog invite = new InviteDialog(nick, channel);
 				invite.show(getSupportFragmentManager(), "invite_dialog");
-				
-				Log.d("back","back!");
 			}
 		});
 	}
