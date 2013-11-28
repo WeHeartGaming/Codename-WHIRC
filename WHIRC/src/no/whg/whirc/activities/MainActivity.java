@@ -61,8 +61,6 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
     public ConnectionService cService;
     private boolean mBound = false;
     
-    private boolean THISISATESTLEAVEITTHEFUCKALONE = true;
-    
     //private Session s = null;
     //private ArrayList <Session> sessions;
 
