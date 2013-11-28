@@ -418,7 +418,6 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			if (server == cService.getCurrentServer()){
 				generateFragments(server);
 			}
-			Log.d(TAG, "receiveEvent() MODE_EVENT: Added MODE_EVENT Message to channel " + conversation.getChannelTitle() + ": " + me.getRawEventData());
 		} else if (e.getType() == Type.AWAY_EVENT){
 			AwayEvent ae = (AwayEvent)e;
 			Server server = cService.getServer(ae.getSession());
@@ -547,6 +546,23 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			// TODO: Nothing to do, really.
 			System.out.println(e.getType() + " : " + e.getRawEventData());
 		}
+	}
+	
+	private void inviteDialog(InviteEvent ie){
+		String channel = ie.getChannelName();
+		String nick = ie.getNick();
+		runOnUiThread(new Runnable(){
+			public void run(){
+				// Do dialog
+				/* end up doing this
+				if (true){
+					ie.getSession().join(channel);
+				} else {
+					whatever
+				}
+				*/
+			}
+		});
 	}
 	
 	private void generateFragments(Server s){
