@@ -52,22 +52,22 @@ public class ConnectionFragment extends Fragment {
 		View rootView = inflater.inflate(R.layout.fragment_connections,
 				container, false);
 		
-		cList = (ListView) rootView.findViewById(R.id.lw_connections);
-		cListAdapter = new ConnectionListAdapter(servers, getActivity());
-		cList.setAdapter(cListAdapter);
-		
-		
-		servers = new ArrayList<Server>();
-		
-		db = new WhircDB(getActivity());
-		
-		Log.d("ConnectionFragment", "Size: " + db.getAllServers().size() + "\nRest: " + db.getAllServers().toString());
-		
-		Iterator<Server> iterator = db.getAllServers().iterator();
-		
-		while (iterator.hasNext()) {
-			servers.add(iterator.next());
-		}
+//		cList = (ListView) rootView.findViewById(R.id.lw_connections);
+//		cListAdapter = new ConnectionListAdapter(servers, getActivity());
+//		cList.setAdapter(cListAdapter);
+//		
+//		
+//		servers = new ArrayList<Server>();
+//		
+//		db = new WhircDB(getActivity());
+//		
+//		Log.d("ConnectionFragment", "Size: " + db.getAllServers().size() + "\nRest: " + db.getAllServers().toString());
+//		
+//		Iterator<Server> iterator = db.getAllServers().iterator();
+//		
+//		while (iterator.hasNext()) {
+//			servers.add(iterator.next());
+//		}
 		
 
 		return rootView;
