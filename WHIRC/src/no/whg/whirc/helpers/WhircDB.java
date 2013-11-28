@@ -142,6 +142,8 @@ public class WhircDB extends SQLiteOpenHelper {
 			} while (cursor.moveToNext());
 		}
 		
+		db.close();
+		
 		return servers;
 	}
 	
@@ -153,7 +155,7 @@ public class WhircDB extends SQLiteOpenHelper {
 	 */
 	public Server getServer(String simpleName) {
 		SQLiteDatabase db = this.getReadableDatabase();
-		
+
 		Cursor cursor = db.query(WHIRC_TABLE,
 				whircAllColumns,
 	            " simpleName = ?",
@@ -176,6 +178,57 @@ public class WhircDB extends SQLiteOpenHelper {
 		server.setPort(cursor.getString(6));
 		server.setSimpleName(cursor.getString(7));
 		
+		db.close();
+		
 		return server;
+	}
+	
+	/**
+	 * Allows the program to update a row in the DB
+	 * 
+	 * @param server Server to change
+	 * @return returns how many rows were changed. should never be above 1
+	 */
+	public int updateServer(Server server) {
+		SQLiteDatabase db = this.getReadableDatabase();
+		
+		ContentValues values = new ContentValues();
+		values.put("nickOne", server.getNickOne());
+		values.put("nickTwo", server.getNickTwo());
+		values.put("nickThree", server.getNickThree());
+		values.put("name", server.getName());
+		values.put("host", server.getHost());
+		values.put("port", server.getPort());
+		values.put("simpleName", server.getSimpleName());
+		
+		int retInt = db.update(WHIRC_TABLE, values, COLUMN_SIMPLENAME + " = ?", new String[] { server.getSimpleName() });
+
+		db.close();
+		
+		return retInt;
+	}
+	
+	/**
+	 * Allows the program to update only the user specific fields
+	 * 
+	 * @param server Serer to change
+	 * @return returns how many rows were changed. should never be above 1
+	 */
+	public int updateServerUser(Server server) {
+		SQLiteDatabase db = this.getReadableDatabase();
+		
+		ContentValues values = new ContentValues();
+		values.put("nickOne", server.getNickOne());
+		values.put("nickTwo", server.getNickTwo());
+		values.put("nickThree", server.getNickThree());
+		values.put("name", server.getName());
+		
+		Log.d("nickOne",server.getNickOne());
+		
+		int retInt = db.update(WHIRC_TABLE, values, COLUMN_SIMPLENAME + " = ?", new String[] { server.getSimpleName() });
+
+		db.close();
+		
+		return retInt;
 	}
 }

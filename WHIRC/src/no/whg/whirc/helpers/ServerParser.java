@@ -42,7 +42,7 @@ public class ServerParser
 			
 			if(splitString[0].contains("Random server"))
 			{
-				dbObject.addServer("test", "", "", "", splitString[1], "667", "splitString[4]");
+				dbObject.addServer("test", "", "", "", splitString[1], "667", splitString[4]);
 				//insert splitString[1] and [4] and push them to the db with ports and generic usernames
 			}
 			
