@@ -1,11 +1,13 @@
 package no.whg.whirc.models;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import jerklib.Channel;
-import no.whg.whirc.R;
+import jerklib.events.MessageEvent;
 import no.whg.whirc.activities.MainActivity;
 import no.whg.whirc.adapters.MessageAdapter;
+import android.text.format.Time;
 import android.widget.ListView;
 
 
@@ -19,29 +21,28 @@ public class Conversation {
 	private ListView messageView;
 	private MainActivity activity;
 	private MessageAdapter messageAdapter;
-	private String channelID;
 	private String channelTitle;
 	
-	public Conversation(Channel channel, String channelID){
+	public Conversation(Channel channel/*, String channelID*/){
 		this.channel = channel;
-		this.channelID = channelID;
-		
+		//this.channelID = channelID;
+		this.channelTitle = channel.getName();
 		messages = new ArrayList<Message>();
 		
 		if (!channel.getTopic().equals("")){
 			Message topic = new Message(channel.getTopicSetter(), channel.getTopic(), channel.getTopicSetTime().toString());
 			messages.add(topic);
 		}
-		messageAdapter = new MessageAdapter(messages, activity);
+		//messageAdapter = new MessageAdapter(messages, activity);
 
-		messageView = (ListView) activity.findViewById(R.id.lw_chat);
-		messageView.setAdapter(messageAdapter);
+		//messageView = (ListView) activity.findViewById(R.id.lw_chat);
+		//messageView.setAdapter(messageAdapter);
 	}
 	
 	
-	public String getChannelID(){
-		return channelID;
-	}
+	//public String getChannelID(){
+	//	return channelID;
+	//}
 	
 	public ArrayList<Message> getMessages(){
 		return messages;
@@ -49,10 +50,14 @@ public class Conversation {
 	
 	public void addMessage(Message m){
 		messages.add(m);
-		messageAdapter.notifyDataSetChanged();
 	}
 	
-	public ListView getView(){
-		return messageView;
+	public void addMessage(MessageEvent me){
+		addMessage(new Message(me.getNick(), me.getMessage(), (new Date().toString())));
+	}
+	
+	
+	public String getChannelTitle(){
+		return channelTitle;
 	}
 }

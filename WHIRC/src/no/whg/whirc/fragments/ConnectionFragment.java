@@ -66,7 +66,7 @@ public class ConnectionFragment extends Fragment {
 
 				final EditText input1 = (EditText) textEntryView.findViewById(R.id.et_host);
 				final EditText input2 = (EditText) textEntryView.findViewById(R.id.et_port);
-				final EditText input3 = (EditText) textEntryView.findViewById(R.id.et_password);
+				final EditText input3 = (EditText) textEntryView.findViewById(R.id.et_nick);
 
 
 //				input1.setText("DefaultValue", TextView.BufferType.EDITABLE);
