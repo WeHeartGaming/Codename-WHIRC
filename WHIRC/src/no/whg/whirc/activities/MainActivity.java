@@ -117,6 +117,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 	        try 
 	        {
 				filePath = downloadServer.execute("http://www.mirc.com/servers.ini", null, "").get();
+				Log.d("ServerListDownload", filePath);
 			}
 	        catch (InterruptedException e)
 	        {
@@ -129,7 +130,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
         }
         
         
-        Log.d("ServerListDownload", filePath);
+        
         // Set placeholder title
         mTitle = mDrawerTitleLeft = getTitle();
         mDrawerLayoutLeft = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -296,7 +297,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		if (cService.getSessions().isEmpty()){
 			//Session temp = cService.connect("irc.quakenet.org");
 			//cService.getSessions().get(cService.getSessions().indexOf(temp)).addIRCEventListener(this);
-			cService.connect("irc.quakenet.org", this);
+			//cService.connect("irc.quakenet.org", this);
 			Log.d(TAG, "onServiceConnected(): Forced a connection to quakenet for debug purposes.");
 		}
 		

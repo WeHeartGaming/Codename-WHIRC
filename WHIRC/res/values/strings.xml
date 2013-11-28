@@ -16,6 +16,8 @@
     <string name="alternateNick2">Second nick</string>
     <string name="alternateNick3">Third nick</string>
     <string name="more">More</string>
+    <string name="connected">Connected</string>
+    <string name="disconnected">Disconnected</string>
     
     <!-- DIALOG STUFF -->
     <string name="dialog_invite_recieved"><b>%1$s</b> has invited you to join #<b>%2$s</b></string>
