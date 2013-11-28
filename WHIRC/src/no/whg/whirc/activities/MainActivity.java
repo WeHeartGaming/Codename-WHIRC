@@ -11,6 +11,7 @@ import jerklib.events.JoinCompleteEvent;
 import jerklib.events.MessageEvent;
 import jerklib.listeners.IRCEventListener;
 import no.whg.whirc.R;
+import no.whg.whirc.adapters.ConnectionPagerAdapter;
 import no.whg.whirc.adapters.ConversationPagerAdapter;
 import no.whg.whirc.fragments.ConversationFragment;
 import no.whg.whirc.helpers.ConnectionService;
@@ -27,8 +28,6 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -70,6 +69,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
     ConversationPagerAdapter mConversationPagerAdapter;
+    ConnectionPagerAdapter mConnectionPagerAdapter;
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -141,7 +141,8 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mConversationPagerAdapter = new ConversationPagerAdapter(getSupportFragmentManager());
-        mViewPager.setAdapter(mConversationPagerAdapter);
+        mConnectionPagerAdapter = new ConnectionPagerAdapter(getSupportFragmentManager());
+        mViewPager.setAdapter(mConnectionPagerAdapter);
 	    
 		cService = null;
 		Intent intent = new Intent(this, ConnectionService.class);
@@ -344,7 +345,6 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 						}
 					});
 			    	Log.d(TAG, "Added " + s.getServerInformation().getServerName() + channel.getName() + " fragment.");
-			    	mViewPager.setAdapter(new ConversationPagerAdapter(getSupportFragmentManager()));
 				} else {
 			    	Log.d(TAG, "Conversation " + s.getServerInformation().getServerName() + channel.getName() + "already exists.");
 				}
