@@ -16,7 +16,6 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceGroup;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.Xml;
 
 
@@ -44,8 +43,6 @@ public class SettingsActivity extends PreferenceActivity {
 		getFragmentManager().beginTransaction().replace(android.R.id.content, new SettingsFragment()).commit();
 	}
 	
-	
-	
 	@Override
 	protected void onStop() {
 		super.onStop();
@@ -54,8 +51,8 @@ public class SettingsActivity extends PreferenceActivity {
 	}
 
 	public static class SettingsFragment extends PreferenceFragment {
-		
-		private WhircDB db = null;
+
+		public static WhircDB db = null;
 		
 		@Override
 		public void onCreate(Bundle savedInstanceState) {
@@ -70,9 +67,9 @@ public class SettingsActivity extends PreferenceActivity {
 		
 		@Override
 		public void onStop() {
-			// TODO Auto-generated method stub
 			super.onStop();
 			
+			// Closing isn't vital
 			db.close();
 		}
 
@@ -80,8 +77,11 @@ public class SettingsActivity extends PreferenceActivity {
 		 * Populates the list of usernames based on which servers the user has visited.
 		 */
 		private void populateServerList() {
+			// Fetches the group where items will be added. removeAll() makes sure the list is purged each time it is populated
 			PreferenceGroup testGroup = (PreferenceGroup)findPreference("settings_userEditCat");
-
+			testGroup.removeAll();
+			
+			// Prepares lists
 			List<UserEditDialog> dialogList = new ArrayList<UserEditDialog>();
 			List<Server> servers = new LinkedList<Server>();
 			servers = db.getAllServers();
@@ -115,31 +115,3 @@ public class SettingsActivity extends PreferenceActivity {
 		}
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

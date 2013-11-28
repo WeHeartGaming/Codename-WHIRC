@@ -1,12 +1,12 @@
 package no.whg.whirc.preferenceDialogs;
 
 import no.whg.whirc.R;
+import no.whg.whirc.activities.SettingsActivity.SettingsFragment;
 import no.whg.whirc.models.Server;
 import android.content.Context;
-import android.os.Bundle;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
@@ -52,7 +52,7 @@ public class UserEditDialog extends DialogPreference {
 	public void setData(Server server) {
 		setDialogTitle(server.getSimpleName());
 
-		// Sets the correct information in the editboxes
+		// Populates the strings making them ready for insertion into the editboxes
 		nickOne = server.getNickOne();
 		nickTwo = server.getNickTwo();
 		nickThree = server.getNickThree();
@@ -64,7 +64,25 @@ public class UserEditDialog extends DialogPreference {
 		super.onDialogClosed(positiveResult);
 		
 		if (positiveResult) {
-			// CHANGE USER DATA HERE
+			nickOne = nickOneView.getText().toString();
+			nickTwo = nickTwoView.getText().toString();
+			nickThree = nickThreeView.getText().toString();
+			name = nameView.getText().toString();
+			
+			// Build new server object to send to the DB
+			Server temp = new Server();
+			temp.setNickOne(nickOne);
+			temp.setNickTwo(nickTwo);
+			temp.setNickThree(nickThree);
+			temp.setName(name);
+			temp.setSimpleName(String.valueOf(this.getTitle()));
+			
+			if (SettingsFragment.db.updateServerUser(temp) != 0)
+				Log.d("update?", "UPDATE"); /* Put toast here */
+			
+			SettingsFragment.db.close();
+			
+			populateData();
 		}
 	}
 
@@ -78,6 +96,10 @@ public class UserEditDialog extends DialogPreference {
 		nickThreeView = (EditText)view.findViewById(R.id.setDialog_edit_nickThree);
 		nameView = (EditText)view.findViewById(R.id.setDialog_edit_name);
 		
+		populateData();
+	}
+	
+	private void populateData() {
 		nickOneView.setText(nickOne);
 		nickTwoView.setText(nickTwo);
 		nickThreeView.setText(nickThree);
