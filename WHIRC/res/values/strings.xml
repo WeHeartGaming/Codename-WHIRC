@@ -6,7 +6,14 @@
     <string name="menu_networks">Networks</string>
     <string name="menu_settings">Settings</string>
     
+    <!-- CONNECTIONS LIST -->
     <string name="addNetwork">Add network</string>
+    <string name="hostname">Host name</string>
+    <string name="nick">Nick name</string>
+    <string name="port">Port</string>
+    <string name="name">Real name</string>
+    <string name="alternateNick2">Second nick</string>
+    <string name="alternateNick3">Third nick</string>
     
     
     <string name="app_name">WHIRC</string>
