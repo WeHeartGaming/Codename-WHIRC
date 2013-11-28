@@ -6,6 +6,7 @@ import java.util.Date;
 
 import jerklib.Channel;
 import jerklib.events.AwayEvent;
+import jerklib.events.CtcpEvent;
 import jerklib.events.JoinEvent;
 import jerklib.events.KickEvent;
 import jerklib.events.MessageEvent;
@@ -105,6 +106,12 @@ public class Conversation {
 
     public void addMessage(ModeEvent me){
         addMessage(new Message(me.setBy(), "Mode set to " + me.getModeAdjustments().toString(), getTime(), me.hashCode()));
+	}
+	
+	public void addMessage(CtcpEvent ce){
+		String cm = ce.getCtcpString();
+		String[] ctcp = cm.split(" ", 2);
+		addMessage(new Message("", ce.getNick() + " " + ctcp[1], (new Date().toString()), ce.hashCode()));
     }
 
     public String getChannelTitle(){
