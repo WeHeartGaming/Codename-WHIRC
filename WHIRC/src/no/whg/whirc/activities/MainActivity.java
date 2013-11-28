@@ -112,6 +112,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
         
         String t = "" + l;
         Log.d("ServerListDownload", t );
+        
         if(server.getSize() == 0)
         {
 	        try 
