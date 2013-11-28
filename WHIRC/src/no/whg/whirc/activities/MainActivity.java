@@ -141,7 +141,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.pager);
-        mConversationPagerAdapter = new ConversationPagerAdapter(getSupportFragmentManager());
+        //mConversationPagerAdapter = new ConversationPagerAdapter(getSupportFragmentManager());
         mConnectionPagerAdapter = new ConnectionPagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mConnectionPagerAdapter);
 	    
@@ -160,11 +160,19 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 	protected void onStart() {
 		// TODO Auto-generated method stub
 		super.onStart();
-		Intent intent = new Intent(this, ConnectionService.class);
-	    bindService(intent, this, Context.BIND_ABOVE_CLIENT);
+//		Intent intent = new Intent(this, ConnectionService.class);
+//	    bindService(intent, this, Context.BIND_ABOVE_CLIENT);
 	    Log.d(TAG, "onStart()");
 	}
-
+	
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		Intent intent = new Intent(this, ConnectionService.class);
+	    bindService(intent, this, Context.BIND_ABOVE_CLIENT);
+		Log.d(TAG, "onResume()");
+	}
 	
 
 	/* (non-Javadoc)
@@ -174,8 +182,16 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 	protected void onStop() {
 		// TODO Auto-generated method stub
 		super.onStop();
-		unbindService(this);
+		//unbindService(this);
 		Log.d(TAG, "onStop()");
+	}
+	
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		unbindService(this);
+		Log.d(TAG, "onPause()");
 	}
 
 
@@ -262,7 +278,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		}
 		
 
-	    mConversationPagerAdapter.removeFragments();
+	    //mConversationPagerAdapter.removeFragments();
 	    
 	    Server s = cService.getCurrentServer();
 	    if (s != null){
@@ -301,7 +317,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 	@Override
 	public void receiveEvent(IRCEvent e) {
 		if (e.getType() == Type.CONNECT_COMPLETE) {
-			mConversationPagerAdapter.removeFragments();
+			//mConversationPagerAdapter.removeFragments();
 			cService.addServer(e.getSession());
 		    Server s = cService.getCurrentServer();
 		    if (s != null){
@@ -325,10 +341,10 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			Log.d(TAG, "Added message to channel " + c.getChannelTitle() + ": " + me.getMessage());
 			
 		} else if (e.getType() == Type.MOTD) {
-			MotdEvent me = (MotdEvent)e;
-			Server s = cService.getServer(me.getSession());
-			Conversation c = s.getConversation(s.getName());
-			c.addMessage(me);
+//			MotdEvent me = (MotdEvent)e;
+//			Server s = cService.getServer(me.getSession());
+//			Conversation c = s.getConversation(s.getName());
+//			c.addMessage(me);
 		} else if (e.getType() == Type.JOIN_COMPLETE){
 			Session s = e.getSession();
 			JoinCompleteEvent jce = (JoinCompleteEvent) e;
@@ -366,6 +382,8 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 	
 	private void generateFragments(Server s){
 		if (s != null){
+
+	        mConversationPagerAdapter = new ConversationPagerAdapter(getSupportFragmentManager());
 			if (!s.getConversations().isEmpty()){
 				for (Conversation c : s.getConversations().values()){
 		        	Log.d(TAG, "Found Conversation " + c.getChannelTitle() + ", making a fragment.");
@@ -377,9 +395,9 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			runOnUiThread(new Runnable(){
 				public void run(){
 					mConversationPagerAdapter.notifyDataSetChanged();
+					mViewPager.setAdapter(mConversationPagerAdapter);
 				}
 			});
-			mViewPager.setAdapter(mConversationPagerAdapter);
 		} else {
 			Log.e(TAG, "Server is null, cannot look for conversations.");
 		}
