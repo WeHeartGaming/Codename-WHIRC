@@ -67,12 +67,12 @@ public class ConversationPagerAdapter extends FragmentPagerAdapter {
 	@Override
 	public int getItemPosition(Object object) {
 		Log.d("ConversationPagerAdapter", "getItemPosition ran");
-		//int position = fragments.indexOf(object);
-		//if (position >= 0) {
-		//	return position;
-		//} else {
-		return POSITION_NONE;
-		//}
+		int position = fragments.indexOf(object);
+		if (position >= 0) {
+			return position;
+		} else {
+			return POSITION_NONE;
+		}
 	}
 
 	public void addFragment(ConversationFragment f) {

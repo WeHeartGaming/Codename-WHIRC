@@ -1,6 +1,5 @@
 package no.whg.whirc.activities;
 
-import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
 import jerklib.Channel;
@@ -12,17 +11,14 @@ import jerklib.events.JoinCompleteEvent;
 import jerklib.events.MessageEvent;
 import jerklib.listeners.IRCEventListener;
 import no.whg.whirc.R;
+import no.whg.whirc.adapters.ConnectionPagerAdapter;
 import no.whg.whirc.adapters.ConversationPagerAdapter;
 import no.whg.whirc.fragments.ConversationFragment;
 import no.whg.whirc.helpers.ConnectionService;
 import no.whg.whirc.helpers.ConnectionServiceBinder;
 import no.whg.whirc.helpers.ServerListDownload;
-import no.whg.whirc.helpers.ServerParser;
 import no.whg.whirc.models.Conversation;
 import no.whg.whirc.models.Server;
-
-import org.ini4j.InvalidFileFormatException;
-
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -73,6 +69,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
     ConversationPagerAdapter mConversationPagerAdapter;
+    ConnectionPagerAdapter mConnectionPagerAdapter;
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -144,7 +141,8 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mConversationPagerAdapter = new ConversationPagerAdapter(getSupportFragmentManager());
-        mViewPager.setAdapter(mConversationPagerAdapter);
+        mConnectionPagerAdapter = new ConnectionPagerAdapter(getSupportFragmentManager());
+        mViewPager.setAdapter(mConnectionPagerAdapter);
 	    
 		cService = null;
 		Intent intent = new Intent(this, ConnectionService.class);
@@ -324,6 +322,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 				}
 			});
 			Log.d(TAG, "Added message to channel " + c.getChannelTitle() + ": " + me.getMessage());
+			
 		} else if (e.getType() == Type.JOIN_COMPLETE){
 			Session s = e.getSession();
 			JoinCompleteEvent jce = (JoinCompleteEvent) e;

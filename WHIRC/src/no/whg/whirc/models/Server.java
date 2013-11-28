@@ -42,6 +42,10 @@ public class Server {
 		this.password = password;
 	}
 	
+	public Server() {
+		// EMPTY CONSTRUCTOR
+	}
+	
 	public Server(Session session){
 		this.simpleName = session.getServerInformation().getServerName();
 		this.session = session;
@@ -73,7 +77,61 @@ public class Server {
 		return simpleName;
 	}
 	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 	public Session getSession(){
 		return session;
 	}
+
+	public String getNickOne() {
+		return nickOne;
+	}
+
+	public void setNickOne(String nickOne) {
+		this.nickOne = nickOne;
+	}
+
+	public String getNickTwo() {
+		return nickTwo;
+	}
+
+	public void setNickTwo(String nickTwo) {
+		this.nickTwo = nickTwo;
+	}
+
+	public String getNickThree() {
+		return nickThree;
+	}
+
+	public void setNickThree(String nickThree) {
+		this.nickThree = nickThree;
+	}
+
+	public String getHost() {
+		return host;
+	}
+
+	public void setHost(String host) {
+		this.host = host;
+	}
+
+	public String getPort() {
+		return port;
+	}
+
+	public void setPort(String port) {
+		this.port = port;
+	}
+
+	public String getSimpleName() {
+		return simpleName;
+	}
+
+	public void setSimpleName(String simpleName) {
+		this.simpleName = simpleName;
+	}
+	
+	
 }

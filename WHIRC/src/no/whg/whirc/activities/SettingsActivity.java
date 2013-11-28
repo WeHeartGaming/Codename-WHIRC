@@ -2,7 +2,6 @@ package no.whg.whirc.activities;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import org.xmlpull.v1.XmlPullParser;
 
@@ -13,9 +12,7 @@ import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceGroup;
-import android.preference.PreferenceScreen;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.Xml;
 
 

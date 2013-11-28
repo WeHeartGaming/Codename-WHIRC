@@ -6,7 +6,6 @@ package no.whg.whirc.fragments;
 import java.util.ArrayList;
 
 import no.whg.whirc.R;
-import no.whg.whirc.models.db.Server;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -95,7 +94,6 @@ public class ConnectionFragment extends Fragment {
 		});
 		
 		cList = (ListView) getActivity().findViewById(R.id.lw_connections);
-		ArrayList<Server> servers = new ArrayList<Server>();
 		
 //		msgs = new ArrayList<Messages>();
 //		Messages msg;
