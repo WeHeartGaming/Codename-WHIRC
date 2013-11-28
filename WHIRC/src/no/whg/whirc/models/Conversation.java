@@ -111,7 +111,7 @@ public class Conversation {
 	public void addMessage(CtcpEvent ce){
 		String cm = ce.getCtcpString();
 		String[] ctcp = cm.split(" ", 2);
-		addMessage(new Message("", ce.getNick() + " " + ctcp[1], (new Date().toString()), ce.hashCode()));
+		addMessage(new Message("", ce.getNick() + " " + ctcp[1], getTime(), ce.hashCode()));
     }
 
     public String getChannelTitle(){
