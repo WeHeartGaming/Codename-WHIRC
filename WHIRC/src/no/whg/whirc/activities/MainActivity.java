@@ -1,5 +1,7 @@
 package no.whg.whirc.activities;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import jerklib.Channel;
@@ -8,7 +10,6 @@ import jerklib.Session;
 import jerklib.events.AwayEvent;
 import jerklib.events.ChannelListEvent;
 import jerklib.events.CtcpEvent;
-import jerklib.events.ErrorEvent;
 import jerklib.events.IRCEvent;
 import jerklib.events.IRCEvent.Type;
 import jerklib.events.InviteEvent;
@@ -23,13 +24,11 @@ import jerklib.events.NickListEvent;
 import jerklib.events.NoticeEvent;
 import jerklib.events.PartEvent;
 import jerklib.events.QuitEvent;
-import jerklib.events.ServerInformationEvent;
 import jerklib.events.ServerVersionEvent;
 import jerklib.events.TopicEvent;
 import jerklib.events.WhoEvent;
 import jerklib.events.WhoisEvent;
 import jerklib.events.WhowasEvent;
-import jerklib.events.dcc.DccEvent;
 import jerklib.events.modes.ModeEvent;
 import jerklib.listeners.IRCEventListener;
 import no.whg.whirc.R;
@@ -529,7 +528,22 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			System.out.println(e.getType() + " : " + e.getRawEventData());
 		} else if (e.getType() == Type.QUIT){
 			QuitEvent qe = (QuitEvent)e;
-			System.out.println(e.getType() + " : " + e.getRawEventData());
+			Server server = cService.getServer(qe.getSession());
+			List<Channel> channels = qe.getChannelList();
+			//Conversation conversation = server.getConversation(qe.getChannel().getName());
+			ArrayList<Conversation> conversations = server.getMatchingConversations(channels);
+			if (conversations != null){
+				for (Conversation conversation : conversations){
+					if (!conversation.hasMessage(qe.hashCode())){
+						conversation.addMessage(qe);
+					} else {
+						Log.e(TAG, "receiveEvent() QUIT: QUIT Message already exists, did not add it to Conversation.");
+					}
+				}
+				if (server == cService.getCurrentServer()){
+					generateFragments(server);
+				}
+			}
 		} else if (e.getType() == Type.WHO_EVENT){
 			WhoEvent we = (WhoEvent)e;
 			System.out.println(e.getType() + " : " + e.getRawEventData());
