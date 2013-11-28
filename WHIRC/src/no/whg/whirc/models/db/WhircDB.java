@@ -19,6 +19,8 @@ public class WhircDB extends SQLiteOpenHelper {
 	public static final String COLUMN_HOSTNAME = "hostName";
 	public static final String COLUMN_PORT = "port";
 	
+	public static final String COLUMN_NICKONE = "nickOne";
+	
 	/**
 	 * 
 	 *  The table data for the USER_TABLE

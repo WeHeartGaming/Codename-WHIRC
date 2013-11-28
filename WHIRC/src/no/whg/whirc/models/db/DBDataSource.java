@@ -38,7 +38,7 @@ public class DBDataSource {
 	 * 
 	 * @param server
 	 * @return Returns the added object
-	 */
+	 *//*
 	public Server addServer(String server) {
 		ContentValues values = new ContentValues();
 		values.put(WhircDB.COLUMN_SERVER, server);
@@ -53,12 +53,12 @@ public class DBDataSource {
 		cursor.close();
 		return newServer;
 	}
-
+*/
 	/**
 	 * 
 	 * @param cursor
 	 * @return
-	 */
+	 *//*
 	private Server cursorToServer(Cursor cursor) {
 		Server server = new Server();
 		
@@ -67,7 +67,7 @@ public class DBDataSource {
 		
 		return server;
 	}
-	
+	*/
 	//////////////////
 	// USER METHODS
 	//////////////////
@@ -80,7 +80,7 @@ public class DBDataSource {
 	 * @param address
 	 * @param password
 	 * @return
-	 */
+	 *//*
 	public User addUser(String nickOne, String nickTwo, String nickThree, String name, String address, String password) {
 		ContentValues values = new ContentValues();
 		values.put(WhircDB.COLUMN_USERONE, nickOne);
@@ -98,12 +98,12 @@ public class DBDataSource {
 		User newUser = cursorToUser(cursor);
 		cursor.close();
 		return newUser;
-	}
+	}*/
 	/**
 	 * 
 	 * @param cursor
 	 * @return
-	 */
+	 *//*
 	private User cursorToUser(Cursor cursor) {
 		User user = new User();
 		
@@ -116,5 +116,5 @@ public class DBDataSource {
 		user.setPassword(cursor.getString(6));
 		
 		return user;
-	}
+	}*/
 }

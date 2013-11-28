@@ -6,7 +6,7 @@ package no.whg.whirc.adapters;
 import java.util.ArrayList;
 
 import no.whg.whirc.R;
-import no.whg.whirc.models.db.Server;
+import no.whg.whirc.models.Server;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -62,7 +62,7 @@ public class ConnectionListAdapter extends BaseAdapter {
 		
 		Server server = data.get(position);
 		
-		name.setText(server.getHost());
+		//name.setText(server.getHost());
 		status.setText("TODO");
 		
 		
