@@ -160,8 +160,8 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 	protected void onStart() {
 		// TODO Auto-generated method stub
 		super.onStart();
-//		Intent intent = new Intent(this, ConnectionService.class);
-//	    bindService(intent, this, Context.BIND_ABOVE_CLIENT);
+		Intent intent = new Intent(this, ConnectionService.class);
+	    bindService(intent, this, Context.BIND_ABOVE_CLIENT);
 	    Log.d(TAG, "onStart()");
 	}
 	
@@ -169,8 +169,8 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		Intent intent = new Intent(this, ConnectionService.class);
-	    bindService(intent, this, Context.BIND_ABOVE_CLIENT);
+		//Intent intent = new Intent(this, ConnectionService.class);
+	    //bindService(intent, this, Context.BIND_ABOVE_CLIENT);
 		Log.d(TAG, "onResume()");
 	}
 	
@@ -182,7 +182,10 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 	protected void onStop() {
 		// TODO Auto-generated method stub
 		super.onStop();
-		//unbindService(this);
+		unbindService(this);
+		for (Session s : cService.getSessions()){
+			s.removeIRCEventListener(this);
+		}
 		Log.d(TAG, "onStop()");
 	}
 	
@@ -190,7 +193,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
-		unbindService(this);
+		//unbindService(this);
 		Log.d(TAG, "onPause()");
 	}
 
