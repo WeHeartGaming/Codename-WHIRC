@@ -3,49 +3,79 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
+	
+    <EditText
+        android:id="@+id/et_serverName"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:hint="@string/servername" />
     
     <EditText
         android:id="@+id/et_host"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/hostname"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"/>
+        android:layout_marginRight="10dp"
+        android:hint="@string/hostname" />
+
     <EditText
         android:id="@+id/et_port"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/port"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"/>
+        android:layout_marginRight="10dp"
+        android:hint="@string/port" />
+
     <EditText
         android:id="@+id/et_nick"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/nick"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp" />
-    
+        android:layout_marginRight="10dp"
+        android:hint="@string/nick" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_margin="10dp" >
+
+        <TextView
+            android:id="@+id/tv_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/more" />
+        
+        <ImageView
+            android:id="@+id/iv_more"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:background="@drawable/ic_btn_round_more_normal" />
+    </LinearLayout>
+
     <EditText
         android:id="@+id/et_more_name"
-        android:layout_height="wrap_content"
         android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:hint="@string/name" />
-    
+
     <EditText
         android:id="@+id/et_more_nick2"
-        android:layout_height="wrap_content"
         android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:hint="@string/alternateNick2" />
-    
+
     <EditText
         android:id="@+id/et_more_nick3"
-        android:layout_height="wrap_content"
         android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:hint="@string/alternateNick3" />

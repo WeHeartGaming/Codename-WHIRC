@@ -16,6 +16,7 @@ import jerklib.events.IRCEvent.Type;
 import jerklib.events.MessageEvent;
 import jerklib.listeners.IRCEventListener;
 import no.whg.whirc.activities.MainActivity;
+import no.whg.whirc.models.Conversation;
 import no.whg.whirc.models.Server;
 import android.R;
 import android.app.Notification;
@@ -205,7 +206,9 @@ public class ConnectionService extends Service implements IRCEventListener {
 			addServer(e.getSession());
 		} else if (e.getType() == Type.CHANNEL_MESSAGE) {
 			MessageEvent me = (MessageEvent)e;
-			
+			Server s = getServer(me.getSession());
+			Conversation c = s.getConversation(me.getChannel().getName());
+			c.addMessage(me);
 			if (me.getMessage().contains(me.getSession().getNick())) {
 				//TODO: Highlight in notification
 			}
