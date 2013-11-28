@@ -41,16 +41,13 @@ import android.widget.ListView;
         public ConversationFragment(Conversation conversation, Context c) {
         	this.conversation = conversation;
             this.messageAdapter = new MessageAdapter(conversation.getMessages(), c);
-        	this.conversation.addMessageAdapter(messageAdapter);
+        	//this.conversation.addMessageAdapter(messageAdapter);
         }
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_conversation, container, false);
-            
-            messageList = conversation.getView();
-            
+            View rootView = inflater.inflate(R.layout.fragment_conversation, container, false);                    
 
     		messageView = (ListView) rootView.findViewById(R.id.lw_chat);
     		messageView.setAdapter(messageAdapter);
@@ -69,6 +66,9 @@ import android.widget.ListView;
 			Bundle args = getArguments();
 			//int position = args.getInt(ARG_SECTION_NUMBER);
 
-            messageList = conversation.getView();
+		}
+		
+		public String getName() {
+			return conversation.getChannelTitle();
 		}
     }

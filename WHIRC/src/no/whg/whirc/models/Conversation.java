@@ -21,7 +21,6 @@ public class Conversation {
 	private ListView messageView;
 	private MainActivity activity;
 	private MessageAdapter messageAdapter;
-	private String channelID;
 	private String channelTitle;
 	
 	public Conversation(Channel channel/*, String channelID*/){
@@ -57,13 +56,6 @@ public class Conversation {
 		addMessage(new Message(me.getNick(), me.getMessage(), (new Date().toString())));
 	}
 	
-	public void addMessageAdapter(MessageAdapter ma){
-		messageAdapter = ma;
-	}
-	
-	public ListView getView(){
-		return messageView;
-	}
 	
 	public String getChannelTitle(){
 		return channelTitle;

@@ -2,11 +2,10 @@ package no.whg.whirc.adapters;
 
 import java.util.ArrayList;
 
-import jerklib.Channel;
-import jerklib.Session;
+import no.whg.whirc.R;
+import no.whg.whirc.activities.MainActivity;
 import no.whg.whirc.fragments.ConnectionFragment;
 import no.whg.whirc.fragments.ConversationFragment;
-import no.whg.whirc.models.Conversation;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -19,14 +18,14 @@ import android.util.Log;
  */
 public class ConversationPagerAdapter extends FragmentPagerAdapter {
 	private static final String TAG = "ConversationFragmentAdapter";
-	private ArrayList<Fragment> fragments;
+	private ArrayList<ConversationFragment> fragments;
 	private FragmentManager manager;
 	
 
     public ConversationPagerAdapter(FragmentManager fm) {
         super(fm);
         this.manager = fm;
-        this.fragments = new ArrayList<Fragment>();
+        this.fragments = new ArrayList<ConversationFragment>();
     }
 
 	@Override
@@ -57,7 +56,11 @@ public class ConversationPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return "derp";
+        if (fragments.size() == 0) {
+        	return "Networks"; // TODO: internationalize
+        } else {
+        	return fragments.get(position).getName();
+        }
     }
     
 
