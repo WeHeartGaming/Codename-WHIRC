@@ -491,6 +491,10 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			} else {
 				Log.e(TAG, "receiveEvent() JOIN_COMPLETE: This server does not exist.");
 			}
+		} else if (e.getType() == Type.INVITE_EVENT){
+			InviteEvent ie = (InviteEvent)e;
+			inviteDialog(ie);
+			Log.d(TAG, "receiveEvent() INVITE_EVENT: Called INVITE_EVENT dialog for channel " + ie.getChannelName() + ": " + ie.getRawEventData());
 		} else if (e.getType() == Type.SERVER_VERSION_EVENT){
 			ServerVersionEvent sve = (ServerVersionEvent)e;
 			System.out.println(e.getType() + " : " + e.getRawEventData());
@@ -508,9 +512,6 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			System.out.println(e.getType() + " : " + e.getRawEventData());
 		} else if (e.getType() == Type.EXCEPTION){
 			// TODO: I don't even pretend to know
-			System.out.println(e.getType() + " : " + e.getRawEventData());
-		} else if (e.getType() == Type.INVITE_EVENT){
-			InviteEvent ie = (InviteEvent)e;
 			System.out.println(e.getType() + " : " + e.getRawEventData());
 		} else if (e.getType() == Type.NICK_CHANGE){
 			NickChangeEvent nce = (NickChangeEvent)e;
