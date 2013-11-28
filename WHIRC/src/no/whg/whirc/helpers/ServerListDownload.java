@@ -39,7 +39,7 @@ public class ServerListDownload extends AsyncTask<String, Integer, String>
 	{
 		context = c;
 		filePath = "none";
-		iniParser = new ServerParser();
+		iniParser = new ServerParser(context);
 	}
 	
 	public static boolean isDownloadManagerAvailable(Context context)
