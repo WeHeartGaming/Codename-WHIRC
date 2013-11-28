@@ -317,13 +317,11 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		    Log.d(TAG, "Joined channel #whg.");
 		} else if (e.getType() == Type.CHANNEL_MESSAGE) {
 			MessageEvent me = (MessageEvent)e;
-			
-			
-		} else {
-			System.out.println(e.getType() + " : " + e.getRawEventData());
-		}
-
-		if (e.getType() == Type.JOIN_COMPLETE){
+			Server s = cService.getServer(me.getSession());
+			Conversation c = s.getConversation(me.getChannel().getName());
+			c.addMessage(me);
+			Log.d(TAG, "Added message to channel " + c.getChannelTitle() + ": " + me.getMessage());
+		} else if (e.getType() == Type.JOIN_COMPLETE){
 			Session s = e.getSession();
 			JoinCompleteEvent jce = (JoinCompleteEvent) e;
 			Channel channel = jce.getChannel();
@@ -353,6 +351,8 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			} else {
 				Log.e(TAG, "This server does not exist");
 			}
+		} else {
+			System.out.println(e.getType() + " : " + e.getRawEventData());
 		}
 	}
 	
