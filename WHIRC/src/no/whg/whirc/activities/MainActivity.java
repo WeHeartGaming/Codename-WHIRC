@@ -489,9 +489,6 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			    	conversation = new Conversation(channel);
 			    	server.addConversation(conversation);
 			    	Log.d(TAG, "receiveEvent() JOIN_COMPLETE: Created conversation " + session.getRequestedConnection().getHostName() + channel.getName() + ".");
-			    	
-					//mConversationPagerAdapter.addFragment(new ConversationFragment(conversation, getApplicationContext()));
-			    	//Log.d(TAG, "receiveEvent() JOIN_COMPLETE: Added " + session.getRequestedConnection().getHostName() + channel.getName() + " fragment.");
 				} else {
 			    	Log.d(TAG, "receiveEvent() JOIN_COMPLETE: Conversation " + session.getRequestedConnection().getHostName() + channel.getName() + "already exists.");
 				}
@@ -501,10 +498,27 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			} else {
 				Log.e(TAG, "receiveEvent() JOIN_COMPLETE: This server does not exist.");
 			}
+		} else if (e.getType() == Type.CTCP_EVENT){
+			CtcpEvent ce = (CtcpEvent)e;
+			String cm = ce.getCtcpString();
+			String[] ctcp = cm.split(" ", 2);
+			if(ctcp[0].equals("ACTION")){
+				Server server = cService.getServer(ce.getSession());
+				Conversation conversation = server.getConversation(ce.getChannel().getName());
+				if (!conversation.hasMessage(ce.hashCode())){
+					conversation.addMessage(ce, ctcp[1]);
+					Log.d(TAG, "receiveEvent() CTCP_EVENT: Added CTCP to Conversation.");
+				} else {
+					Log.e(TAG, "receiveEvent() CTCP_EVENT: CTCP already exists, did not add it to Conversation.");
+				}
+				if (server == cService.getCurrentServer()){
+					generateFragments(server);
+				}
+			}
 		} else if (e.getType() == Type.INVITE_EVENT){
 			InviteEvent ie = (InviteEvent)e;
-			inviteDialog(ie);
-			Log.d(TAG, "receiveEvent() INVITE_EVENT: Called INVITE_EVENT dialog for channel " + ie.getChannelName() + ": " + ie.getRawEventData());
+			Log.d(TAG, "receiveEvent() INVITE_EVENT: Calling INVITE_EVENT dialog for channel " + ie.getChannelName() + ": " + ie.getRawEventData());
+			inviteDialog(ie.getChannelName(), ie.getNick());
 		} else if (e.getType() == Type.SERVER_VERSION_EVENT){
 			ServerVersionEvent sve = (ServerVersionEvent)e;
 			System.out.println(e.getType() + " : " + e.getRawEventData());
@@ -556,12 +570,12 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		} else if (e.getType() == Type.DEFAULT){
 			// TODO: Nothing to do, really.
 			System.out.println(e.getType() + " : " + e.getRawEventData());
+		} else {
+			Log.e(TAG, "This should not be called: " + e.getRawEventData());
 		}
 	}
 	
-	private void inviteDialog(InviteEvent ie){
-		final String channel = ie.getChannelName();
-		final String nick = ie.getNick();
+	private void inviteDialog(final String channel, final String nick){
 		runOnUiThread(new Runnable(){
 			public void run(){
 				InviteDialog invite = new InviteDialog(nick, channel);
