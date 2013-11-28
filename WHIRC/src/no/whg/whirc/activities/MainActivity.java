@@ -58,8 +58,6 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
     public ConnectionService cService;
     private boolean mBound = false;
     
-    private boolean THISISATESTLEAVEITTHEFUCKALONE = true;
-    
     //private Session s = null;
     //private ArrayList <Session> sessions;
 
@@ -365,7 +363,12 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			if (!s.getConversations().isEmpty()){
 				for (Conversation c : s.getConversations().values()){
 		        	Log.d(TAG, "Found Conversation " + c.getChannelTitle() + ", making a fragment.");
-		        	mConversationPagerAdapter.addFragment(new ConversationFragment(c, getApplicationContext())); // derp..
+		        	mConversationPagerAdapter.addFragment(new ConversationFragment(c, getApplicationContext()));
+		        	runOnUiThread(new Runnable(){
+						public void run(){
+							mConversationPagerAdapter.notifyDataSetChanged();
+						}
+					});
 				}
 			} else {
 				Log.d(TAG, "No conversations to add for Server.");
