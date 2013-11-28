@@ -58,7 +58,6 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
     private ConnectionManager manager;
     
     private ServerListDownload downloadServer;
-    private ServerParser iniParser;
     public ConnectionService cService;
     private boolean mBound = false;
     
@@ -88,7 +87,6 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
         setContentView(R.layout.activity_main);
         
         downloadServer = new ServerListDownload(this.getApplicationContext());
-        iniParser = new ServerParser();
     
         try 
         {
@@ -103,20 +101,6 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			e.printStackTrace();
 		}
         
-        try 
-        {
-			iniParser.parseIni(filePath);
-		} 
-        catch (InvalidFileFormatException e)
-		{
-			e.printStackTrace();
-			Log.d("parserInfo", e.toString());
-		} 
-        catch (IOException e)
-        {
-			e.printStackTrace();
-			Log.d("parserInfo", e.toString());
-		}
         
         Log.d("ServerListDownload", filePath);
         // Set placeholder title

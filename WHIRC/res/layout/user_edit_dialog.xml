@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
     
+    <!-- Nickname #1 -->
 	<TextView 
 	    style="@style/dialog_header"
 	    android:text="@string/setDialog_userEdit_nick"/>
@@ -15,5 +16,57 @@
 	    style="@style/dialog_edit_text"
 	    android:id="@+id/setDialog_edit_nickOne"
 	    android:hint="@string/setDialog_userEdit_nick_hint"/>
+	
+	<!-- Nickname #2 -->
+	<TextView 
+	    style="@style/dialog_header"
+	    android:text="@string/setDialog_userEdit_nickTwo"/>
+	
+	<View 
+	    style="@style/dialog_black_line"/>
+	
+	<EditText 
+	    style="@style/dialog_edit_text"
+	    android:id="@+id/setDialog_edit_nickTwo"
+	    android:hint="@string/setDialog_userEdit_nick_hint"/>
+	
+	<!-- Nickname #3 -->
+	<TextView 
+	    style="@style/dialog_header"
+	    android:text="@string/setDialog_userEdit_nickThree"/>
+	
+	<View 
+	    style="@style/dialog_black_line"/>
+	
+	<EditText 
+	    style="@style/dialog_edit_text"
+	    android:id="@+id/setDialog_edit_nickThree"
+	    android:hint="@string/setDialog_userEdit_nick_hint"/>
+	
+	<!-- Name -->
+	<TextView 
+	    style="@style/dialog_header"
+	    android:text="@string/setDialog_userEdit_name"/>
+	
+	<View 
+	    style="@style/dialog_black_line"/>
+	
+	<EditText 
+	    style="@style/dialog_edit_text"
+	    android:id="@+id/setDialog_edit_name"
+	    android:hint="@string/setDialog_userEdit_name_hint"/>
+	
+	<!-- Password -->
+		<TextView 
+	    style="@style/dialog_header"
+	    android:text="@string/setDialog_userEdit_password"/>
+	
+	<View 
+	    style="@style/dialog_black_line"/>
+	
+	<EditText 
+	    style="@style/dialog_edit_text"
+	    android:id="@+id/setDialog_edit_password"
+	    android:inputType="textPassword"/>
     
 </LinearLayout>

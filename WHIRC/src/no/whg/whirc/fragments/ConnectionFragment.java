@@ -8,14 +8,15 @@ import java.util.ArrayList;
 import no.whg.whirc.R;
 import no.whg.whirc.models.db.Server;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -50,36 +51,50 @@ public class ConnectionFragment extends Fragment {
 		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
 		
-//		TextView addServer = (TextView) getActivity().findViewById(R.id.tv_addConnection);
-//		addServer.setText("cliclckckcicliclc");
-//		addServer.setClickable(true);
-//		addServer.setOnClickListener(new OnClickListener() {
-//
-//			@Override
-//			public void onClick(View v) {
-//				Log.d("ConnectionFragment", "TextView onclick rna");
-//				AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
-//				alert.setView(getActivity().findViewById(R.layout.dialog_connect));
-//				alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//					
-//					@Override
-//					public void onClick(DialogInterface dialog, int which) {
-//						// TODO: add servern til db osv
-//						Log.d("ConnectionFragment", "dialog onclick ran");
-//					}
-//				});
-//				alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-//					
-//					@Override
-//					public void onClick(DialogInterface dialog, int which) {
-//						dialog.cancel();
-//						
-//					}
-//				});
-//			}
-//		});
-//		
-//		cList = (ListView) getActivity().findViewById(R.id.lw_connections);
+		TextView addServer = (TextView) getActivity().findViewById(R.id.tv_addConnection);
+		addServer.setText("cliclckckcicliclc");
+		addServer.setClickable(true);
+		addServer.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Log.d("ConnectionFragment", "TextView onclick rna");
+				LayoutInflater factory = LayoutInflater.from(getActivity());
+
+				//text_entry is an Layout XML file containing two text field to display in alert dialog
+				final View textEntryView = factory.inflate(R.layout.dialog_connect, null);
+
+				final EditText input1 = (EditText) textEntryView.findViewById(R.id.et_host);
+				final EditText input2 = (EditText) textEntryView.findViewById(R.id.et_port);
+				final EditText input3 = (EditText) textEntryView.findViewById(R.id.et_password);
+
+
+//				input1.setText("DefaultValue", TextView.BufferType.EDITABLE);
+//				input2.setText("DefaultValue", TextView.BufferType.EDITABLE);
+//				input3.setText("DefaultValue", TextView.BufferType.EDITABLE);
+
+				final AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+				alert.setTitle(R.string.addNetwork).setView(textEntryView).setPositiveButton("OK",
+				  new DialogInterface.OnClickListener() {
+				   public void onClick(DialogInterface dialog,
+				     int whichButton) {
+
+				    Log.i("AlertDialog","TextEntry 1 Entered "+input1.getText().toString());
+				    Log.i("AlertDialog","TextEntry 2 Entered "+input2.getText().toString());
+				    Log.i("AlertDialog","TextEntry 3 Entered "+input3.getText().toString());
+				   }
+				  }).setNegativeButton("Cancel",
+				  new DialogInterface.OnClickListener() {
+				   public void onClick(DialogInterface dialog,
+				     int whichButton) {
+				     dialog.cancel();
+				   }
+				  });
+				alert.show();
+			}
+		});
+		
+		cList = (ListView) getActivity().findViewById(R.id.lw_connections);
 		ArrayList<Server> servers = new ArrayList<Server>();
 		
 //		msgs = new ArrayList<Messages>();
@@ -96,7 +111,4 @@ public class ConnectionFragment extends Fragment {
 //		msgList.setAdapter(new MessageAdapter(msgs, getActivity()));
 		
 	}
-	
-	
-
 }

@@ -6,19 +6,25 @@
     
     <EditText
         android:id="@+id/et_host"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:hint="Hostname"/>
+        android:hint="Hostname"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"/>
     <EditText
         android:id="@+id/et_port"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:hint="Hostname"/>
+        android:hint="Port"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"/>
     <EditText
         android:id="@+id/et_password"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:hint="Hostname"/>
+        android:hint="Pass"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp" />
     
 
 </LinearLayout>

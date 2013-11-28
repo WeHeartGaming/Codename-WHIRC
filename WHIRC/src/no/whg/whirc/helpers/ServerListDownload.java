@@ -1,11 +1,15 @@
 package no.whg.whirc.helpers;
 
 
-import no.whg.whirc.R;
-
+import java.io.IOException;
 import java.util.List;
 
+import no.whg.whirc.activities.MainActivity;
+
+import org.ini4j.InvalidFileFormatException;
+
 import android.app.DownloadManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -15,7 +19,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
-import no.whg.whirc.activities.MainActivity;
 
 /**
  * 
@@ -27,13 +30,16 @@ public class ServerListDownload extends AsyncTask<String, Integer, String>
 {
 	
 	private MainActivity activity;
+	private BroadcastReceiver downloadReceiver;
 	private Context context;
+	private ServerParser iniParser;
 	String filePath;
 	
 	public ServerListDownload(Context c)
 	{
 		context = c;
 		filePath = "none";
+		iniParser = new ServerParser();
 	}
 	
 	public static boolean isDownloadManagerAvailable(Context context)
@@ -64,7 +70,6 @@ public class ServerListDownload extends AsyncTask<String, Integer, String>
 		try
 		{
 			String url = "http://www.mirc.com/servers.ini";
-			Log.d("ServerListDownload", url);
 			DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
 			
 			if(Build.VERSION.SDK_INT  >= Build.VERSION_CODES.HONEYCOMB)
@@ -72,12 +77,14 @@ public class ServerListDownload extends AsyncTask<String, Integer, String>
 				request.allowScanningByMediaScanner();
 				request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
 			}
+			
 			request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
 			request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "servers.ini");
 			DownloadManager manager = (DownloadManager)context.getSystemService(Context.DOWNLOAD_SERVICE);
-			manager.enqueue(request);
-			filePath = Environment.DIRECTORY_DOWNLOADS + "/servers.ini";			
 			
+			Log.d("ServerListDownload", Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString());
+			manager.enqueue(request);
+			filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/servers.ini";			
 		}
 		catch(Exception E)
 		{
@@ -85,13 +92,28 @@ public class ServerListDownload extends AsyncTask<String, Integer, String>
 		}
 			
 		// TODO Auto-generated method stub
-		
 		return filePath;
 	}
 	
 	@Override
 	protected void onPostExecute(String result)
 	{
+		Log.d("parserInfo", result);
+		Log.d("parserInfo", filePath);
 		
+		try 
+        {
+			iniParser.parseIni(result);
+		} 
+        catch (InvalidFileFormatException e)
+		{
+			e.printStackTrace();
+			Log.d("parserInfo", e.toString());
+		} 
+        catch (IOException e)
+        {
+			e.printStackTrace();
+			Log.d("parserInfo", e.toString());
+		}
 	}
 }
