@@ -360,19 +360,20 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 	
 	private void generateFragments(Server s){
 		if (s != null){
+			s.getServerMessages();
 			if (!s.getConversations().isEmpty()){
 				for (Conversation c : s.getConversations().values()){
 		        	Log.d(TAG, "Found Conversation " + c.getChannelTitle() + ", making a fragment.");
 		        	mConversationPagerAdapter.addFragment(new ConversationFragment(c, getApplicationContext()));
-		        	runOnUiThread(new Runnable(){
-						public void run(){
-							mConversationPagerAdapter.notifyDataSetChanged();
-						}
-					});
 				}
 			} else {
 				Log.d(TAG, "No conversations to add for Server.");
 			}
+			runOnUiThread(new Runnable(){
+				public void run(){
+					mConversationPagerAdapter.notifyDataSetChanged();
+				}
+			});
 		} else {
 			Log.e(TAG, "Server is null, cannot look for conversations.");
 		}
