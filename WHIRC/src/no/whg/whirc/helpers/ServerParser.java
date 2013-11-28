@@ -4,15 +4,26 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+import no.whg.whirc.models.Server;
+
 import org.ini4j.InvalidFileFormatException;
 
-import android.util.Log;
+import android.content.Context;
 
 public class ServerParser
 {
 	private String temp;
 	private String[] iniString;
 	private String[] splitString;
+	private Server insertServer;
+	private Context context;
+	private WhircDB dbObject;
+	
+	public ServerParser(Context c)
+	{
+		context = c;
+		dbObject = new WhircDB(context);
+	}
 	public void parseIni(String filename) throws InvalidFileFormatException, IOException
 	{
 		iniString = new String[220];
@@ -31,12 +42,12 @@ public class ServerParser
 			
 			if(splitString[0].contains("Random server"))
 			{
+				dbObject.addServer("test", "", "", "", splitString[1], "6667", "splitString[3]");
 				//insert splitString[1] and [4] and push them to the db with ports and generic usernames
 			}
 			
 		}
 		
-
-		
+		dbObject.close();
 	}
 }
