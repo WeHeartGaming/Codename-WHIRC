@@ -63,14 +63,36 @@ public class ConnectionFragment extends Fragment {
 				//text_entry is an Layout XML file containing two text field to display in alert dialog
 				final View textEntryView = factory.inflate(R.layout.dialog_connect, null);
 
-				final EditText input1 = (EditText) textEntryView.findViewById(R.id.et_host);
-				final EditText input2 = (EditText) textEntryView.findViewById(R.id.et_port);
-				final EditText input3 = (EditText) textEntryView.findViewById(R.id.et_nick);
+				final EditText host = (EditText) textEntryView.findViewById(R.id.et_host);
+				final EditText port = (EditText) textEntryView.findViewById(R.id.et_port);
+				final EditText nick = (EditText) textEntryView.findViewById(R.id.et_nick);
+				final EditText nickTwo = (EditText) textEntryView.findViewById(R.id.et_more_nick2);
+				final EditText nickThree = (EditText) textEntryView.findViewById(R.id.et_more_nick3);
+				final EditText name = (EditText) textEntryView.findViewById(R.id.et_more_name);
+				final TextView more = (TextView) textEntryView.findViewById(R.id.tv_more);
+				nickTwo.setVisibility(View.GONE);
+				nickThree.setVisibility(View.GONE);
+				name.setVisibility(View.GONE);
+				more.setClickable(true);
+				more.setOnClickListener(new View.OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						if (nickTwo.getVisibility() == View.GONE && nickThree.getVisibility() == View.GONE && name.getVisibility() == View.GONE ) {
+							nickTwo.setVisibility(View.VISIBLE);
+							nickThree.setVisibility(View.VISIBLE);
+							name.setVisibility(View.VISIBLE);
+							textEntryView.invalidate();
+						} else {
+							nickTwo.setVisibility(View.GONE);
+							nickThree.setVisibility(View.GONE);
+							name.setVisibility(View.GONE);
+							textEntryView.invalidate();
+						}
+						
+					}
+				});
 
-
-//				input1.setText("DefaultValue", TextView.BufferType.EDITABLE);
-//				input2.setText("DefaultValue", TextView.BufferType.EDITABLE);
-//				input3.setText("DefaultValue", TextView.BufferType.EDITABLE);
 
 				final AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
 				alert.setTitle(R.string.addNetwork).setView(textEntryView).setPositiveButton("OK",
@@ -78,9 +100,12 @@ public class ConnectionFragment extends Fragment {
 				   public void onClick(DialogInterface dialog,
 				     int whichButton) {
 
-				    Log.i("AlertDialog","TextEntry 1 Entered "+input1.getText().toString());
-				    Log.i("AlertDialog","TextEntry 2 Entered "+input2.getText().toString());
-				    Log.i("AlertDialog","TextEntry 3 Entered "+input3.getText().toString());
+				    Log.i("AlertDialog","Host: "		+host.getText().toString());
+				    Log.i("AlertDialog","Port: "		+port.getText().toString());
+				    Log.i("AlertDialog","Nick: "		+nick.getText().toString());
+				    Log.i("AlertDialog","NickTwo: "		+nickTwo.getText().toString());
+				    Log.i("AlertDialog","NickThree: "	+nickThree.getText().toString());
+				    Log.i("AlertDialog","Name: "		+name.getText().toString());
 				   }
 				  }).setNegativeButton("Cancel",
 				  new DialogInterface.OnClickListener() {

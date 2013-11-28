@@ -26,6 +26,13 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp" />
     
+    <TextView 
+        android:id="@+id/tv_more"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="@string/more"/>
+    
     <EditText
         android:id="@+id/et_more_name"
         android:layout_height="wrap_content"
