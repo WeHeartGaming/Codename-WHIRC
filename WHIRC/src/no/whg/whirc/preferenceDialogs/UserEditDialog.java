@@ -81,6 +81,8 @@ public class UserEditDialog extends DialogPreference {
 				Log.d("update?", "UPDATE"); /* Put toast here */
 			
 			SettingsFragment.db.close();
+			
+			populateData();
 		}
 	}
 
@@ -94,6 +96,10 @@ public class UserEditDialog extends DialogPreference {
 		nickThreeView = (EditText)view.findViewById(R.id.setDialog_edit_nickThree);
 		nameView = (EditText)view.findViewById(R.id.setDialog_edit_name);
 		
+		populateData();
+	}
+	
+	private void populateData() {
 		nickOneView.setText(nickOne);
 		nickTwoView.setText(nickTwo);
 		nickThreeView.setText(nickThree);
