@@ -32,11 +32,14 @@ public class InviteDialog extends DialogFragment {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 		
+		// Retrieve main element in dialog_invite.xml
 		View mainView = inflater.inflate(R.layout.dialog_invite, null);
 		
+		// Retrieve TextView in mainView and set the correct text
 		inviteText = (TextView)mainView.findViewById(R.id.dialog_invite);
 		inviteText.setText(String.format(String.valueOf(R.string.dialog_invite_recieved), user, channel));
 		
+		// Setup onclick listeners for both buttons in the dialog
 		builder.setView(mainView)
 			.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 				
