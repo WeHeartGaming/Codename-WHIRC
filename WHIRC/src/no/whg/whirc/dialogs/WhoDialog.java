@@ -70,7 +70,7 @@ public class WhoDialog extends DialogFragment {
 				}
 			});
 		
-		return super.onCreateDialog(savedInstanceState);
+		return builder.create();
 	}
 	
 	/**
