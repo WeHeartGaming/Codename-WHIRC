@@ -9,6 +9,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class UserEditDialog extends DialogPreference {
 	
@@ -83,6 +84,9 @@ public class UserEditDialog extends DialogPreference {
 			SettingsFragment.db.close();
 			
 			populateData();
+			
+			Toast toast = Toast.makeText(getContext(), "Saved changes!", Toast.LENGTH_SHORT);
+			toast.show();
 		}
 	}
 
