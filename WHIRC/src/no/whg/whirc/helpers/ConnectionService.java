@@ -13,6 +13,7 @@ import jerklib.ConnectionManager;
 import jerklib.Profile;
 import jerklib.Session;
 import jerklib.events.IRCEvent;
+import jerklib.events.InviteEvent;
 import jerklib.events.IRCEvent.Type;
 import jerklib.events.MessageEvent;
 import jerklib.listeners.IRCEventListener;

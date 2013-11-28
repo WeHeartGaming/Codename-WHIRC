@@ -480,9 +480,6 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			    	conversation = new Conversation(channel);
 			    	server.addConversation(conversation);
 			    	Log.d(TAG, "receiveEvent() JOIN_COMPLETE: Created conversation " + session.getRequestedConnection().getHostName() + channel.getName() + ".");
-			    	
-					//mConversationPagerAdapter.addFragment(new ConversationFragment(conversation, getApplicationContext()));
-			    	//Log.d(TAG, "receiveEvent() JOIN_COMPLETE: Added " + session.getRequestedConnection().getHostName() + channel.getName() + " fragment.");
 				} else {
 			    	Log.d(TAG, "receiveEvent() JOIN_COMPLETE: Conversation " + session.getRequestedConnection().getHostName() + channel.getName() + "already exists.");
 				}
@@ -494,8 +491,8 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			}
 		} else if (e.getType() == Type.INVITE_EVENT){
 			InviteEvent ie = (InviteEvent)e;
-			inviteDialog(ie);
-			Log.d(TAG, "receiveEvent() INVITE_EVENT: Called INVITE_EVENT dialog for channel " + ie.getChannelName() + ": " + ie.getRawEventData());
+			Log.d(TAG, "receiveEvent() INVITE_EVENT: Calling INVITE_EVENT dialog for channel " + ie.getChannelName() + ": " + ie.getRawEventData());
+			inviteDialog(ie.getChannelName(), ie.getNick());
 		} else if (e.getType() == Type.CTCP_EVENT){
 			CtcpEvent ce = (CtcpEvent)e;
 
@@ -562,12 +559,12 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		} else if (e.getType() == Type.DEFAULT){
 			// TODO: Nothing to do, really.
 			System.out.println(e.getType() + " : " + e.getRawEventData());
+		} else {
+			Log.e(TAG, "This should not be called: " + e.getRawEventData());
 		}
 	}
 	
-	private void inviteDialog(InviteEvent ie){
-		final String channel = ie.getChannelName();
-		final String nick = ie.getNick();
+	private void inviteDialog(final String channel, final String nick){
 		runOnUiThread(new Runnable(){
 			public void run(){
 				InviteDialog invite = new InviteDialog(nick, channel);
