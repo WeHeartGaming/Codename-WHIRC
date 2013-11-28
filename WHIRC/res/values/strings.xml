@@ -17,6 +17,8 @@
     <string name="alternateNick3">Third nick</string>
     <string name="more">More</string>
     
+    <!-- DIALOG STUFF -->
+    <string name="dialog_invite_recieved"><b>%1$s</b> has invited you to join #<b>%2$s</b></string>
     
     <string name="app_name">WHIRC</string>
     <string name="action_settings">Settings</string>

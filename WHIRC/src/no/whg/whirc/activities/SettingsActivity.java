@@ -16,6 +16,7 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceGroup;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.Xml;
 
 

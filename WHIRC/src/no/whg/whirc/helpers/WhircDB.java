@@ -231,4 +231,28 @@ public class WhircDB extends SQLiteOpenHelper {
 		
 		return retInt;
 	}
+	
+	/**
+	 * Returns number of elements in the main table
+	 * 
+	 * @return number of elements in main table
+	 */
+	public int getSize() {
+		int size = 0;
+		
+		String query = "SELECT * FROM " + WHIRC_TABLE;
+		
+		SQLiteDatabase db = this.getWritableDatabase();
+		Cursor cursor = db.rawQuery(query, null);
+
+		if (cursor.moveToFirst()) {
+			do {
+				size++;
+			} while (cursor.moveToNext());
+		}
+		
+		db.close();
+		
+		return size;
+	}
 }
