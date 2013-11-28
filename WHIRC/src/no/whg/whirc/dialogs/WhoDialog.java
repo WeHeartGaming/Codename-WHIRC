@@ -146,25 +146,3 @@ public class WhoDialog extends DialogFragment {
 		
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
