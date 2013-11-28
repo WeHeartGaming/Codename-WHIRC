@@ -20,7 +20,7 @@ public class ServerParser
 		BufferedReader reader = new BufferedReader(new FileReader(filename));
 		
 		int i = 0;
-		while((temp = reader.readLine()) != null)
+		while((temp = reader.readLine()) != null) //reading in the file	
 		{
 			iniString[i++] = temp;
 		}
@@ -28,9 +28,15 @@ public class ServerParser
 		for(int j = 18; j < 220; j++)		//hardcoded shit FUCK OFF
 		{
 			splitString = iniString[j].split(":");
+			
+			if(splitString[0].contains("Random server"))
+			{
+				//insert splitString[1] and [4] and push them to the db with ports and generic usernames
+			}
+			
 		}
 		
 
-		Log.d("parserInfo", temp);
+		
 	}
 }
