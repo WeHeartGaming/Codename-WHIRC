@@ -23,12 +23,12 @@ public class ConnectionListAdapter extends BaseAdapter {
 	Context c;
 	
 	/**
-	 * @param data
+	 * @param servers
 	 * @param c
 	 */
-	public ConnectionListAdapter(ArrayList<Server> data, Context c) {
+	public ConnectionListAdapter(ArrayList<Server> servers, Context c) {
 		super();
-		this.data = data;
+		this.data = servers;
 		this.c = c;
 	}
 
@@ -62,8 +62,12 @@ public class ConnectionListAdapter extends BaseAdapter {
 		
 		Server server = data.get(position);
 		
-		//name.setText(server.getHost());
-		status.setText("TODO");
+		name.setText(server.getSimpleName());
+		
+		if (server.getSession().isConnected())
+			status.setText(R.string.connected);
+		else
+			status.setText(R.string.disconnected);
 		
 		
 		return v;

@@ -3,7 +3,13 @@
  */
 package no.whg.whirc.fragments;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import no.whg.whirc.R;
+import no.whg.whirc.adapters.ConnectionListAdapter;
+import no.whg.whirc.helpers.WhircDB;
+import no.whg.whirc.models.Server;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -23,8 +29,12 @@ import android.widget.TextView;
  */
 public class ConnectionFragment extends Fragment {
 	private ListView cList;
+	private WhircDB db;
+	private ArrayList<Server> servers;
+	private ConnectionListAdapter cListAdapter;
 
 	public ConnectionFragment() {
+		//this.cListAdapter = new ConnectionListAdapter(getActivity());
 
 	}
 
@@ -41,6 +51,24 @@ public class ConnectionFragment extends Fragment {
 		// TODO Auto-generated method stub
 		View rootView = inflater.inflate(R.layout.fragment_connections,
 				container, false);
+		
+//		cList = (ListView) rootView.findViewById(R.id.lw_connections);
+//		cListAdapter = new ConnectionListAdapter(servers, getActivity());
+//		cList.setAdapter(cListAdapter);
+//		
+//		
+//		servers = new ArrayList<Server>();
+//		
+//		db = new WhircDB(getActivity());
+//		
+//		Log.d("ConnectionFragment", "Size: " + db.getAllServers().size() + "\nRest: " + db.getAllServers().toString());
+//		
+//		Iterator<Server> iterator = db.getAllServers().iterator();
+//		
+//		while (iterator.hasNext()) {
+//			servers.add(iterator.next());
+//		}
+		
 
 		return rootView;
 	}
@@ -175,6 +203,20 @@ public class ConnectionFragment extends Fragment {
 		});
 
 		cList = (ListView) getActivity().findViewById(R.id.lw_connections);
+		servers = new ArrayList<Server>();
+		
+		db = new WhircDB(getActivity());
+		
+		Log.d("ConnectionFragment", "Size: " + db.getAllServers().size() + "\nRest: " + db.getAllServers().toString());
+		
+		Iterator<Server> iterator = db.getAllServers().iterator();
+		
+		while (iterator.hasNext()) {
+			servers.add(iterator.next());
+		}
+		cListAdapter = new ConnectionListAdapter(servers, getActivity());
+		cList.setAdapter(cListAdapter);
+		
 
 		// msgs = new ArrayList<Messages>();
 		// Messages msg;
