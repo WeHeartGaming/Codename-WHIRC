@@ -22,26 +22,26 @@ public class Conversation {
 	private String channelID;
 	private String channelTitle;
 	
-	public Conversation(Channel channel, String channelID){
+	public Conversation(Channel channel/*, String channelID*/){
 		this.channel = channel;
-		this.channelID = channelID;
-		
+		//this.channelID = channelID;
+		this.channelTitle = channel.getName();
 		messages = new ArrayList<Message>();
 		
 		if (!channel.getTopic().equals("")){
 			Message topic = new Message(channel.getTopicSetter(), channel.getTopic(), channel.getTopicSetTime().toString());
 			messages.add(topic);
 		}
-		messageAdapter = new MessageAdapter(messages, activity);
+		//messageAdapter = new MessageAdapter(messages, activity);
 
-		messageView = (ListView) activity.findViewById(R.id.lw_chat);
-		messageView.setAdapter(messageAdapter);
+		//messageView = (ListView) activity.findViewById(R.id.lw_chat);
+		//messageView.setAdapter(messageAdapter);
 	}
 	
 	
-	public String getChannelID(){
-		return channelID;
-	}
+	//public String getChannelID(){
+	//	return channelID;
+	//}
 	
 	public ArrayList<Message> getMessages(){
 		return messages;
@@ -52,7 +52,15 @@ public class Conversation {
 		messageAdapter.notifyDataSetChanged();
 	}
 	
+	public void addMessageAdapter(MessageAdapter ma){
+		messageAdapter = ma;
+	}
+	
 	public ListView getView(){
 		return messageView;
+	}
+	
+	public String getChannelTitle(){
+		return channelTitle;
 	}
 }

@@ -37,7 +37,7 @@ public class ConnectionService extends Service implements IRCEventListener {
 	
 	// irc object
 	ConnectionManager connection;
-	Session qnet = null;
+	//Session qnet = null;
 	
 	private ArrayList <Server> serverList;
 	private int currentServer;
@@ -70,7 +70,6 @@ public class ConnectionService extends Service implements IRCEventListener {
 				s.removeIRCEventListener(this);
 			}
 		}
-		Log.d(TAG, "onBind()");
 		return this.binder;
 	}
 	
@@ -147,68 +146,35 @@ public class ConnectionService extends Service implements IRCEventListener {
 		return START_STICKY;
 	}
 	
-	public void connect(String server){
-		connect(server, this);
-	}
-	
 	public void connect(final String server, final ConnectionService service) {
-		
 		final Runnable thread = new Runnable() {
 			@Override
 			public void run() {
 				Log.d(TAG, "Connection thread started! [connect() called]");
-//				while ((qnet == null) || (!qnet.isConnected())){
-//					Log.d(TAG, "Attempting to connect! [if (qnet == null) || (!qnet.isConnected())]");
-//					qnet = connection.requestConnection(server);
-//					qnet.addIRCEventListener(service);
-//					try {
-//						Log.d(TAG, "Sleeping connection thread! [if (!qnet.isConnected()) called]");
-//						Thread.sleep(15000);
-//					} catch (InterruptedException e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}
-//					if ((qnet == null) || (!qnet.isConnected())){
-////						Log.d(TAG, "Retrying connect! [if (qnet == null) || (!qnet.isConnected())]");
-//					} 
-//					else if (qnet.isConnected()) {
-//						Log.d(TAG, "Connected! [(qnet.isConnected())]");
-//						addServer(qnet);
-//
-//						//qnet.join("#whg");
-//					}
-//				}
-				int i;
-				//for (i = 0; i < 3; i++){
-					if ((qnet == null) || (!qnet.isConnected())){
-						qnet = connection.requestConnection(server);
-						qnet.addIRCEventListener(service);
-//						try {
-//							Log.d(TAG, "Sleeping connection thread! [if (!qnet.isConnected()) called]");
-//							Thread.sleep(15000);
-//						} catch (InterruptedException e) {
-//							// TODO Auto-generated catch block
-//							e.printStackTrace();
-//						}
-//						if (qnet.isConnected()) {
-//							Log.d(TAG, "Connected! [(qnet.isConnected())]");
-//							//addServer(qnet);
-//							i = 9000;
-//							//qnet.join("#whg");
-//						} else {
-//							qnet.removeIRCEventListener(service);
-//							qnet = null;
-//							Log.e(TAG, "Did not connect.");
-//						}
-					}
-				//}
+				Session mySession = null;
+				mySession = connection.requestConnection(server);
+				mySession.addIRCEventListener(service);
 			}
 		};
 		threads.add(thread);
 		handler.postDelayed(thread, 1000);
-		//notification.tickerText = "Connected to " + qnet.getConnectedHostName();
 		Log.d(TAG, "Thread created! toString: " + thread.toString() + " - hash: " + thread.hashCode());
-		
+	}
+	
+	public void connect(final String server, final MainActivity service) {
+		final Runnable thread = new Runnable() {
+			@Override
+			public void run() {
+				Log.d(TAG, "Connection thread started! [connect() called]");
+				Session mySession = null;
+				mySession = connection.requestConnection(server);
+				mySession.addIRCEventListener(service);
+					
+			}
+		};
+		Log.d(TAG, "Thread created! toString: " + thread.toString() + " - hash: " + thread.hashCode());
+		threads.add(thread);
+		handler.postDelayed(thread, 1000);
 	}
 	
 	public void shutdown() {
@@ -235,7 +201,8 @@ public class ConnectionService extends Service implements IRCEventListener {
 	public void receiveEvent(IRCEvent e) {
 		
 		if (e.getType() == Type.CONNECT_COMPLETE) {
-			Log.d(TAG, "Server: irc.quakenet.org [as string] - Session name: " + qnet.getConnectedHostName());
+			Log.d(TAG, "Server: irc.quakenet.org [as string] - Session name: " + e.getSession().getConnectedHostName());
+			addServer(e.getSession());
 		} else if (e.getType() == Type.CHANNEL_MESSAGE) {
 			MessageEvent me = (MessageEvent)e;
 			
@@ -279,10 +246,23 @@ public class ConnectionService extends Service implements IRCEventListener {
 		return null;
 	}
 	
-	private void addServer (Session s){
+	public void addServer (Session s){
 		if (getServer(s.getServerInformation().getServerName()) == null){
 			Server myServer = new Server (s);
 			serverList.add(myServer);
+			Log.d(TAG, "Added " + s.getConnectedHostName() + " to serverList.");
 		}
+	}
+	
+	public ConnectionManager getConnection(){
+		return connection;
+	}
+	
+	public ArrayList<Runnable> getThreads(){
+		return threads;
+	}
+	
+	public Handler getHandler(){
+		return handler;
 	}
 }

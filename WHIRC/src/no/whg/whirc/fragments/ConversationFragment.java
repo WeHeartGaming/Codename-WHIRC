@@ -3,9 +3,11 @@ package no.whg.whirc.fragments;
 import java.util.ArrayList;
 
 import no.whg.whirc.R;
+import no.whg.whirc.adapters.MessageAdapter;
 import no.whg.whirc.models.Conversation;
 import no.whg.whirc.models.Message;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -31,11 +33,15 @@ import android.widget.ListView;
         ListView messageList;
         ArrayList<Message> msgs;
         AdapterView.AdapterContextMenuInfo info;
+        private MessageAdapter messageAdapter;
+        private ListView messageView;
         
         private Conversation conversation;
 
-        public ConversationFragment(Conversation c) {
-        	this.conversation = c;
+        public ConversationFragment(Conversation conversation, Context c) {
+        	this.conversation = conversation;
+            this.messageAdapter = new MessageAdapter(conversation.getMessages(), c);
+        	this.conversation.addMessageAdapter(messageAdapter);
         }
 
         @Override
@@ -44,6 +50,10 @@ import android.widget.ListView;
             View rootView = inflater.inflate(R.layout.fragment_conversation, container, false);
             
             messageList = conversation.getView();
+            
+
+    		messageView = (ListView) rootView.findViewById(R.id.lw_chat);
+    		messageView.setAdapter(messageAdapter);
             
             return rootView;
         }

@@ -2,6 +2,7 @@ package no.whg.whirc.models;
 
 import java.util.HashMap;
 
+import jerklib.Channel;
 import jerklib.Session;
 
 public class Server {
@@ -45,6 +46,10 @@ public class Server {
 		this.simpleName = session.getServerInformation().getServerName();
 		this.session = session;
 		this.conversations = new HashMap<String, Conversation>();
+		
+		for (Channel c : session.getChannels()){
+			addConversation(new Conversation(c));
+		}
 	}
 
 
@@ -53,7 +58,7 @@ public class Server {
 	}
 	
 	public void addConversation(Conversation c) {
-		conversations.put(c.getChannelID(), c);
+		conversations.put(c.getChannelTitle(), c);
 	}
 	
 	public void removeConversation(String title) {

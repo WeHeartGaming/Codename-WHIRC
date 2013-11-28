@@ -74,7 +74,7 @@ public class ConversationPagerAdapter extends FragmentPagerAdapter {
 
 	public void addFragment(ConversationFragment f) {
     	fragments.add(f);
-    	notifyDataSetChanged();
+    	//notifyDataSetChanged();
     }
 	
 	public void removeFragments(){
