@@ -21,6 +21,14 @@
     
     <!-- DIALOG STUFF -->
     <string name="dialog_invite_recieved"><b>%1$s</b> has invited you to join #<b>%2$s</b></string>
+    <string name="dialog_who_channels">Channel(s)</string>
+    <string name="dialog_who_nick">Nickname</string>
+    <string name="dialog_who_name">Name</string>
+    <string name="dialog_who_idle">Currently idle</string>
+    <string name="dialog_who_signedOn">Signed on</string>
+    <string name="dialog_who_server">Server</string>
+    <string name="dialog_who_serverInfo">Serverinfo</string>
+    <string name="dialog_who_isAway">Is away</string>
     
     <string name="app_name">WHIRC</string>
     <string name="action_settings">Settings</string>
