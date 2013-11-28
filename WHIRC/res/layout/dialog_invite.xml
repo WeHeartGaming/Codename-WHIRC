@@ -4,8 +4,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
     
-    <TextView 
-		style="@style/dialog_centered_textview"
-        android:text="@string/setDialog_userDeleteWarning"/>
-
+	<TextView 
+	    style="@style/dialog_centered_textview"
+	    android:id="@+id/dialog_invite"/>
+	
 </LinearLayout>
