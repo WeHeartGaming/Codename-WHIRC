@@ -1,6 +1,5 @@
 package no.whg.whirc.activities;
 
-import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
 import jerklib.Channel;
@@ -17,12 +16,8 @@ import no.whg.whirc.fragments.ConversationFragment;
 import no.whg.whirc.helpers.ConnectionService;
 import no.whg.whirc.helpers.ConnectionServiceBinder;
 import no.whg.whirc.helpers.ServerListDownload;
-import no.whg.whirc.helpers.ServerParser;
 import no.whg.whirc.models.Conversation;
 import no.whg.whirc.models.Server;
-
-import org.ini4j.InvalidFileFormatException;
-
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -32,6 +27,8 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -326,6 +323,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 				}
 			});
 			Log.d(TAG, "Added message to channel " + c.getChannelTitle() + ": " + me.getMessage());
+			
 		} else if (e.getType() == Type.JOIN_COMPLETE){
 			Session s = e.getSession();
 			JoinCompleteEvent jce = (JoinCompleteEvent) e;
@@ -348,6 +346,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 						}
 					});
 			    	Log.d(TAG, "Added " + s.getServerInformation().getServerName() + channel.getName() + " fragment.");
+			    	mViewPager.setAdapter(new ConversationPagerAdapter(getSupportFragmentManager()));
 				} else {
 			    	Log.d(TAG, "Conversation " + s.getServerInformation().getServerName() + channel.getName() + "already exists.");
 				}
