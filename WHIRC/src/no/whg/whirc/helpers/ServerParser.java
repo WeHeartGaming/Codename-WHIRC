@@ -25,7 +25,7 @@ public class ServerParser
 			iniString[i++] = temp;
 		}
 		
-		for(int j = 18; j <= 220; j++)		//hardcoded shit FUCK OFF
+		for(int j = 18; j < 220; j++)		//hardcoded shit FUCK OFF
 		{
 			splitString = iniString[j].split(":");
 		}
