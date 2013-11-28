@@ -1,11 +1,13 @@
 package no.whg.whirc.models;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import jerklib.Channel;
-import no.whg.whirc.R;
+import jerklib.events.MessageEvent;
 import no.whg.whirc.activities.MainActivity;
 import no.whg.whirc.adapters.MessageAdapter;
+import android.text.format.Time;
 import android.widget.ListView;
 
 
@@ -50,6 +52,10 @@ public class Conversation {
 	public void addMessage(Message m){
 		messages.add(m);
 		messageAdapter.notifyDataSetChanged();
+	}
+	
+	public void addMessage(MessageEvent me){
+		addMessage(new Message(me.getNick(), me.getMessage(), (new Date().toString())));
 	}
 	
 	public void addMessageAdapter(MessageAdapter ma){

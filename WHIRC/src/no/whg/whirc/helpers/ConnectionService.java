@@ -246,6 +246,17 @@ public class ConnectionService extends Service implements IRCEventListener {
 		return null;
 	}
 	
+	public Server getServer(Session s){
+		if (!serverList.isEmpty()){
+			for (Server serv : serverList){
+				if (serv.getSession() == s){
+					return serv;
+				}
+			}
+		}
+		return null;
+	}
+	
 	public void addServer (Session s){
 		if (getServer(s.getServerInformation().getServerName()) == null){
 			Server myServer = new Server (s);
