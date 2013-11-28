@@ -497,16 +497,21 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			Log.d(TAG, "receiveEvent() INVITE_EVENT: Called INVITE_EVENT dialog for channel " + ie.getChannelName() + ": " + ie.getRawEventData());
 		} else if (e.getType() == Type.CTCP_EVENT){
 			CtcpEvent ce = (CtcpEvent)e;
-			Server server = cService.getServer(ce.getSession());
-			Conversation conversation = server.getConversation(ce.getChannel().getName());
-			if (!conversation.hasMessage(ce.hashCode())){
-				conversation.addMessage(ce);
-				Log.d(TAG, "receiveEvent() CTCP_EVENT: Added CTCP to Conversation.");
-			} else {
-				Log.e(TAG, "receiveEvent() CTCP_EVENT: CTCP already exists, did not add it to Conversation.");
-			}
-			if (server == cService.getCurrentServer()){
-				generateFragments(server);
+
+			String cm = ce.getCtcpString();
+			String[] ctcp = cm.split(" ", 2);
+			if(ctcp[0].equals("ACTION")){
+				Server server = cService.getServer(ce.getSession());
+				Conversation conversation = server.getConversation(ce.getChannel().getName());
+				if (!conversation.hasMessage(ce.hashCode())){
+					conversation.addMessage(ce, ctcp[1]);
+					Log.d(TAG, "receiveEvent() CTCP_EVENT: Added CTCP to Conversation.");
+				} else {
+					Log.e(TAG, "receiveEvent() CTCP_EVENT: CTCP already exists, did not add it to Conversation.");
+				}
+				if (server == cService.getCurrentServer()){
+					generateFragments(server);
+				}
 			}
 		} else if (e.getType() == Type.SERVER_VERSION_EVENT){
 			ServerVersionEvent sve = (ServerVersionEvent)e;

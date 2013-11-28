@@ -108,10 +108,8 @@ public class Conversation {
         addMessage(new Message(me.setBy(), "Mode set to " + me.getModeAdjustments().toString(), getTime(), me.hashCode()));
 	}
 	
-	public void addMessage(CtcpEvent ce){
-		String cm = ce.getCtcpString();
-		String[] ctcp = cm.split(" ", 2);
-		addMessage(new Message("", ce.getNick() + " " + ctcp[1], getTime(), ce.hashCode()));
+	public void addMessage(CtcpEvent ce, String ctcp){
+		addMessage(new Message("", ce.getNick() + " " + ctcp, getTime(), ce.hashCode()));
     }
 
     public String getChannelTitle(){
