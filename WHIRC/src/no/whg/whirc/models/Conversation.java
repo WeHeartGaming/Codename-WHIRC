@@ -5,9 +5,9 @@ import java.util.Date;
 
 import jerklib.Channel;
 import jerklib.events.MessageEvent;
+import jerklib.events.MotdEvent;
 import no.whg.whirc.activities.MainActivity;
 import no.whg.whirc.adapters.MessageAdapter;
-import android.text.format.Time;
 import android.widget.ListView;
 
 
@@ -23,9 +23,8 @@ public class Conversation {
 	private MessageAdapter messageAdapter;
 	private String channelTitle;
 	
-	public Conversation(Channel channel/*, String channelID*/){
+	public Conversation(Channel channel){
 		this.channel = channel;
-		//this.channelID = channelID;
 		this.channelTitle = channel.getName();
 		messages = new ArrayList<Message>();
 		
@@ -33,16 +32,13 @@ public class Conversation {
 			Message topic = new Message(channel.getTopicSetter(), channel.getTopic(), channel.getTopicSetTime().toString());
 			messages.add(topic);
 		}
-		//messageAdapter = new MessageAdapter(messages, activity);
-
-		//messageView = (ListView) activity.findViewById(R.id.lw_chat);
-		//messageView.setAdapter(messageAdapter);
 	}
 	
-	
-	//public String getChannelID(){
-	//	return channelID;
-	//}
+	public Conversation(String servername){
+		this.channelTitle = servername;
+		
+		messages = new ArrayList<Message>();
+	}
 	
 	public ArrayList<Message> getMessages(){
 		return messages;
@@ -55,7 +51,10 @@ public class Conversation {
 	public void addMessage(MessageEvent me){
 		addMessage(new Message(me.getNick(), me.getMessage(), (new Date().toString())));
 	}
-	
+
+	public void addMessage(MotdEvent me){
+		addMessage(new Message(me.getHostName(), me.getMotdLine(), (new Date().toString())));
+	}
 	
 	public String getChannelTitle(){
 		return channelTitle;

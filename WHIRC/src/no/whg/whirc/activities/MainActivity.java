@@ -9,6 +9,7 @@ import jerklib.events.IRCEvent;
 import jerklib.events.IRCEvent.Type;
 import jerklib.events.JoinCompleteEvent;
 import jerklib.events.MessageEvent;
+import jerklib.events.MotdEvent;
 import jerklib.listeners.IRCEventListener;
 import no.whg.whirc.R;
 import no.whg.whirc.adapters.ConnectionPagerAdapter;
@@ -323,6 +324,11 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			});
 			Log.d(TAG, "Added message to channel " + c.getChannelTitle() + ": " + me.getMessage());
 			
+		} else if (e.getType() == Type.MOTD) {
+			MotdEvent me = (MotdEvent)e;
+			Server s = cService.getServer(me.getSession());
+			Conversation c = s.getConversation(s.getName());
+			c.addMessage(me);
 		} else if (e.getType() == Type.JOIN_COMPLETE){
 			Session s = e.getSession();
 			JoinCompleteEvent jce = (JoinCompleteEvent) e;
@@ -360,7 +366,6 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 	
 	private void generateFragments(Server s){
 		if (s != null){
-			s.getServerMessages();
 			if (!s.getConversations().isEmpty()){
 				for (Conversation c : s.getConversations().values()){
 		        	Log.d(TAG, "Found Conversation " + c.getChannelTitle() + ", making a fragment.");
@@ -374,6 +379,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 					mConversationPagerAdapter.notifyDataSetChanged();
 				}
 			});
+			mViewPager.setAdapter(mConversationPagerAdapter);
 		} else {
 			Log.e(TAG, "Server is null, cannot look for conversations.");
 		}
