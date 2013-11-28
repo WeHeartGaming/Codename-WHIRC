@@ -77,10 +77,7 @@ public class UserEditDialog extends DialogPreference {
 			temp.setNickThree(nickThree);
 			temp.setName(name);
 			temp.setSimpleName(String.valueOf(this.getTitle()));
-			
-			if (SettingsFragment.db.updateServerUser(temp) != 0)
-				Log.d("update?", "UPDATE"); /* Put toast here */
-			
+
 			SettingsFragment.db.close();
 			
 			populateData();
