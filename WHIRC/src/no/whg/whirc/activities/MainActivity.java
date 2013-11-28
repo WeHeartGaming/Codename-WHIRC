@@ -1,17 +1,36 @@
 package no.whg.whirc.activities;
 
-import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
 import jerklib.Channel;
 import jerklib.ConnectionManager;
 import jerklib.Session;
+import jerklib.events.AwayEvent;
+import jerklib.events.ChannelListEvent;
+import jerklib.events.CtcpEvent;
+import jerklib.events.ErrorEvent;
 import jerklib.events.IRCEvent;
 import jerklib.events.IRCEvent.Type;
+import jerklib.events.InviteEvent;
 import jerklib.events.JoinCompleteEvent;
+import jerklib.events.JoinEvent;
+import jerklib.events.KickEvent;
 import jerklib.events.MessageEvent;
 import jerklib.events.MotdEvent;
+import jerklib.events.NickChangeEvent;
+import jerklib.events.NickInUseEvent;
+import jerklib.events.NickListEvent;
+import jerklib.events.NoticeEvent;
+import jerklib.events.PartEvent;
+import jerklib.events.QuitEvent;
+import jerklib.events.ServerInformationEvent;
+import jerklib.events.ServerVersionEvent;
 import jerklib.events.TopicEvent;
+import jerklib.events.WhoEvent;
+import jerklib.events.WhoisEvent;
+import jerklib.events.WhowasEvent;
+import jerklib.events.dcc.DccEvent;
+import jerklib.events.modes.ModeEvent;
 import jerklib.listeners.IRCEventListener;
 import no.whg.whirc.R;
 import no.whg.whirc.adapters.ConnectionPagerAdapter;
@@ -21,7 +40,6 @@ import no.whg.whirc.helpers.ConnectionService;
 import no.whg.whirc.helpers.ConnectionServiceBinder;
 import no.whg.whirc.helpers.ServerListDownload;
 import no.whg.whirc.models.Conversation;
-import no.whg.whirc.models.Message;
 import no.whg.whirc.models.Server;
 import android.content.ComponentName;
 import android.content.Context;
@@ -376,7 +394,77 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			} else {
 				Log.e(TAG, "receiveEvent() JOIN_COMPLETE: This server does not exist");
 			}
-		} else {
+		} else if (e.getType() == Type.AWAY_EVENT){
+			AwayEvent ae = (AwayEvent)e;
+			System.out.println(e.getType() + " : " + e.getRawEventData());
+		} else if (e.getType() == Type.SERVER_VERSION_EVENT){
+			ServerVersionEvent sve = (ServerVersionEvent)e;
+			System.out.println(e.getType() + " : " + e.getRawEventData());
+		} else if (e.getType() == Type.CHANNEL_LIST_EVENT){
+			ChannelListEvent cle = (ChannelListEvent)e;
+			System.out.println(e.getType() + " : " + e.getRawEventData());
+		} else if (e.getType() == Type.CTCP_EVENT){
+			CtcpEvent ce = (CtcpEvent)e;
+			System.out.println(e.getType() + " : " + e.getRawEventData());
+		} else if (e.getType() == Type.DCC_EVENT){
+			DccEvent de = (DccEvent)e;
+			System.out.println(e.getType() + " : " + e.getRawEventData());
+		} else if (e.getType() == Type.ERROR){
+			ErrorEvent ee = (ErrorEvent)e;
+			System.out.println(e.getType() + " : " + e.getRawEventData());
+		} else if (e.getType() == Type.EXCEPTION){
+			// TODO: I don't even pretend to know
+			System.out.println(e.getType() + " : " + e.getRawEventData());
+		} else if (e.getType() == Type.INVITE_EVENT){
+			InviteEvent ie = (InviteEvent)e;
+			System.out.println(e.getType() + " : " + e.getRawEventData());
+		} else if (e.getType() == Type.JOIN){
+			JoinEvent je = (JoinEvent)e;
+			System.out.println(e.getType() + " : " + e.getRawEventData());
+		} else if (e.getType() == Type.KICK_EVENT){
+			KickEvent ke = (KickEvent)e;
+			System.out.println(e.getType() + " : " + e.getRawEventData());
+		} else if (e.getType() == Type.MODE_EVENT){
+			ModeEvent me = (ModeEvent)e;
+			System.out.println(e.getType() + " : " + e.getRawEventData());
+		} else if (e.getType() == Type.NICK_CHANGE){
+			NickChangeEvent nce = (NickChangeEvent)e;
+			System.out.println(e.getType() + " : " + e.getRawEventData());
+		} else if (e.getType() == Type.NICK_IN_USE){
+			NickInUseEvent niue = (NickInUseEvent)e;
+			System.out.println(e.getType() + " : " + e.getRawEventData());
+		} else if (e.getType() == Type.NICK_LIST_EVENT){
+			NickListEvent nle = (NickListEvent)e;
+			System.out.println(e.getType() + " : " + e.getRawEventData());
+		} else if (e.getType() == Type.NOTICE){
+			NoticeEvent ne = (NoticeEvent)e;
+			System.out.println(e.getType() + " : " + e.getRawEventData());
+		} else if (e.getType() == Type.PART){
+			PartEvent pe = (PartEvent)e;
+			System.out.println(e.getType() + " : " + e.getRawEventData());
+		} else if (e.getType() == Type.PRIVATE_MESSAGE){
+			//MessageEvent me = (MessageEvent)e;
+			System.out.println(e.getType() + " : " + e.getRawEventData());
+		} else if (e.getType() == Type.QUIT){
+			QuitEvent qe = (QuitEvent)e;
+			System.out.println(e.getType() + " : " + e.getRawEventData());
+		} else if (e.getType() == Type.SERVER_INFORMATION){
+			ServerInformationEvent sie = (ServerInformationEvent)e;
+			System.out.println(e.getType() + " : " + e.getRawEventData());
+		} else if (e.getType() == Type.UPDATE_HOST_NAME){
+			//
+			System.out.println(e.getType() + " : " + e.getRawEventData());
+		} else if (e.getType() == Type.WHO_EVENT){
+			WhoEvent we = (WhoEvent)e;
+			System.out.println(e.getType() + " : " + e.getRawEventData());
+		} else if (e.getType() == Type.WHOIS_EVENT){
+			WhoisEvent we = (WhoisEvent)e;
+			System.out.println(e.getType() + " : " + e.getRawEventData());
+		} else if (e.getType() == Type.WHOWAS_EVENT){
+			WhowasEvent we = (WhowasEvent)e;
+			System.out.println(e.getType() + " : " + e.getRawEventData());
+		} else if (e.getType() == Type.DEFAULT){
+			// TODO: Nothing to do, really.
 			System.out.println(e.getType() + " : " + e.getRawEventData());
 		}
 	}
