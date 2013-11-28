@@ -489,6 +489,23 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			} else {
 				Log.e(TAG, "receiveEvent() JOIN_COMPLETE: This server does not exist.");
 			}
+		} else if (e.getType() == Type.CTCP_EVENT){
+			CtcpEvent ce = (CtcpEvent)e;
+			String cm = ce.getCtcpString();
+			String[] ctcp = cm.split(" ", 2);
+			if(ctcp[0].equals("ACTION")){
+				Server server = cService.getServer(ce.getSession());
+				Conversation conversation = server.getConversation(ce.getChannel().getName());
+				if (!conversation.hasMessage(ce.hashCode())){
+					conversation.addMessage(ce, ctcp[1]);
+					Log.d(TAG, "receiveEvent() CTCP_EVENT: Added CTCP to Conversation.");
+				} else {
+					Log.e(TAG, "receiveEvent() CTCP_EVENT: CTCP already exists, did not add it to Conversation.");
+				}
+				if (server == cService.getCurrentServer()){
+					generateFragments(server);
+				}
+			}
 		} else if (e.getType() == Type.INVITE_EVENT){
 			InviteEvent ie = (InviteEvent)e;
 			Log.d(TAG, "receiveEvent() INVITE_EVENT: Calling INVITE_EVENT dialog for channel " + ie.getChannelName() + ": " + ie.getRawEventData());
