@@ -50,7 +50,7 @@ public class Server {
 		this.simpleName = session.getServerInformation().getServerName();
 		this.session = session;
 		this.conversations = new HashMap<String, Conversation>();
-		
+		addConversation(new Conversation(this.simpleName));
 		for (Channel c : session.getChannels()){
 			addConversation(new Conversation(c));
 		}

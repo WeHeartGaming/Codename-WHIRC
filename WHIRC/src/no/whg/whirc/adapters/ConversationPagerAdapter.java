@@ -40,7 +40,8 @@ public class ConversationPagerAdapter extends FragmentPagerAdapter {
         	return fragments.get(index);
         } else {
         	Log.d("ConversationPagerAdapter", "new ConnectionFragment has been created");
-        	return new ConnectionFragment();
+        	//return new ConnectionFragment();
+        	return null;
         }
     }
 
