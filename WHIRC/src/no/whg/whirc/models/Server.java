@@ -1,12 +1,13 @@
 package no.whg.whirc.models;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import jerklib.Channel;
 import jerklib.Session;
 
 public class Server {
-	private HashMap<String, Conversation> conversations;
+	//private HashMap<String, Conversation> conversations;
 	private Session session;
 	private String nickOne;
 	private String nickTwo;
@@ -16,6 +17,7 @@ public class Server {
 	private String port;
 	private String password;
 	private String simpleName;
+	private ArrayList<Conversation> conversations;
 	
 	
 	
@@ -49,7 +51,8 @@ public class Server {
 	public Server(Session session){
 		this.simpleName = session.getServerInformation().getServerName();
 		this.session = session;
-		this.conversations = new HashMap<String, Conversation>();
+		//this.conversations = new HashMap<String, Conversation>();
+		this.conversations = new ArrayList<Conversation>();
 		addConversation(new Conversation(this.simpleName));
 		for (Channel c : session.getChannels()){
 			addConversation(new Conversation(c));
@@ -58,18 +61,33 @@ public class Server {
 
 
 	public Conversation getConversation(String title) {
-		return conversations.get(title);
+		for (Conversation c : conversations){
+			if (c.getChannelTitle() == title){
+				return c;
+			}
+		}
+		return null;
+		//return conversations.get(title);
+	}
+	
+	public Conversation getConversation(int i) {
+		return conversations.get(i);
 	}
 	
 	public void addConversation(Conversation c) {
-		conversations.put(c.getChannelTitle(), c);
+		//conversations.put(c.getChannelTitle(), c);
+		conversations.add(c);
 	}
 	
 	public void removeConversation(String title) {
 		conversations.remove(title);
 	}
 	
-	public HashMap<String, Conversation> getConversations() {
+//	public HashMap<String, Conversation> getConversations() {
+//		return conversations;
+//	}
+	
+	public ArrayList<Conversation> getConversations(){
 		return conversations;
 	}
 	
