@@ -320,6 +320,11 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			Server s = cService.getServer(me.getSession());
 			Conversation c = s.getConversation(me.getChannel().getName());
 			c.addMessage(me);
+			runOnUiThread(new Runnable(){
+				public void run(){
+					mConversationPagerAdapter.notifyDataSetChanged();
+				}
+			});
 			Log.d(TAG, "Added message to channel " + c.getChannelTitle() + ": " + me.getMessage());
 		} else if (e.getType() == Type.JOIN_COMPLETE){
 			Session s = e.getSession();

@@ -51,7 +51,6 @@ public class Conversation {
 	
 	public void addMessage(Message m){
 		messages.add(m);
-		messageAdapter.notifyDataSetChanged();
 	}
 	
 	public void addMessage(MessageEvent me){
