@@ -3,7 +3,7 @@ package no.whg.whirc.dialogs;
 import no.whg.whirc.R;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -56,14 +56,30 @@ public class WhoDialog extends DialogFragment {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 		
-		setLayouts(inflater);
-		return super.onCreateDialog(savedInstanceState);
-	}
-	
-	private void setLayouts(LayoutInflater inflater) {
 		// Retrieve main element in dialog_who.xml
 		View mainView = inflater.inflate(R.layout.dialog_who, null);
 		
+		setLayouts(mainView);
+		
+		// Setup onclick listeners for both buttons in the dialog
+		builder.setView(mainView)
+			.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();
+				}
+			});
+		
+		return super.onCreateDialog(savedInstanceState);
+	}
+	
+	/**
+	 * Separate function for dealing with view elements in the layout.
+	 * Purely here to make it more readable
+	 * 
+	 * @param mainView
+	 */
+	private void setLayouts(View mainView) {		
 		/*
 		 * Retrieve LinearLayouts in mainView and hides those who have no content
 		 * Also sets content where applicable
