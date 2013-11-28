@@ -6,7 +6,6 @@ import no.whg.whirc.models.Server;
 import android.content.Context;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -100,6 +99,9 @@ public class UserEditDialog extends DialogPreference {
 		populateData();
 	}
 	
+	/**
+	 * Populates the fields with relevant data
+	 */
 	private void populateData() {
 		nickOneView.setText(nickOne);
 		nickTwoView.setText(nickTwo);

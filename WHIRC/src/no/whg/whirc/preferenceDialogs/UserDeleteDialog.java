@@ -4,7 +4,6 @@ import no.whg.whirc.R;
 import android.content.Context;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
-import android.view.View;
 
 public class UserDeleteDialog extends DialogPreference {
 

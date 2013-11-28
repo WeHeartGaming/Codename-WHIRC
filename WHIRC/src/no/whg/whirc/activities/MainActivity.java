@@ -35,6 +35,7 @@ import jerklib.listeners.IRCEventListener;
 import no.whg.whirc.R;
 import no.whg.whirc.adapters.ConnectionPagerAdapter;
 import no.whg.whirc.adapters.ConversationPagerAdapter;
+import no.whg.whirc.dialogs.InviteDialog;
 import no.whg.whirc.fragments.ConversationFragment;
 import no.whg.whirc.helpers.ConnectionService;
 import no.whg.whirc.helpers.ConnectionServiceBinder;
@@ -549,18 +550,14 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 	}
 	
 	private void inviteDialog(InviteEvent ie){
-		String channel = ie.getChannelName();
-		String nick = ie.getNick();
+		final String channel = ie.getChannelName();
+		final String nick = ie.getNick();
 		runOnUiThread(new Runnable(){
 			public void run(){
-				// Do dialog
-				/* end up doing this
-				if (true){
-					ie.getSession().join(channel);
-				} else {
-					whatever
-				}
-				*/
+				InviteDialog invite = new InviteDialog(nick, channel);
+				invite.show(getSupportFragmentManager(), "invite_dialog");
+				
+				Log.d("back","back!");
 			}
 		});
 	}

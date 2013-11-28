@@ -3,9 +3,10 @@ package no.whg.whirc.dialogs;
 import no.whg.whirc.R;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
+import android.support.v4.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -46,6 +47,7 @@ public class InviteDialog extends DialogFragment {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					/* JOIN CHANNEL HERE */
+					Log.d("join","join!");
 				}
 			})
 			.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
