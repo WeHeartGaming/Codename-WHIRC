@@ -36,6 +36,7 @@ import no.whg.whirc.R;
 import no.whg.whirc.adapters.ConnectionPagerAdapter;
 import no.whg.whirc.adapters.ConversationPagerAdapter;
 import no.whg.whirc.dialogs.InviteDialog;
+import no.whg.whirc.dialogs.WhoDialog;
 import no.whg.whirc.fragments.ConversationFragment;
 import no.whg.whirc.helpers.ConnectionService;
 import no.whg.whirc.helpers.ConnectionServiceBinder;
@@ -573,6 +574,19 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			public void run(){
 				InviteDialog invite = new InviteDialog(nick, channel);
 				invite.show(getSupportFragmentManager(), "invite_dialog");
+			}
+		});
+	}
+	
+	private void whoDialog(final String[] channels, final String nick, final String name,
+			final String server, final String serverInfo, final String signedOn,
+			final boolean idle, final boolean away) {
+		runOnUiThread(new Runnable() {
+
+			@Override
+			public void run() {
+				WhoDialog who = new WhoDialog(channels, nick, name, server, serverInfo, signedOn, idle, away);
+				who.show(getSupportFragmentManager(), "who_dialog");
 			}
 		});
 	}
