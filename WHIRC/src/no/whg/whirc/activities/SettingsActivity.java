@@ -1,11 +1,14 @@
 package no.whg.whirc.activities;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.xmlpull.v1.XmlPullParser;
 
 import no.whg.whirc.R;
+import no.whg.whirc.helpers.WhircDB;
+import no.whg.whirc.models.Server;
 import no.whg.whirc.preferenceDialogs.UserEditDialog;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -13,6 +16,7 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceGroup;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.Xml;
 
 
@@ -28,7 +32,7 @@ import android.util.Xml;
  * API Guide</a> for more information on developing a Settings UI.
  */
 public class SettingsActivity extends PreferenceActivity {
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -49,18 +53,29 @@ public class SettingsActivity extends PreferenceActivity {
 		// MAKE SURE STUFF IS SAVED HERE
 	}
 
-
-
 	public static class SettingsFragment extends PreferenceFragment {
+		
+		private WhircDB db = null;
 		
 		@Override
 		public void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
 			
+			// Initialize the DB
+			db = new WhircDB(getActivity());
+			
 			addPreferencesFromResource(R.xml.preferences);
 			populateServerList();
-		}
+		}		
 		
+		@Override
+		public void onStop() {
+			// TODO Auto-generated method stub
+			super.onStop();
+			
+			db.close();
+		}
+
 		/**
 		 * Populates the list of usernames based on which servers the user has visited.
 		 */
@@ -68,28 +83,63 @@ public class SettingsActivity extends PreferenceActivity {
 			PreferenceGroup testGroup = (PreferenceGroup)findPreference("settings_userEditCat");
 
 			List<UserEditDialog> dialogList = new ArrayList<UserEditDialog>();
+			List<Server> servers = new LinkedList<Server>();
+			servers = db.getAllServers();
 			
 			// Extracts the resources which allows generation of new UserEditDialog objects
 			Resources resources = this.getResources();
 		    XmlPullParser parser = resources.getXml(R.layout.user_edit_dialog);
 		    AttributeSet attributes = Xml.asAttributeSet(parser);
 			
-		    // TEMPORAY
-			for (int i = 0; i < 6; i++) {
-				UserEditDialog temp = new UserEditDialog(getActivity(), attributes);
+			// Populates preferences with stored servers if there are any in the database
+			if (!servers.isEmpty()) {
+				// Adds servers into the dialoglist and populates their data
+				for (Server server : servers) {
+					UserEditDialog temp = new UserEditDialog(getActivity(), attributes);
+					
+					temp.setTitle(server.getSimpleName());
+					temp.setKey("settings_" + server.getSimpleName());
+					temp.setSummary(server.getHost());
+					temp.setOrder(servers.indexOf(server));
+					
+					temp.setData(server);
+					
+					dialogList.add(temp);
+				}
 				
-				temp.setTitle("Nummer" + String.valueOf(i));
-				temp.setKey("key" + String.valueOf(i));
-				temp.setSummary("summary" + String.valueOf(i));
-				temp.setData("Tittel" + String.valueOf(i));
-				temp.setOrder(i);
-				
-				dialogList.add(temp);
-			}
-			
-			for (int j = 0; j < dialogList.size(); j++) {
-				testGroup.addPreference(dialogList.get(j));
+				// Adds the dialog elements into the preference group
+				for (UserEditDialog dialog : dialogList)
+					testGroup.addPreference(dialog);
+
 			}
 		}
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

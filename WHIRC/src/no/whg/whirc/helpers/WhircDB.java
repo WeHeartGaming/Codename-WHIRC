@@ -118,7 +118,7 @@ public class WhircDB extends SQLiteOpenHelper {
 	 * 
 	 * @return LinkedList containing all servers in DB
 	 */
-	public List<Server> getAllServers() {
+	public List<Server> getAllServers() {	
 		List<Server> servers = new LinkedList<Server>();
 		
 		String query = "SELECT * FROM " + WHIRC_TABLE;
