@@ -35,6 +35,7 @@ import no.whg.whirc.R;
 import no.whg.whirc.adapters.ConnectionPagerAdapter;
 import no.whg.whirc.adapters.ConversationPagerAdapter;
 import no.whg.whirc.dialogs.InviteDialog;
+import no.whg.whirc.dialogs.WhoDialog;
 import no.whg.whirc.fragments.ConversationFragment;
 import no.whg.whirc.helpers.ConnectionService;
 import no.whg.whirc.helpers.ConnectionServiceBinder;
@@ -116,6 +117,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 	        try 
 	        {
 				filePath = downloadServer.execute("http://www.mirc.com/servers.ini", null, "").get();
+				Log.d("ServerListDownload", filePath);
 			}
 	        catch (InterruptedException e)
 	        {
@@ -128,7 +130,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
         }
         
         
-        Log.d("ServerListDownload", filePath);
+        
         // Set placeholder title
         mTitle = mDrawerTitleLeft = getTitle();
         mDrawerLayoutLeft = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -295,7 +297,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		if (cService.getSessions().isEmpty()){
 			//Session temp = cService.connect("irc.quakenet.org");
 			//cService.getSessions().get(cService.getSessions().indexOf(temp)).addIRCEventListener(this);
-			cService.connect("irc.quakenet.org", this);
+			//cService.connect("irc.quakenet.org", this);
 			Log.d(TAG, "onServiceConnected(): Forced a connection to quakenet for debug purposes.");
 		}
 		
@@ -587,6 +589,19 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			public void run(){
 				InviteDialog invite = new InviteDialog(nick, channel);
 				invite.show(getSupportFragmentManager(), "invite_dialog");
+			}
+		});
+	}
+	
+	private void whoDialog(final String[] channels, final String nick, final String name,
+			final String server, final String serverInfo, final String signedOn,
+			final boolean idle, final boolean away) {
+		runOnUiThread(new Runnable() {
+
+			@Override
+			public void run() {
+				WhoDialog who = new WhoDialog(channels, nick, name, server, serverInfo, signedOn, idle, away);
+				who.show(getSupportFragmentManager(), "who_dialog");
 			}
 		});
 	}
