@@ -55,18 +55,5 @@
 	    style="@style/dialog_edit_text"
 	    android:id="@+id/setDialog_edit_name"
 	    android:hint="@string/setDialog_userEdit_name_hint"/>
-	
-	<!-- Password -->
-		<TextView 
-	    style="@style/dialog_header"
-	    android:text="@string/setDialog_userEdit_password"/>
-	
-	<View 
-	    style="@style/dialog_black_line"/>
-	
-	<EditText 
-	    style="@style/dialog_edit_text"
-	    android:id="@+id/setDialog_edit_password"
-	    android:inputType="textPassword"/>
     
 </LinearLayout>
