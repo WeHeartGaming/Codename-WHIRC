@@ -40,6 +40,7 @@ import no.whg.whirc.fragments.ConversationFragment;
 import no.whg.whirc.helpers.ConnectionService;
 import no.whg.whirc.helpers.ConnectionServiceBinder;
 import no.whg.whirc.helpers.ServerListDownload;
+import no.whg.whirc.helpers.WhircDB;
 import no.whg.whirc.models.Conversation;
 import no.whg.whirc.models.Server;
 import android.content.ComponentName;
@@ -75,6 +76,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
     private CharSequence mTitle;
     
     private ConnectionManager manager;
+    private WhircDB server;
     
     private ServerListDownload downloadServer;
     public ConnectionService cService;
@@ -105,19 +107,26 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
         setContentView(R.layout.activity_main);
         
         downloadServer = new ServerListDownload(this.getApplicationContext());
-    
-        try 
+        server = new WhircDB(this.getApplicationContext());
+        int l = server.getSize();
+        
+        String t = "" + l;
+        Log.d("ServerListDownload", t );
+        if(server.getSize() == 0)
         {
-			filePath = downloadServer.execute("http://www.mirc.com/servers.ini", null, "").get();
-		}
-        catch (InterruptedException e)
-        {
-			e.printStackTrace();
-		}
-        catch (ExecutionException e)
-		{
-			e.printStackTrace();
-		}
+	        try 
+	        {
+				filePath = downloadServer.execute("http://www.mirc.com/servers.ini", null, "").get();
+			}
+	        catch (InterruptedException e)
+	        {
+				e.printStackTrace();
+			}
+	        catch (ExecutionException e)
+			{
+				e.printStackTrace();
+			}
+        }
         
         
         Log.d("ServerListDownload", filePath);
