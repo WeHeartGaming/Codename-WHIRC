@@ -464,8 +464,8 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			} else {
 				Log.e(TAG, "receiveEvent() MOTD: Message already exists, did not add it to Conversation.");
 			}
-			Log.d(TAG, "receiveEvent() MOTD: Received MOTD event. Running generateFragments().");
 			if (server == cService.getCurrentServer()){
+				Log.d(TAG, "receiveEvent() MOTD: Received MOTD event. Running generateFragments().");
 				generateFragments(server);
 			}
 		} else if (e.getType() == Type.JOIN_COMPLETE){
@@ -506,27 +506,22 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 					generateFragments(server);
 				}
 			}
-		} else if (e.getType() == Type.INVITE_EVENT){
-			InviteEvent ie = (InviteEvent)e;
-			Log.d(TAG, "receiveEvent() INVITE_EVENT: Calling INVITE_EVENT dialog for channel " + ie.getChannelName() + ": " + ie.getRawEventData());
-			inviteDialog(ie.getChannelName(), ie.getNick());
 		} else if (e.getType() == Type.SERVER_VERSION_EVENT){
 			ServerVersionEvent sve = (ServerVersionEvent)e;
-			System.out.println(e.getType() + " : " + e.getRawEventData());
+			Server server = cService.getServer(sve.getSession());
+			Conversation conversation = server.getConversation(0); // 0 is always the position of the server conversation. 
+			if (!conversation.hasMessage(sve.hashCode())){
+				conversation.addMessage(sve);
+				Log.d(TAG, "receiveEvent() SERVER_VERSION_EVENT: Added Message to Conversation.");
+			} else {
+				Log.e(TAG, "receiveEvent() SERVER_VERSION_EVENT: Message already exists, did not add it to Conversation.");
+			}
+			if (server == cService.getCurrentServer()){
+				Log.d(TAG, "receiveEvent() SERVER_VERSION_EVENT: Received SERVER_VERSION_EVENT event. Running generateFragments().");
+				generateFragments(server);
+			}
 		} else if (e.getType() == Type.CHANNEL_LIST_EVENT){
 			ChannelListEvent cle = (ChannelListEvent)e;
-			System.out.println(e.getType() + " : " + e.getRawEventData());
-		} else if (e.getType() == Type.CTCP_EVENT){
-			CtcpEvent ce = (CtcpEvent)e;
-			System.out.println(e.getType() + " : " + e.getRawEventData());
-		} else if (e.getType() == Type.DCC_EVENT){
-			DccEvent de = (DccEvent)e;
-			System.out.println(e.getType() + " : " + e.getRawEventData());
-		} else if (e.getType() == Type.ERROR){
-			ErrorEvent ee = (ErrorEvent)e;
-			System.out.println(e.getType() + " : " + e.getRawEventData());
-		} else if (e.getType() == Type.EXCEPTION){
-			// TODO: I don't even pretend to know
 			System.out.println(e.getType() + " : " + e.getRawEventData());
 		} else if (e.getType() == Type.NICK_CHANGE){
 			NickChangeEvent nce = (NickChangeEvent)e;
@@ -543,12 +538,6 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		} else if (e.getType() == Type.QUIT){
 			QuitEvent qe = (QuitEvent)e;
 			System.out.println(e.getType() + " : " + e.getRawEventData());
-		} else if (e.getType() == Type.SERVER_INFORMATION){
-			ServerInformationEvent sie = (ServerInformationEvent)e;
-			System.out.println(e.getType() + " : " + e.getRawEventData());
-		} else if (e.getType() == Type.UPDATE_HOST_NAME){
-			//
-			System.out.println(e.getType() + " : " + e.getRawEventData());
 		} else if (e.getType() == Type.WHO_EVENT){
 			WhoEvent we = (WhoEvent)e;
 			System.out.println(e.getType() + " : " + e.getRawEventData());
@@ -558,11 +547,32 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		} else if (e.getType() == Type.WHOWAS_EVENT){
 			WhowasEvent we = (WhowasEvent)e;
 			System.out.println(e.getType() + " : " + e.getRawEventData());
+		}
+			
+
+		// This should work, but jerklib dies if we try inviting the client somewhere
+		else if (e.getType() == Type.INVITE_EVENT){
+			InviteEvent ie = (InviteEvent)e;
+			Log.d(TAG, "receiveEvent() INVITE_EVENT: Calling INVITE_EVENT dialog for channel " + ie.getChannelName() + ": " + ie.getRawEventData());
+			inviteDialog(ie.getChannelName(), ie.getNick());
+		}	
+		// Everything under here is being ignored.
+		else if (e.getType() == Type.UPDATE_HOST_NAME){
+			// We don't need this
+			System.out.println(e.getType() + " : " + e.getRawEventData());
+		} else if (e.getType() == Type.SERVER_INFORMATION){
+			// Fuck this
+		} else if (e.getType() == Type.DCC_EVENT){
+			// We don't need this
+		} else if (e.getType() == Type.ERROR){
+			// We don't need this
+		} else if (e.getType() == Type.EXCEPTION){
+			// We don't need this
+			// TODO: I don't even pretend to know
 		} else if (e.getType() == Type.DEFAULT){
 			// TODO: Nothing to do, really.
-			System.out.println(e.getType() + " : " + e.getRawEventData());
 		} else {
-			Log.e(TAG, "This should not be called: " + e.getRawEventData());
+			// This is just for show
 		}
 	}
 	
