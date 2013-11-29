@@ -11,6 +11,11 @@ import org.ini4j.InvalidFileFormatException;
 
 import android.content.Context;
 
+/**
+ * 
+ * @author Peer Andreas
+ *
+ */
 public class ServerParser
 {
 	Random randGenerator;
@@ -21,12 +26,23 @@ public class ServerParser
 	private Context context;
 	private WhircDB dbObject;
 	
+	/**
+	 * 
+	 * @param c The apps context
+	 */
 	public ServerParser(Context c)
 	{
 		context = c;
 		dbObject = new WhircDB(context);
 		randGenerator = new Random(2345345);
 	}
+	
+	/**
+	 * 
+	 * @param filename full filepath to the file
+	 * @throws InvalidFileFormatException
+	 * @throws IOException
+	 */
 	public void parseIni(String filename) throws InvalidFileFormatException, IOException
 	{
 		iniString = new String[220];
@@ -45,7 +61,7 @@ public class ServerParser
 			
 			if(splitString[0].contains("Random server"))
 			{
-				String userName = "ph" + randGenerator.nextInt(1000);
+				String userName = "ph" + (randGenerator.nextInt(10000) + 1000);
 				dbObject.addServer(userName, "", "", "", splitString[1], "6667", splitString[3]);
 				//insert splitString[1] and [4] and push them to the db with ports and generic usernames
 			}
