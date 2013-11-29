@@ -114,7 +114,7 @@ public class Conversation {
 	}
 	
 	public void addMessage(QuitEvent qe){
-		addMessage(new Message(getChannelTitle(), "User " + qe.getNick() + " has quit IRC (" + qe.getUserName() + " " + qe.getHostName() + "):\n" + qe.getQuitMessage(), getTime(), qe.hashCode()));
+		addMessage(new Message(getChannelTitle(), "User " + qe.getNick() + " has quit IRC (" + qe.getUserName() + "@" + qe.getHostName() + "):\n" + qe.getQuitMessage(), getTime(), qe.hashCode()));
 	}
 
     public String getChannelTitle(){
