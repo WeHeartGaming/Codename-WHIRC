@@ -62,6 +62,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnChildClickListener;
+import android.widget.ExpandableListView.OnGroupClickListener;
 import android.widget.ListView;
 
 public class MainActivity extends FragmentActivity implements ServiceConnection, IRCEventListener {
@@ -192,6 +194,32 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 //        tempS.add(new Server("Nothing", tempC));
         elwAdapter = new LeftMenuAdapter(servers, this);
         elw.setAdapter(elwAdapter);
+        
+        elw.setOnGroupClickListener(new OnGroupClickListener() {
+
+			@Override
+			public boolean onGroupClick(ExpandableListView parent, View v,
+					int groupPosition, long id) {
+				cService.setCurrentServer(groupPosition);
+				generateFragments(cService.getCurrentServer());
+				
+				
+				return false;
+			}
+        	
+        });
+        
+        elw.setOnChildClickListener(new OnChildClickListener() {
+
+			@Override
+			public boolean onChildClick(ExpandableListView parent, View v,
+					int groupPosition, int childPosition, long id) {
+				Log.d("MainActivity", "onChildClick [groupID=" + groupPosition + "], [childID=" + childPosition + "]");
+				mConversationPagerAdapter.getItem(childPosition);
+				return false;
+			}
+        	
+        });
 	    
 		cService = null;
 		Intent intent = new Intent(this, ConnectionService.class);
@@ -308,7 +336,9 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		if (cService.getSessions().isEmpty()){
 			connect("irc.freenode.net");
 			Log.e(TAG, "onServiceConnected(): Forced a connection to quakenet for debug purposes.");
-		}
+		} 
+		
+		
 		
 		for (Session s : cService.getSessions()){
 			s.addIRCEventListener(this);
@@ -320,6 +350,9 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 	    Server s = cService.getCurrentServer();
 	    if (s != null){
 	    	if (s.getSession().isConnected()){
+	    		
+	    		
+	    		
 	    		generateFragments(s);
 	    	} else {
 	    		Log.d(TAG, "Not connected to current Server [" + s.getName() + "].");
@@ -328,6 +361,12 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 	    	Log.d(TAG, "onServiceConnected(): There is no current Server.");
 	    }
 	    
+	    if (cService.getAllServers() != null) {
+	    	for (Server ss : cService.getAllServers()) {
+	    		generateLeftMenu(ss);
+	    		elwAdapter.notifyDataSetChanged();
+	    	}
+	    }
 	    
 	}
 
@@ -353,13 +392,11 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		    final Server tempServer = server;
 		    if (server != null){
 		    	if (server == cService.getCurrentServer()){
-		    		runOnUiThread(new Runnable(){
-						public void run(){
-							elwAdapter.addServer(tempServer);
-				    		elw.setAdapter(elwAdapter);
-						}
-					});
+		    		
 					generateFragments(server);
+					//generateLeftMenu(server);
+					elwAdapter.notifyDataSetChanged();
+					elwAdapter.notifyDataSetInvalidated();
 					
 				}
 		    } else {
@@ -392,9 +429,11 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			JoinEvent je = (JoinEvent)e;
 			Server server = cService.getServer(je.getSession());
 			Conversation conversation = server.getConversation(je.getChannel().getName());
+			elwAdapter.notifyDataSetChanged();
 			if (!conversation.hasMessage(je.hashCode())){
 				conversation.addUser(je.getNick());
 				conversation.addMessage(je);
+				
 			} else {
 				Log.e(TAG, "receiveEvent() JOIN: JOIN Message already exists, did not add it to Conversation.");
 			}
@@ -491,6 +530,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			}
 			if (server == cService.getCurrentServer()){
 				generateFragments(server);
+				
 			}
 		} else if (e.getType() == Type.JOIN_COMPLETE){
 			Session session = e.getSession();
@@ -498,7 +538,9 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			Channel channel = jce.getChannel();
 			Conversation conversation = null;
 			Server server = cService.getServer(session.getRequestedConnection().getHostName());
+			
 			if (server != null){
+				elw.setAdapter(elwAdapter);
 				conversation = server.getConversation(channel.getName());
 				if (conversation == null){
 			    	conversation = new Conversation(channel);
@@ -707,6 +749,17 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			});
 		} else {
 			Log.e(TAG, "generateFragments(): Server is null, cannot look for conversations.");
+		}
+	}
+	
+	private void generateLeftMenu(final Server s) {
+		if (s != null) {
+			runOnUiThread(new Runnable(){
+				public void run(){
+					elwAdapter.addServer(s);
+			    	elw.setAdapter(elwAdapter);
+				}
+			});
 		}
 	}
 	/**

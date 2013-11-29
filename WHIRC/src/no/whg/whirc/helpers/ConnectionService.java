@@ -523,6 +523,14 @@ public class ConnectionService extends Service implements IRCEventListener {
 		}
 		return null;
 	}
+	
+	public ArrayList<Server> getAllServers() {
+		if (!serverList.isEmpty()) {
+			return serverList;
+		} else {
+			return null;
+		}
+	}
 	/**
 	 * 
 	 * @param session

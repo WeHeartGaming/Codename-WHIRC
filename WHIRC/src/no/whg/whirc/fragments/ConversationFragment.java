@@ -3,6 +3,7 @@ package no.whg.whirc.fragments;
 import java.util.ArrayList;
 
 import no.whg.whirc.R;
+import no.whg.whirc.activities.MainActivity;
 import no.whg.whirc.adapters.MessageAdapter;
 import no.whg.whirc.models.Conversation;
 import no.whg.whirc.models.Message;
@@ -38,6 +39,10 @@ import android.widget.ListView;
         
         private Conversation conversation;
 
+        public ConversationFragment() {
+        	this(new Conversation("nope, Chuck Testa"), null);
+        }
+        
         public ConversationFragment(Conversation conversation, Context c) {
         	this.conversation = conversation;
             this.messageAdapter = new MessageAdapter(conversation.getMessages(), c);
