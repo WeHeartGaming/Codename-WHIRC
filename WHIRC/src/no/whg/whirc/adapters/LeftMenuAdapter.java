@@ -107,5 +107,9 @@ public class LeftMenuAdapter extends BaseExpandableListAdapter
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+	public void addServer(Server s) {
+		serverList.add(s);
+	}
 
 }
