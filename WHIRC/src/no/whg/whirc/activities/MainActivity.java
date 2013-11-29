@@ -263,6 +263,11 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
         switch (item.getItemId()) {
             case R.id.action_settings:
                 startActivity(new Intent(this, SettingsActivity.class));
+                return super.onOptionsItemSelected(item);
+            case R.id.action_servers:
+            	mViewPager.setAdapter(mConnectionPagerAdapter);
+            	mConnectionPagerAdapter.notifyDataSetChanged();
+            	return super.onOptionsItemSelected(item);
             default:
                 return super.onOptionsItemSelected(item);
         }
