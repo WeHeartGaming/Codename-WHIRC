@@ -153,7 +153,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
         // set up the drawers  list view with items and click listener
         //mDrawerListLeft.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, new String[]{"lol 1", "lol 2", "lol 3", "lol 4"}));
         //mDrawerListLeft.setOnItemClickListener(new DrawerItemClickListener());
-        mDrawerListRight.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, new String[]{"lol 1", "lol 2", "lol 3", "lol 4"}));
+        mDrawerListRight.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, new String[]{"Empty"}));
         mDrawerListRight.setOnItemClickListener(new DrawerItemClickListener());
         
         // enable actionbar up button
@@ -207,7 +207,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
         	
         });
         
-        elw.setOnChildClickListener(new OnChildClickListener() {
+        elw.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
 
 			@Override
 			public boolean onChildClick(ExpandableListView parent, View v,
@@ -430,6 +430,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			conversation.addMessage(te);
 			if (server == cService.getCurrentServer()){
 				generateFragments(server);
+				generateLeftMenu(server);
 			}
 		} else if (e.getType() == Type.CHANNEL_MESSAGE) {
 			MessageEvent me = (MessageEvent)e;
