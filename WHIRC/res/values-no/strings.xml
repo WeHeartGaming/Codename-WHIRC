@@ -19,6 +19,10 @@
     <string name="more">Mer</string>
     <string name="connected">Tilkoblet</string>
     <string name="disconnected">Koblet fra</string>
+    <string name="context_connect">Koblet til</string>
+    <string name="context_disconnect">Koblet fra</string>
+    <string name="context_edit">Rediger</string>
+    <string name="context_remove">Slett</string>
     
     <!-- DIALOG STUFF -->
     <string name="dialog_invite_recieved"><b>%1$s</b> inviterte deg til å bli med i #<b>%2$s</b></string>
