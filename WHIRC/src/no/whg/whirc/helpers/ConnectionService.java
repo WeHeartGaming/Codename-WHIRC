@@ -55,10 +55,8 @@ public class ConnectionService extends Service implements IRCEventListener {
 	private ArrayList<Runnable> threads;
 	Notification notification;
 	
-	
 	// irc object
 	ConnectionManager connection;
-	//Session qnet = null;
 	
 	private ArrayList <Server> serverList;
 	private int currentServer;
@@ -75,13 +73,12 @@ public class ConnectionService extends Service implements IRCEventListener {
 		this.handler = new Handler();
 		this.threads = new ArrayList<Runnable>();
 		this.binder = new ConnectionServiceBinder(this);
-		Log.e(TAG, "constructor");
+		this.currentServer = 0;
 	}
 	
 	@Override
 	public IBinder onBind(Intent intent) {
 		// TODO Auto-generated method stub
-		Log.d(TAG, "Service bound! [onBind() called]");
 		
 		// lets see if shit keeps running or not now
 		startService(new Intent(this, ConnectionService.class));
@@ -108,7 +105,6 @@ public class ConnectionService extends Service implements IRCEventListener {
 				s.addIRCEventListener(this);
 			}
 		}
-		Log.d(TAG, "onUnbind()");
 		return super.onUnbind(intent);
 	}
 
@@ -119,7 +115,6 @@ public class ConnectionService extends Service implements IRCEventListener {
 	public void onCreate() {
 		// TODO Load servers from file
 		super.onCreate();
-		Log.d("ConnectionService", "Service created! [onCreate() called]");
 		serverList = new ArrayList <Server>();
 		
 		//connect("irc.quakenet.org", this);
@@ -149,10 +144,8 @@ public class ConnectionService extends Service implements IRCEventListener {
 	public void onDestroy() {
 		// TODO Auto-generated method stub
 		super.onDestroy();
-		Log.d(TAG, "Service destroyed! [onDestroy() called]");
 		for(Runnable t : threads) {
 			handler.removeCallbacks(t);
-			Log.d(TAG, "Removed callback on thread " + t.toString() + " (" + t.hashCode() + ")");
 		}
 		stopSelf();
 	}
@@ -163,7 +156,6 @@ public class ConnectionService extends Service implements IRCEventListener {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		// TODO Auto-generated method stub
-		Log.d(TAG, "Service started! [onStartCommand() called]");
 		return START_STICKY;
 	}
 	
@@ -180,7 +172,6 @@ public class ConnectionService extends Service implements IRCEventListener {
 		};
 		threads.add(thread);
 		handler.postDelayed(thread, 1000);
-		Log.d(TAG, "Thread created! toString: " + thread.toString() + " - hash: " + thread.hashCode());
 	}
 	
 	public void connect(final String server, final MainActivity service) {
@@ -194,7 +185,6 @@ public class ConnectionService extends Service implements IRCEventListener {
 					
 			}
 		};
-		Log.d(TAG, "Thread created! toString: " + thread.toString() + " - hash: " + thread.hashCode());
 		threads.add(thread);
 		handler.postDelayed(thread, 1000);
 	}
@@ -448,20 +438,43 @@ public class ConnectionService extends Service implements IRCEventListener {
 			Log.d(TAG, e.getType() + " : " + e.getRawEventData());
 		}
 	}
-	
+	/**
+	 * 
+	 * @return
+	 */
 	public Server getCurrentServer(){
-		// TODO make this not static
 		if (serverList.size() > 0){
-			return serverList.get(0);
+			return serverList.get(currentServer);
 		} else {
 			return null;
 		}
 	}
-	
+	/**
+	 * 
+	 * @param server
+	 */
+	public void setCurrentServer(Server server){
+		this.currentServer = serverList.indexOf(server);
+	}
+	/**
+	 * 
+	 * @param i
+	 */
+	public void setCurrentServer(int i){
+		this.currentServer = i;
+	}
+	/**
+	 * 
+	 * @return
+	 */
 	public ArrayList<Server> getServerList(){
 		return serverList;
 	}
-	
+	/**
+	 * 
+	 * @param i
+	 * @return
+	 */
 	public Server getServer(int i){
 		if (i >= serverList.size()){
 			return null;
@@ -469,45 +482,64 @@ public class ConnectionService extends Service implements IRCEventListener {
 			return serverList.get(i);
 		}
 	}
-	
-	public Server getServer(String s){
+	/**
+	 * 
+	 * @param server
+	 * @return
+	 */
+	public Server getServer(String server){
 		if (!serverList.isEmpty()){
 			for (Server serv : serverList){
-				if (serv.getName().equals(s)){
+				if (serv.getName().equals(server)){
 					return serv;
 				}
 			}
 		}
 		return null;
 	}
-	
-	public Server getServer(Session s){
+	/**
+	 * 
+	 * @param session
+	 * @return
+	 */
+	public Server getServer(Session session){
 		if (!serverList.isEmpty()){
 			for (Server serv : serverList){
-				if (serv.getSession() == s){
+				if (serv.getSession() == session){
 					return serv;
 				}
 			}
 		}
 		return null;
 	}
-	
-	public void addServer (Session s){
-		if (getServer(s.getServerInformation().getServerName()) == null){
-			Server myServer = new Server (s);
+	/**
+	 * 
+	 * @param session
+	 */
+	public void addServer (Session session){
+		if (getServer(session.getServerInformation().getServerName()) == null){
+			Server myServer = new Server(session);
 			serverList.add(myServer);
-			Log.d(TAG, "Added " + s.getConnectedHostName() + " to serverList.");
 		}
 	}
-	
+	/**
+	 * 
+	 * @return
+	 */
 	public ConnectionManager getConnection(){
 		return connection;
 	}
-	
+	/**
+	 * 
+	 * @return
+	 */
 	public ArrayList<Runnable> getThreads(){
 		return threads;
 	}
-	
+	/**
+	 * 
+	 * @return
+	 */
 	public Handler getHandler(){
 		return handler;
 	}

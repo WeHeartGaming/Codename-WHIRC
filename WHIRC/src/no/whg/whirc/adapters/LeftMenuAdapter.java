@@ -1,5 +1,6 @@
 package no.whg.whirc.adapters;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import no.whg.whirc.R;
@@ -14,15 +15,21 @@ import android.widget.TextView;
 
 public class LeftMenuAdapter extends BaseExpandableListAdapter
 {
-	private List<Server> serverList;
-	private List<List<Conversation>> conversationList; 
+	private ArrayList<Server> serverList;
+	private List<ArrayList<Conversation>> conversationList; 
 	Context context;
 
-	public LeftMenuAdapter(List<Server> servers, List<List<Conversation>> conversations, Context c)
-	{
+	public LeftMenuAdapter(ArrayList<Server> servers, Context c) {
 		this.serverList = servers;
-		this.conversationList = conversations;
 		this.context = c;
+		
+		conversationList = new ArrayList<ArrayList<Conversation>>();
+		
+		if (serverList.size() != 0) {
+			for (Server server : serverList) {
+				conversationList.add(server.getConversations());
+			}
+		}
 	}
 	
 	@Override

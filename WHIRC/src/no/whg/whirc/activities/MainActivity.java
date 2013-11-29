@@ -34,6 +34,7 @@ import jerklib.listeners.IRCEventListener;
 import no.whg.whirc.R;
 import no.whg.whirc.adapters.ConnectionPagerAdapter;
 import no.whg.whirc.adapters.ConversationPagerAdapter;
+import no.whg.whirc.adapters.LeftMenuAdapter;
 import no.whg.whirc.dialogs.InviteDialog;
 import no.whg.whirc.dialogs.WhoDialog;
 import no.whg.whirc.fragments.ConversationFragment;
@@ -61,6 +62,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ExpandableListAdapter;
+import android.widget.ExpandableListView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 
 public class MainActivity extends FragmentActivity implements ServiceConnection, IRCEventListener {
@@ -118,7 +122,6 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 	        try 
 	        {
 				filePath = downloadServer.execute("http://www.mirc.com/servers.ini", null, "").get();
-				Log.d("ServerListDownload", filePath);
 			}
 	        catch (InterruptedException e)
 	        {
@@ -143,11 +146,11 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
         mDrawerLayoutLeft.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
         mDrawerLayoutRight.setDrawerShadow(R.drawable.drawer_shadow_right, GravityCompat.END);
         // set up the drawers  list view with items and click listener
-        mDrawerListLeft.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, new String[]{"List 1", "List 2", "List 3", "List 4"}));
+        mDrawerListLeft.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, new String[]{"lol 1", "lol 2", "lol 3", "lol 4"}));
         mDrawerListLeft.setOnItemClickListener(new DrawerItemClickListener());
         mDrawerListRight.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, new String[]{"lol 1", "lol 2", "lol 3", "lol 4"}));
         mDrawerListRight.setOnItemClickListener(new DrawerItemClickListener());
-
+        
         // enable actionbar up button
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
@@ -181,7 +184,6 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		cService = null;
 		Intent intent = new Intent(this, ConnectionService.class);
 		startService(intent);
-		Log.d(TAG, "onCreate() has been run.");
     }
 
 
@@ -194,14 +196,12 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		super.onStart();
 		Intent intent = new Intent(this, ConnectionService.class);
 	    bindService(intent, this, Context.BIND_ABOVE_CLIENT);
-	    Log.d(TAG, "onStart(): Added IRCEventListeners.");
 	}
 	
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		Log.d(TAG, "onResume()");
 	}
 	
 
@@ -216,14 +216,12 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		for (Session s : cService.getSessions()){
 			s.removeIRCEventListener(this);
 		}
-		Log.d(TAG, "onStop(): Decoupled IRCEventListeners.");
 	}
 	
 	@Override
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
-		Log.d(TAG, "onPause()");
 	}
 
 
@@ -296,9 +294,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		Log.d(TAG, "onServiceConnected()");
 		cService = ((ConnectionServiceBinder) binder).getService();
 		if (cService.getSessions().isEmpty()){
-			//Session temp = cService.connect("irc.quakenet.org");
-			//cService.getSessions().get(cService.getSessions().indexOf(temp)).addIRCEventListener(this);
-			cService.connect("irc.quakenet.org", this);
+			connect("irc.quakenet.org");
 			Log.d(TAG, "onServiceConnected(): Forced a connection to quakenet for debug purposes.");
 		}
 		
@@ -540,17 +536,6 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 				}
 			}
 		} else if (e.getType() == Type.NOTICE){
-//			NoticeEvent ne = (NoticeEvent)e;
-//			Server server = cService.getServer(ne.getSession());
-//			Conversation conversation = server.getConversation(0); // 0 is always the position of the server conversation. 
-//			if (!conversation.hasMessage(ne.hashCode())){
-//				conversation.addMessage(ne);
-//			} else {
-//				Log.e(TAG, "receiveEvent() NOTICE: Message already exists, did not add it to Conversation.");
-//			}
-//			if (server == cService.getCurrentServer()){
-//				generateFragments(server);
-//			}
 			System.out.println(e.getType() + " : " + e.getRawEventData());
 		} else if (e.getType() == Type.WHO_EVENT){
 			WhoEvent we = (WhoEvent)e;
@@ -630,7 +615,11 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			// This is just for show
 		}
 	}
-	
+	/**
+	 * 
+	 * @param channel
+	 * @param nick
+	 */
 	private void inviteDialog(final String channel, final String nick){
 		runOnUiThread(new Runnable(){
 			public void run(){
@@ -639,7 +628,17 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			}
 		});
 	}
-	
+	/**
+	 * 
+	 * @param channels
+	 * @param nick
+	 * @param name
+	 * @param server
+	 * @param serverInfo
+	 * @param signedOn
+	 * @param idle
+	 * @param away
+	 */
 	private void whoDialog(final String[] channels, final String nick, final String name,
 			final String server, final String serverInfo, final String signedOn,
 			final boolean idle, final boolean away) {
@@ -652,7 +651,10 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			}
 		});
 	}
-	
+	/**
+	 * 
+	 * @param s
+	 */
 	private void generateFragments(Server s){
 		if (s != null){
 	        mConversationPagerAdapter = new ConversationPagerAdapter(getSupportFragmentManager());
@@ -674,5 +676,108 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		} else {
 			Log.e(TAG, "generateFragments(): Server is null, cannot look for conversations.");
 		}
+	}
+	/**
+	 * 
+	 * @param server
+	 */
+	public void connect (String server){
+		cService.connect(server, this);
+	}
+	/**
+	 * 
+	 * @param server
+	 */
+	public void changeServer(Server server){
+		cService.setCurrentServer(server);
+		generateFragments(server);
+	}
+	/**
+	 * 
+	 * @param i
+	 */
+	public void changeServer(int i){
+		cService.setCurrentServer(i);
+		generateFragments(cService.getCurrentServer());
+	}
+	/**
+	 * 
+	 * @param action
+	 * @param channel
+	 */
+	public void channelAction(String action, Channel channel){
+		channel.action(action);
+	}
+	/**
+	 * 
+	 * @param name
+	 * @param channel
+	 */
+	public void channelDeop(String name, Channel channel){
+		channel.deop(name);
+	}
+	/**
+	 * 
+	 * @param name
+	 * @param channel
+	 */
+	public void channelDevoice(String name, Channel channel){
+		channel.deVoice(name);
+	}
+	/**
+	 * 
+	 * @param name
+	 * @param reason
+	 * @param channel
+	 */
+	public void channelKick(String name, String reason, Channel channel){
+		channel.kick(name, reason);
+	}
+	/**
+	 * 
+	 * @param mode
+	 * @param channel
+	 */
+	public void channelMode(String mode, Channel channel){
+		channel.mode(mode);
+	}
+	/**
+	 * 
+	 * @param name
+	 * @param channel
+	 */
+	public void channelOp(String name, Channel channel){
+		channel.op(name);
+	}
+	/**
+	 * 
+	 * @param channel
+	 */
+	public void channelPart(Channel channel){
+		channel.part("");
+	}
+	/**
+	 * 
+	 * @param say
+	 * @param channel
+	 */
+	public void channelSay(String say, Channel channel){
+		channel.say(say);
+	}
+	/**
+	 * 
+	 * @param topic
+	 * @param channel
+	 */
+	public void channelSetTopic(String topic, Channel channel){
+		channel.setTopic(topic);
+	}
+	/**
+	 * 
+	 * @param name
+	 * @param channel
+	 */
+	public void channelVoice(String name, Channel channel){
+		channel.voice(name);
 	}
 }
