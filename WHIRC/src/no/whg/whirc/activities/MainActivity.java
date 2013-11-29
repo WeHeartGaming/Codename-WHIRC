@@ -662,7 +662,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		        	mConversationPagerAdapter.addFragment(new ConversationFragment(c, getApplicationContext()));
 				}
 			} else {
-				Log.E(TAG, "generateFragments(): No conversations to add for Server.");
+				Log.e(TAG, "generateFragments(): No conversations to add for Server.");
 			}
 			runOnUiThread(new Runnable(){
 				public void run(){
