@@ -52,23 +52,8 @@ public class ConnectionFragment extends Fragment {
 		View rootView = inflater.inflate(R.layout.fragment_connections,
 				container, false);
 		
-//		cList = (ListView) rootView.findViewById(R.id.lw_connections);
-//		cListAdapter = new ConnectionListAdapter(servers, getActivity());
-//		cList.setAdapter(cListAdapter);
-//		
-//		
-//		servers = new ArrayList<Server>();
-//		
-//		db = new WhircDB(getActivity());
-//		
-//		Log.d("ConnectionFragment", "Size: " + db.getAllServers().size() + "\nRest: " + db.getAllServers().toString());
-//		
-//		Iterator<Server> iterator = db.getAllServers().iterator();
-//		
-//		while (iterator.hasNext()) {
-//			servers.add(iterator.next());
-//		}
-		
+		cList = (ListView) rootView.findViewById(R.id.lw_connections);
+		servers = new ArrayList<Server>();	
 
 		return rootView;
 	}
@@ -202,9 +187,6 @@ public class ConnectionFragment extends Fragment {
 			}
 		});
 
-		cList = (ListView) getActivity().findViewById(R.id.lw_connections);
-		servers = new ArrayList<Server>();
-		
 		db = new WhircDB(getActivity());
 		
 		Log.d("ConnectionFragment", "Size: " + db.getAllServers().size() + "\nRest: " + db.getAllServers().toString());
@@ -214,9 +196,8 @@ public class ConnectionFragment extends Fragment {
 		while (iterator.hasNext()) {
 			servers.add(iterator.next());
 		}
-		cListAdapter = new ConnectionListAdapter(servers, getActivity());
-		cList.setAdapter(cListAdapter);
-		
+		cList.setAdapter(new ConnectionListAdapter(servers, getActivity()));
+		//cListAdapter.notifyDataSetChanged();
 
 		// msgs = new ArrayList<Messages>();
 		// Messages msg;
