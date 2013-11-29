@@ -3,6 +3,7 @@ package no.whg.whirc.helpers;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Random;
 
 import no.whg.whirc.models.Server;
 
@@ -12,6 +13,7 @@ import android.content.Context;
 
 public class ServerParser
 {
+	Random randGenerator;
 	private String temp;
 	private String[] iniString;
 	private String[] splitString;
@@ -23,6 +25,7 @@ public class ServerParser
 	{
 		context = c;
 		dbObject = new WhircDB(context);
+		randGenerator = new Random(2345345);
 	}
 	public void parseIni(String filename) throws InvalidFileFormatException, IOException
 	{
@@ -42,7 +45,8 @@ public class ServerParser
 			
 			if(splitString[0].contains("Random server"))
 			{
-				dbObject.addServer("test", "", "", "", splitString[1], "6667", splitString[3]);
+				String userName = "ph" + randGenerator.nextInt(1000);
+				dbObject.addServer(userName, "", "", "", splitString[1], "6667", splitString[3]);
 				//insert splitString[1] and [4] and push them to the db with ports and generic usernames
 			}
 			
