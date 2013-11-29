@@ -67,6 +67,7 @@ public class Conversation {
         this.channel = channel;
         this.channelTitle = priv;
         this.isPriv = true;
+        this.users = new ArrayList<String>();
         this.userList = new ArrayList<String>();
         this.userList.add(priv);
         messages = new ArrayList<Message>();
@@ -93,38 +94,37 @@ public class Conversation {
      * 
      */
     public void makeUserList(){
-    	this.ops = channel.getNicksForMode(ModeAdjustment.Action.PLUS, 'o');
-    	this.voices = channel.getNicksForMode(ModeAdjustment.Action.PLUS, 'v');
-    	this.users = new ArrayList<String>();
-    	
-    	for (String s : channel.getNicks()){
-		  	if (!ops.contains(s) && !voices.contains(s)){
-		  		users.add(s);
+    	if(!isPriv){
+	    	this.ops = channel.getNicksForMode(ModeAdjustment.Action.PLUS, 'o');
+	    	this.voices = channel.getNicksForMode(ModeAdjustment.Action.PLUS, 'v');
+	    	this.users = new ArrayList<String>();
+	    	
+	    	for (String s : channel.getNicks()){
+			  	if (!ops.contains(s) && !voices.contains(s)){
+			  		users.add(s);
+			  	}
 		  	}
-	  	}
-	  	
-    	updateUserList();
+	    	updateUserList();
+    	}
     }
     /**
      * 
      */
     private void updateUserList(){
     	this.userList = new ArrayList<String>();
-    	String opSymbol = "@ ";
-    	String voiceSymbol = "+ ";
-
-	  	Log.d(TAG, ops.toString());
-	  	for (String op : ops){
-	  		userList.add(opSymbol.concat(op));
-	  	}
-	  	for (String voice : voices){
-	  		userList.add(voiceSymbol.concat(voice));
-	  	}
+    	if(!isPriv){
+	    	String opSymbol = "@ ";
+	    	String voiceSymbol = "+ ";
+		  	for (String op : ops){
+		  		userList.add(opSymbol.concat(op));
+		  	}
+		  	for (String voice : voices){
+		  		userList.add(voiceSymbol.concat(voice));
+		  	}
+    	}
 	  	for (String user : users){
 	  		userList.add(user);
 	  	}
-	  	Log.d(TAG, ops.toString());
-	  	Log.d(TAG, userList.toString());
     }
     /**
      * 
@@ -197,6 +197,16 @@ public class Conversation {
     	}
     	return 'u';
     }
+    
+    public boolean getPriv(){
+    	return isPriv;
+    }
+    
+    public void changePrivNick(String user){
+    	userList.remove(0);
+    	userList.add(user);
+    	this.channelTitle = user;
+    }
     /**
      * 
      * @param user
@@ -228,15 +238,6 @@ public class Conversation {
     			}
     		}
     	}
-//    	String op = "@ ";
-//    	String voice = "+ ";
-//    	op += user;
-//    	voice += user;
-//    	for (String s : userList){
-//    		if (s.equals(user) || (s.equals(voice) || s.equals(op))){
-//    			return true;
-//    		}
-//    	}
     	return false;
     }
     /**
@@ -409,5 +410,9 @@ public class Conversation {
      */
     public Channel getChannel(){
     	return this.channel;
+    }
+    
+    public void setChannel(Channel channel){
+    	this.channel = channel;
     }
 }

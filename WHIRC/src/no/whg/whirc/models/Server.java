@@ -87,7 +87,7 @@ public class Server {
 
 	public Conversation getConversation(String title) {
 		for (Conversation c : conversations){
-			if (c.getChannelTitle() == title){
+			if (c.getChannelTitle().equals(title)){
 				return c;
 			}
 		}

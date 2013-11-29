@@ -293,15 +293,15 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		Log.d(TAG, "onServiceConnected()");
 		cService = ((ConnectionServiceBinder) binder).getService();
 		if (cService.getSessions().isEmpty()){
-			connect("irc.quakenet.org");
+			connect("irc.freenode.net");
 			Log.e(TAG, "onServiceConnected(): Forced a connection to quakenet for debug purposes.");
 		}
 		
 		for (Session s : cService.getSessions()){
 			s.addIRCEventListener(this);
-//			if (!s.isConnected()){
-//				cService.connect(s.getServerInformation().getServerName(), this);
-//			}
+			if (!s.isConnected()){
+				cService.connect(s.getServerInformation().getServerName(), this);
+			}
 		}
 	    
 	    Server s = cService.getCurrentServer();
@@ -444,7 +444,10 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 				conversation = new Conversation(me.getChannel(), nick);
 				server.addConversation(conversation);
 			} else {
-				conversation = server.getConversation(me.getChannel().getName());
+				conversation = server.getConversation(me.getNick());
+				if (conversation.getChannel() != me.getChannel()){
+					conversation.setChannel(me.getChannel());
+				}
 			}
 			if (!conversation.hasMessage(me.hashCode())){
 				conversation.addMessage(me);
@@ -518,7 +521,6 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			QuitEvent qe = (QuitEvent)e;
 			Server server = cService.getServer(qe.getSession());
 			List<Channel> channels = qe.getChannelList();
-			//Conversation conversation = server.getConversation(qe.getChannel().getName());
 			ArrayList<Conversation> conversations = server.getMatchingConversations(channels);
 			if (conversations != null){
 				for (Conversation conversation : conversations){
@@ -569,14 +571,25 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			ArrayList<Conversation> conversations = server.getConversations();
 			for (Conversation conversation : conversations){
 				if (conversation.hasUser(nce.getOldNick())){
-					Log.d(TAG, nce.getOldNick());
-					if (!conversation.hasMessage(nce.hashCode())){
-						conversation.makeUserList();
-						conversation.addMessage(nce);
+					if (conversation.getPriv()){
+						if (!conversation.hasMessage(nce.hashCode())){
+							conversation.addMessage(nce);
+							conversation.changePrivNick(nce.getNewNick());
+						} else {
+							Log.e(TAG, "receiveEvent() NICK_CHANGE: NICK_CHANGE Message already exists, did not add it to Conversation.");
+						}
 					} else {
-						Log.e(TAG, "receiveEvent() NICK_CHANGE: NICK_CHANGE Message already exists, did not add it to Conversation.");
+						if (!conversation.hasMessage(nce.hashCode())){
+							conversation.makeUserList();
+							conversation.addMessage(nce);
+						} else {
+							Log.e(TAG, "receiveEvent() NICK_CHANGE: NICK_CHANGE Message already exists, did not add it to Conversation.");
+						}
 					}
 				}
+			}
+			if (server == cService.getCurrentServer()){
+				generateFragments(server);
 			}
 		}
 			
