@@ -182,7 +182,6 @@ public class ConnectionService extends Service implements IRCEventListener {
 				Session mySession = null;
 				mySession = connection.requestConnection(server);
 				mySession.addIRCEventListener(service);
-					
 			}
 		};
 		threads.add(thread);
@@ -295,7 +294,10 @@ public class ConnectionService extends Service implements IRCEventListener {
 				conversation = new Conversation(me.getChannel(), nick);
 				server.addConversation(conversation);
 			} else {
-				conversation = server.getConversation(me.getChannel().getName());
+				conversation = server.getConversation(me.getNick());
+				if (conversation.getChannel() != me.getChannel()){
+					conversation.setChannel(me.getChannel());
+				}
 			}
 			if (!conversation.hasMessage(me.hashCode())){
 				conversation.addMessage(me);
@@ -396,11 +398,20 @@ public class ConnectionService extends Service implements IRCEventListener {
 			ArrayList<Conversation> conversations = server.getConversations();
 			for (Conversation conversation : conversations){
 				if (conversation.hasUser(nce.getOldNick())){
-					if (!conversation.hasMessage(nce.hashCode())){
-						conversation.makeUserList();
-						conversation.addMessage(nce);
+					if (conversation.getPriv()){
+						if (!conversation.hasMessage(nce.hashCode())){
+							conversation.addMessage(nce);
+							conversation.changePrivNick(nce.getNewNick());
+						} else {
+							Log.e(TAG, "receiveEvent() NICK_CHANGE: NICK_CHANGE Message already exists, did not add it to Conversation.");
+						}
 					} else {
-						Log.e(TAG, "receiveEvent() NICK_CHANGE: NICK_CHANGE Message already exists, did not add it to Conversation.");
+						if (!conversation.hasMessage(nce.hashCode())){
+							conversation.makeUserList();
+							conversation.addMessage(nce);
+						} else {
+							Log.e(TAG, "receiveEvent() NICK_CHANGE: NICK_CHANGE Message already exists, did not add it to Conversation.");
+						}
 					}
 				}
 			}
