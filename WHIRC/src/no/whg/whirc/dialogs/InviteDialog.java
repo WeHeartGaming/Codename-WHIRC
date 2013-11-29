@@ -11,6 +11,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+/**
+ * 
+ * @author Inge
+ *
+ */
+
 public class InviteDialog extends DialogFragment {
 
 	private String user;
@@ -48,6 +54,9 @@ public class InviteDialog extends DialogFragment {
 				public void onClick(DialogInterface dialog, int which) {
 					/* JOIN CHANNEL HERE */
 					Log.d("join","join!");
+					// We ran across a bug in the library that causes a crash whenever an
+					//  invitation event is recieved. So we decided to leave this class as is
+					//  even though it doesn't do anything other than crash the application
 				}
 			})
 			.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {

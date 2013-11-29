@@ -10,6 +10,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+/**
+ * 
+ * @author Inge
+ *
+ */
+
 public class UserEditDialog extends DialogPreference {
 	
 	private String title = "null";

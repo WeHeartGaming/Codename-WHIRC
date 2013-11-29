@@ -3,4 +3,9 @@
         android:title="@string/action_settings"
         android:orderInCategory="100"
         android:showAsAction="always" />
+    
+    <item android:id="@+id/action_servers"
+        android:title="@string/action_servers"
+        android:orderInCategory="200"
+        android:showAsAction="collapseActionView" />
 </menu>

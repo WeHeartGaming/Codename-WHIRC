@@ -11,6 +11,12 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+/**
+ *
+ * @author Inge
+ *
+ */
+
 public class WhoDialog extends DialogFragment {
 	private LinearLayout channelsView;
 	private LinearLayout nickView;
@@ -37,6 +43,18 @@ public class WhoDialog extends DialogFragment {
 	private boolean idle;
 	private boolean away;
 	
+	/**
+	 * Constructor. Reads data and stores it accordingly
+	 *
+	 * @param channels Array of channel names
+	 * @param nick Nickname
+	 * @param name Real name
+	 * @param server Server the user is on
+	 * @param serverInfo Information on that server
+	 * @param signedOn When the user signed on
+	 * @param idle If the user is idle
+	 * @param away If the user is away
+	 */
 	public WhoDialog(String[] channels, String nick, String name, 
 			String server, String serverInfo, String signedOn, boolean idle, boolean away) {
 		if (channels != null) {

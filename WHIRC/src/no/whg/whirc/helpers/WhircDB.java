@@ -14,7 +14,7 @@ import android.util.Log;
 
 /**
  * 
- * @author Peer Andreas
+ * @authors Peer Andreas & Inge
  *
  */
 public class WhircDB extends SQLiteOpenHelper {

@@ -5,6 +5,12 @@ import android.content.Context;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
 
+/**
+ * 
+ * @author Inge
+ *
+ */
+
 public class UserDeleteDialog extends DialogPreference {
 
 	/**
@@ -30,7 +36,7 @@ public class UserDeleteDialog extends DialogPreference {
 		super.onDialogClosed(positiveResult);
 		
 		if (positiveResult) {
-			// DELETE USER DATA HERE MANG
+			/* User data is supposed to be deleted here */
 		}
 	}
 }
