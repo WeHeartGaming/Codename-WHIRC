@@ -46,6 +46,22 @@ public class Server {
 	
 	
 	
+	
+	
+	/**
+	 * @param simpleName
+	 * @param conversations
+	 */
+	public Server(String simpleName, ArrayList<Conversation> conversations) {
+		super();
+		this.simpleName = simpleName;
+		this.conversations = conversations;
+	}
+
+
+
+
+
 	/**
 	 * @param nickOne
 	 * @param nickTwo
@@ -87,7 +103,7 @@ public class Server {
 
 	public Conversation getConversation(String title) {
 		for (Conversation c : conversations){
-			if (c.getChannelTitle() == title){
+			if (c.getChannelTitle().equals(title)){
 				return c;
 			}
 		}

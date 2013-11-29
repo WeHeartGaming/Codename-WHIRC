@@ -2,6 +2,7 @@ package no.whg.whirc.fragments;
 
 import java.util.ArrayList;
 
+import jerklib.Channel;
 import no.whg.whirc.R;
 import no.whg.whirc.adapters.MessageAdapter;
 import no.whg.whirc.models.Conversation;
@@ -14,6 +15,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 
@@ -35,6 +38,8 @@ import android.widget.ListView;
         AdapterView.AdapterContextMenuInfo info;
         private MessageAdapter messageAdapter;
         private ListView messageView;
+        private ImageView sendButton;
+        private EditText textBox;
         
         private Conversation conversation;
 
@@ -51,6 +56,20 @@ import android.widget.ListView;
 
     		messageView = (ListView) rootView.findViewById(R.id.lw_chat);
     		messageView.setAdapter(messageAdapter);
+    		
+    		sendButton = (ImageView) rootView.findViewById(R.id.ib_send);
+    		textBox = (EditText) rootView.findViewById(R.id.et_send);
+    		
+    		sendButton.setOnClickListener(
+    		        new View.OnClickListener()
+    		        {
+    		            public void onClick(View view)
+    		            {
+    		                channelSend(textBox.getText().toString());
+    		                textBox.setText("");
+    		                
+    		            }
+    		        });
             
             return rootView;
         }
@@ -70,5 +89,107 @@ import android.widget.ListView;
 		
 		public String getName() {
 			return conversation.getChannelTitle();
+		}
+		
+		public void channelSend(String string){
+			if (string.startsWith("/mode")){
+				if (string.startsWith(conversation.getChannelTitle() + " +o " , 6)) {
+					
+				} else if (string.startsWith(conversation.getChannelTitle() + " -o " , 6)) {
+					
+				} else if (string.startsWith(conversation.getChannelTitle() + " +v " , 6)) {
+					
+				} else if (string.startsWith(conversation.getChannelTitle() + " -v " , 6)) {
+					
+				}
+			} else if (string.startsWith("/kick")){
+				
+			} else if (string.startsWith("/topic")){
+				
+			} else {
+				channelSay(string, conversation.getChannel());
+			}
+		}
+		
+		/**
+		 * 
+		 * @param action
+		 * @param channel
+		 */
+		public void channelAction(String action, Channel channel){
+			channel.action(action);
+		}
+		/**
+		 * 
+		 * @param name
+		 * @param channel
+		 */
+		public void channelDeop(String name, Channel channel){
+			channel.deop(name);
+		}
+		/**
+		 * 
+		 * @param name
+		 * @param channel
+		 */
+		public void channelDevoice(String name, Channel channel){
+			channel.deVoice(name);
+		}
+		/**
+		 * 
+		 * @param name
+		 * @param reason
+		 * @param channel
+		 */
+		public void channelKick(String name, String reason, Channel channel){
+			channel.kick(name, reason);
+		}
+		/**
+		 * 
+		 * @param mode
+		 * @param channel
+		 */
+		public void channelMode(String mode, Channel channel){
+			channel.mode(mode);
+		}
+		/**
+		 * 
+		 * @param name
+		 * @param channel
+		 */
+		public void channelOp(String name, Channel channel){
+			channel.op(name);
+		}
+		/**
+		 * 
+		 * @param channel
+		 */
+		public void channelPart(Channel channel){
+			channel.part("");
+		}
+		/**
+		 * 
+		 * @param say
+		 * @param channel
+		 */
+		public void channelSay(String say, Channel channel){
+			channel.say(say);
+			conversation.addMessage(new Message(channel.getSession().getNick(), say, conversation.getTime(), say.hashCode()));
+		}
+		/**
+		 * 
+		 * @param topic
+		 * @param channel
+		 */
+		public void channelSetTopic(String topic, Channel channel){
+			channel.setTopic(topic);
+		}
+		/**
+		 * 
+		 * @param name
+		 * @param channel
+		 */
+		public void channelVoice(String name, Channel channel){
+			channel.voice(name);
 		}
     }

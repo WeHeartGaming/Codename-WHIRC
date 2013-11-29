@@ -61,9 +61,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
 public class MainActivity extends FragmentActivity implements ServiceConnection, IRCEventListener {
@@ -85,6 +83,11 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
     private ServerListDownload downloadServer;
     public ConnectionService cService;
     private boolean mBound = false;
+    
+    private LeftMenuAdapter elwAdapter;
+    private ExpandableListView elw;
+    
+    private ArrayList<Server> servers;
     
     //private Session s = null;
     //private ArrayList <Session> sessions;
@@ -108,9 +111,11 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        convers.getContext(this.getApplicationContext());
         setContentView(R.layout.activity_main);
+        convers.getContext(this.getApplicationContext());
         
+        
+        servers = new ArrayList<Server>();
         downloadServer = new ServerListDownload(this.getApplicationContext());
         server = new WhircDB(this.getApplicationContext());
         int l = server.getSize();
@@ -136,15 +141,16 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
         mTitle = mDrawerTitleLeft = getTitle();
         mDrawerLayoutLeft = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerLayoutRight = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerListLeft = (ListView) findViewById(R.id.left_drawer);
+        //mDrawerListLeft = (ListView) findViewById(R.id.left_drawer);
+        elw = (ExpandableListView) findViewById(R.id.left_drawer);
         mDrawerListRight = (ListView) findViewById(R.id.right_drawer);
 
         // set shadow to overlay main content when we pull out drawer
         mDrawerLayoutLeft.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
         mDrawerLayoutRight.setDrawerShadow(R.drawable.drawer_shadow_right, GravityCompat.END);
         // set up the drawers  list view with items and click listener
-        mDrawerListLeft.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, new String[]{"lol 1", "lol 2", "lol 3", "lol 4"}));
-        mDrawerListLeft.setOnItemClickListener(new DrawerItemClickListener());
+        //mDrawerListLeft.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, new String[]{"lol 1", "lol 2", "lol 3", "lol 4"}));
+        //mDrawerListLeft.setOnItemClickListener(new DrawerItemClickListener());
         mDrawerListRight.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, new String[]{"lol 1", "lol 2", "lol 3", "lol 4"}));
         mDrawerListRight.setOnItemClickListener(new DrawerItemClickListener());
         
@@ -177,6 +183,13 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
         //mConversationPagerAdapter = new ConversationPagerAdapter(getSupportFragmentManager());
         mConnectionPagerAdapter = new ConnectionPagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mConnectionPagerAdapter);
+        
+//        ArrayList<Server> tempS = new ArrayList<Server>();
+//        ArrayList<Conversation> tempC = new ArrayList<Conversation>();
+//        tempC.add(new Conversation("Nothing"));
+//        tempS.add(new Server("Nothing", tempC));
+        elwAdapter = new LeftMenuAdapter(servers, this);
+        elw.setAdapter(elwAdapter);
 	    
 		cService = null;
 		Intent intent = new Intent(this, ConnectionService.class);
@@ -232,10 +245,10 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        boolean drawerOpen = mDrawerLayoutLeft.isDrawerOpen(mDrawerListLeft);
+        //boolean drawerOpen = mDrawerLayoutLeft.isDrawerOpen(elw);
         // Since we are (probably) going to move the settings button to the navigation drawer while it's open,
         //  lets hide the settings button when we open the drawer
-        menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
+        //menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -291,15 +304,15 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		Log.d(TAG, "onServiceConnected()");
 		cService = ((ConnectionServiceBinder) binder).getService();
 		if (cService.getSessions().isEmpty()){
-			connect("irc.quakenet.org");
+			connect("irc.freenode.net");
 			Log.e(TAG, "onServiceConnected(): Forced a connection to quakenet for debug purposes.");
 		}
 		
 		for (Session s : cService.getSessions()){
 			s.addIRCEventListener(this);
-//			if (!s.isConnected()){
-//				cService.connect(s.getServerInformation().getServerName(), this);
-//			}
+			if (!s.isConnected()){
+				cService.connect(s.getServerInformation().getServerName(), this);
+			}
 		}
 	    
 	    Server s = cService.getCurrentServer();
@@ -312,6 +325,8 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 	    } else {
 	    	Log.d(TAG, "onServiceConnected(): There is no current Server.");
 	    }
+	    
+	    
 	}
 
 	@Override
@@ -333,9 +348,17 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		if (e.getType() == Type.CONNECT_COMPLETE) {
 			cService.addServer(e.getSession());
 		    Server server = cService.getCurrentServer();
+		    final Server tempServer = server;
 		    if (server != null){
 		    	if (server == cService.getCurrentServer()){
+		    		runOnUiThread(new Runnable(){
+						public void run(){
+							elwAdapter.addServer(tempServer);
+				    		elw.setAdapter(elwAdapter);
+						}
+					});
 					generateFragments(server);
+					
 				}
 		    } else {
 		    	Log.e(TAG, "receiveEvent() CONNECT_COMPLETE: There is no server object. If this shows up, we're fucked.");
@@ -442,7 +465,10 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 				conversation = new Conversation(me.getChannel(), nick);
 				server.addConversation(conversation);
 			} else {
-				conversation = server.getConversation(me.getChannel().getName());
+				conversation = server.getConversation(me.getNick());
+				if (conversation.getChannel() != me.getChannel()){
+					conversation.setChannel(me.getChannel());
+				}
 			}
 			if (!conversation.hasMessage(me.hashCode())){
 				conversation.addMessage(me);
@@ -516,7 +542,6 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			QuitEvent qe = (QuitEvent)e;
 			Server server = cService.getServer(qe.getSession());
 			List<Channel> channels = qe.getChannelList();
-			//Conversation conversation = server.getConversation(qe.getChannel().getName());
 			ArrayList<Conversation> conversations = server.getMatchingConversations(channels);
 			if (conversations != null){
 				for (Conversation conversation : conversations){
@@ -567,14 +592,25 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			ArrayList<Conversation> conversations = server.getConversations();
 			for (Conversation conversation : conversations){
 				if (conversation.hasUser(nce.getOldNick())){
-					Log.d(TAG, nce.getOldNick());
-					if (!conversation.hasMessage(nce.hashCode())){
-						conversation.makeUserList();
-						conversation.addMessage(nce);
+					if (conversation.getPriv()){
+						if (!conversation.hasMessage(nce.hashCode())){
+							conversation.addMessage(nce);
+							conversation.changePrivNick(nce.getNewNick());
+						} else {
+							Log.e(TAG, "receiveEvent() NICK_CHANGE: NICK_CHANGE Message already exists, did not add it to Conversation.");
+						}
 					} else {
-						Log.e(TAG, "receiveEvent() NICK_CHANGE: NICK_CHANGE Message already exists, did not add it to Conversation.");
+						if (!conversation.hasMessage(nce.hashCode())){
+							conversation.makeUserList();
+							conversation.addMessage(nce);
+						} else {
+							Log.e(TAG, "receiveEvent() NICK_CHANGE: NICK_CHANGE Message already exists, did not add it to Conversation.");
+						}
 					}
 				}
+			}
+			if (server == cService.getCurrentServer()){
+				generateFragments(server);
 			}
 		}
 			
@@ -693,85 +729,5 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 	public void changeServer(int i){
 		cService.setCurrentServer(i);
 		generateFragments(cService.getCurrentServer());
-	}
-	/**
-	 * 
-	 * @param action
-	 * @param channel
-	 */
-	public void channelAction(String action, Channel channel){
-		channel.action(action);
-	}
-	/**
-	 * 
-	 * @param name
-	 * @param channel
-	 */
-	public void channelDeop(String name, Channel channel){
-		channel.deop(name);
-	}
-	/**
-	 * 
-	 * @param name
-	 * @param channel
-	 */
-	public void channelDevoice(String name, Channel channel){
-		channel.deVoice(name);
-	}
-	/**
-	 * 
-	 * @param name
-	 * @param reason
-	 * @param channel
-	 */
-	public void channelKick(String name, String reason, Channel channel){
-		channel.kick(name, reason);
-	}
-	/**
-	 * 
-	 * @param mode
-	 * @param channel
-	 */
-	public void channelMode(String mode, Channel channel){
-		channel.mode(mode);
-	}
-	/**
-	 * 
-	 * @param name
-	 * @param channel
-	 */
-	public void channelOp(String name, Channel channel){
-		channel.op(name);
-	}
-	/**
-	 * 
-	 * @param channel
-	 */
-	public void channelPart(Channel channel){
-		channel.part("");
-	}
-	/**
-	 * 
-	 * @param say
-	 * @param channel
-	 */
-	public void channelSay(String say, Channel channel){
-		channel.say(say);
-	}
-	/**
-	 * 
-	 * @param topic
-	 * @param channel
-	 */
-	public void channelSetTopic(String topic, Channel channel){
-		channel.setTopic(topic);
-	}
-	/**
-	 * 
-	 * @param name
-	 * @param channel
-	 */
-	public void channelVoice(String name, Channel channel){
-		channel.voice(name);
 	}
 }
