@@ -129,6 +129,7 @@ import android.widget.ListView;
 		 */
 		public void channelAction(String action, Channel channel){
 			channel.action(action);
+			conversation.addMessage(new Message("", channel.getSession().getNick() + " " + action, conversation.getTime(), 0));
 		}
 		/**
 		 * 
@@ -137,6 +138,7 @@ import android.widget.ListView;
 		 */
 		public void channelDeop(String name, Channel channel){
 			channel.deop(name);
+			conversation.addMessage(new Message(conversation.getChannelTitle(), "TEMP DEOP STRING " + name, conversation.getTime(), 0));
 		}
 		/**
 		 * 
@@ -145,6 +147,7 @@ import android.widget.ListView;
 		 */
 		public void channelDevoice(String name, Channel channel){
 			channel.deVoice(name);
+			conversation.addMessage(new Message(conversation.getChannelTitle(), "TEMP DEVOICE STRING " + name, conversation.getTime(), 0));
 		}
 		/**
 		 * 
@@ -154,6 +157,7 @@ import android.widget.ListView;
 		 */
 		public void channelKick(String name, String reason, Channel channel){
 			channel.kick(name, reason);
+			conversation.addMessage(new Message(conversation.getChannelTitle(), "TEMP KICK STRING " + name, conversation.getTime(), 0));
 		}
 		/**
 		 * 
@@ -169,6 +173,7 @@ import android.widget.ListView;
 		 * @param channel
 		 */
 		public void channelOp(String name, Channel channel){
+			conversation.addMessage(new Message(conversation.getChannelTitle(), "TEMP OP STRING " + name, conversation.getTime(), 0));
 			channel.op(name);
 		}
 		/**
@@ -194,6 +199,7 @@ import android.widget.ListView;
 		 */
 		public void channelSetTopic(String topic, Channel channel){
 			channel.setTopic(topic);
+			conversation.addMessage(new Message(conversation.getChannelTitle(), "TEMP TOPIC STRING " + topic, conversation.getTime(), 0));
 		}
 		/**
 		 * 
@@ -202,5 +208,6 @@ import android.widget.ListView;
 		 */
 		public void channelVoice(String name, Channel channel){
 			channel.voice(name);
+			conversation.addMessage(new Message(conversation.getChannelTitle(), "TEMP VOICE STRING " + name, conversation.getTime(), 0));
 		}
     }

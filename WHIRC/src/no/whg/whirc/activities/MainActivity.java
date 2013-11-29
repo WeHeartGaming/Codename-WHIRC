@@ -184,7 +184,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
         mViewPager = (ViewPager) findViewById(R.id.pager);
         //mConversationPagerAdapter = new ConversationPagerAdapter(getSupportFragmentManager());
         mConnectionPagerAdapter = new ConnectionPagerAdapter(getSupportFragmentManager());
-        mViewPager.setAdapter(mConnectionPagerAdapter);
+        //mViewPager.setAdapter(mConnectionPagerAdapter);
         
 //        ArrayList<Server> tempS = new ArrayList<Server>();
 //        ArrayList<Conversation> tempC = new ArrayList<Conversation>();
@@ -359,6 +359,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 				    		elw.setAdapter(elwAdapter);
 						}
 					});
+		    		removeFragments();
 					generateFragments(server);
 					
 				}
@@ -404,12 +405,17 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		} else if (e.getType() == Type.PART){
 			PartEvent pe = (PartEvent)e;
 			Server server = cService.getServer(pe.getSession());
-			Conversation conversation = server.getConversation(pe.getChannel().getName());
-			if (!conversation.hasMessage(pe.hashCode())){
-				conversation.removeUser(pe.getWho());
-				conversation.addMessage(pe);
+			if (pe.getWho().equals(pe.getSession().getNick())){
+				server.removeConversation(pe.getChannel().getName());
+				removeFragment(pe.getChannelName());
 			} else {
-				Log.e(TAG, "receiveEvent() PART: PART Message already exists, did not add it to Conversation.");
+				Conversation conversation = server.getConversation(pe.getChannel().getName());
+				if (!conversation.hasMessage(pe.hashCode())){
+					conversation.removeUser(pe.getWho());
+					conversation.addMessage(pe);
+				} else {
+					Log.e(TAG, "receiveEvent() PART: PART Message already exists, did not add it to Conversation.");
+				}
 			}
 			if (server == cService.getCurrentServer()){
 				generateFragments(server);
@@ -648,6 +654,22 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		} else {
 			// This is just for show
 		}
+	}
+	
+	public void removeFragment(final String title){
+		runOnUiThread(new Runnable(){
+			public void run(){
+				mConversationPagerAdapter.removeFragment(title);
+			}
+		});
+	}
+	
+	public void removeFragments(){
+		runOnUiThread(new Runnable(){
+			public void run(){
+				mConversationPagerAdapter.removeFragments();
+			}
+		});
 	}
 	/**
 	 * 

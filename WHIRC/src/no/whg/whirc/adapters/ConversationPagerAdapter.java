@@ -97,4 +97,12 @@ public class ConversationPagerAdapter extends FragmentPagerAdapter {
     	fragments.remove(position);
     	notifyDataSetChanged();
     }
+    
+    public void removeFragment(String title){
+    	for (ConversationFragment f : fragments){
+    		if (getPageTitle(getItemPosition(f)).toString().equals(title)){
+    			removeFragment(fragments.indexOf(f));
+    		}
+    	}
+    }
 }
