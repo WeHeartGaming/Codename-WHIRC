@@ -1,40 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-	
+    
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:color="#666666"
+        android:text="@string/servername"
+        android:layout_marginTop="10dp" />
+        
     <EditText
         android:id="@+id/et_serverName"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:hint="@string/servername" />
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:color="#666666"
+        android:text="@string/hostname"
+        android:layout_marginTop="10dp" />
     
     <EditText
         android:id="@+id/et_host"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:hint="@string/hostname" />
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:color="#666666"
+        android:text="@string/port"
+        android:layout_marginTop="10dp" />
 
     <EditText
         android:id="@+id/et_port"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:hint="@string/port" />
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:color="#666666"
+        android:text="@string/nick"
+        android:layout_marginTop="10dp" />
 
     <EditText
         android:id="@+id/et_nick"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:hint="@string/nick" />
+        android:layout_marginRight="10dp" />
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -56,28 +93,56 @@
             android:background="@drawable/ic_btn_round_more_normal" />
     </LinearLayout>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:color="#666666"
+        android:text="@string/name"
+        android:layout_marginTop="10dp" />
+
     <EditText
         android:id="@+id/et_more_name"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:hint="@string/name" />
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:color="#666666"
+        android:text="@string/alternateNick2"
+        android:layout_marginTop="10dp" />
 
     <EditText
         android:id="@+id/et_more_nick2"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:hint="@string/alternateNick2" />
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:color="#666666"
+        android:text="@string/alternateNick3"
+        android:layout_marginTop="10dp" />
 
     <EditText
         android:id="@+id/et_more_nick3"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:hint="@string/alternateNick3" />
+        android:layout_marginRight="10dp" />
 
 </LinearLayout>
+</ScrollView>

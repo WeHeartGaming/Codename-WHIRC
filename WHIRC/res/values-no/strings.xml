@@ -9,6 +9,7 @@
     
     <!-- CONNECTIONS LIST -->
     <string name="addNetwork">Legg til nettverk</string>
+    <string name="editNetwork">Rediger nettverk</string>
     <string name="servername">Netverks navn (f.eks QuakeNet)</string>
     <string name="hostname">Hostnavn (f.eks irc.quakenet.org)</string>
     <string name="nick">Kallenavn (f.eks HotVanilla44)</string>

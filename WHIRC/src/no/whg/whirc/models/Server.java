@@ -117,7 +117,7 @@ public class Server {
 	}
 	
 	public String getName(){
-		return simpleName;
+		return name;
 	}
 	
 	public void setName(String name) {
@@ -187,4 +187,17 @@ public class Server {
 		}
 		return cons;
 	}
+
+
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "\nNick1: " + getNickOne() + "\nNick2: " + getNickTwo() + "\nNick3: " + getNickThree()
+				+ "\nName: " + getName() + "\nPort: " + getPort() + "\nHost: " + getHost() + "\nSimpleName: " + getSimpleName();
+	}
+	
+	
 }
