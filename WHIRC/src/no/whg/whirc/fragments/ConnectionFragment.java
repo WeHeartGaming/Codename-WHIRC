@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import no.whg.whirc.R;
-import no.whg.whirc.activities.MainActivity;
 import no.whg.whirc.adapters.ConnectionListAdapter;
 import no.whg.whirc.dialogs.ServerDialog;
 import no.whg.whirc.helpers.WhircDB;

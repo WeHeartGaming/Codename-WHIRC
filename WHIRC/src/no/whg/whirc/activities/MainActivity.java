@@ -804,8 +804,8 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			runOnUiThread(new Runnable(){
 				public void run(){
 					try {
-						mViewPager.setAdapter(mConversationPagerAdapter);
 						mConversationPagerAdapter.notifyDataSetChanged();
+						mViewPager.setAdapter(mConversationPagerAdapter);
 					} catch (NullPointerException e){
 						
 					} catch (IllegalStateException e){
