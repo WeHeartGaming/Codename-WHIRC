@@ -6,6 +6,8 @@
     <string name="menu_networks">Networks</string>
     <string name="menu_settings">Settings</string>
     
+
+    
     <!-- CONNECTIONS LIST -->
     <string name="addNetwork">Add network</string>
     <string name="servername">Network name (e.g. QuakeNet)</string>
@@ -18,6 +20,10 @@
     <string name="more">More</string>
     <string name="connected">Connected</string>
     <string name="disconnected">Disconnected</string>
+    <string name="context_connect">Connect</string>
+    <string name="context_disconnect">Disconnect</string>
+    <string name="context_edit">Edit</string>
+    <string name="context_remove">Delete</string>
     
     <!-- DIALOG STUFF -->
     <string name="dialog_invite_recieved"><b>%1$s</b> has invited you to join #<b>%2$s</b></string>

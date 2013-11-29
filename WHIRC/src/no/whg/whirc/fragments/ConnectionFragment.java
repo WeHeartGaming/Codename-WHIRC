@@ -15,7 +15,10 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -57,6 +60,35 @@ public class ConnectionFragment extends Fragment {
 		servers = new ArrayList<Server>();	
 
 		return rootView;
+	}
+	
+	
+
+	/* (non-Javadoc)
+	 * @see android.support.v4.app.Fragment#onContextItemSelected(android.view.MenuItem)
+	 */
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		// TODO Auto-generated method stub
+		return super.onContextItemSelected(item);
+	}
+
+	/* (non-Javadoc)
+	 * @see android.support.v4.app.Fragment#onCreateContextMenu(android.view.ContextMenu, android.view.View, android.view.ContextMenu.ContextMenuInfo)
+	 */
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v,
+			ContextMenuInfo menuInfo) {
+		// TODO Auto-generated method stub
+		super.onCreateContextMenu(menu, v, menuInfo);
+		Log.d("ConnectionFragment", "CREATED CONTEXTMENU OR SOMETHING");
+		
+		if (v.getId() == R.id.lw_connections) {
+			AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+			menu.clearHeader();
+			//menu.ad
+			
+		}
 	}
 
 	/*
@@ -190,28 +222,30 @@ public class ConnectionFragment extends Fragment {
 		
 		cList.setAdapter(cListAdapter);
 		
-		cList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position,
-					long id) {
-				Log.d("ConnectionFragment", "onItemClick pressed! [position=" + position + "], [id=" + id + "]");
-				// TODO: connect logic here
-				
-			}
-		});
+//		cList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//
+//			@Override
+//			public void onItemClick(AdapterView<?> parent, View view, int position,
+//					long id) {
+//				Log.d("ConnectionFragment", "onItemClick pressed! [position=" + position + "], [id=" + id + "]");
+//				// TODO: connect logic here
+//				
+//			}
+//		});
 		
-		cList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-
-			@Override
-			public boolean onItemLongClick(AdapterView<?> parent, View view,
-					int position, long id) {
-				Log.d("ConnectionFragment", "onItemLongClick pressed! [position=" + position + "], [id=" + id + "]");
-				// TODO: contextmenu logic here
-				return false;
-			}
-			
-		});
+//		cList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+//
+//			@Override
+//			public boolean onItemLongClick(AdapterView<?> parent, View view,
+//					int position, long id) {
+//				Log.d("ConnectionFragment", "onItemLongClick pressed! [position=" + position + "], [id=" + id + "]");
+//				// TODO: contextmenu logic here
+//				return false;
+//			}
+//			
+//		});
+		
+		registerForContextMenu(cList);
 
 	}
 }
