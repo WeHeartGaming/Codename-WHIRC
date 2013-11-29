@@ -90,7 +90,7 @@
     <string name="awayStatus">You are now listed as AWAY</string>
     <string name="modeSet">Mode set to %s</string>
     <string name="noLongerAway">You are no longer listed as AWAY</string>
-    <string name=othersAwayStatus">%s is now listed as</string>
+    <string name="othersAwayStatus">%s is now listed as</string>
     <string name="othersNoLongerAway">%s is no longer listed as AWAY</string>
     
 </resources>
