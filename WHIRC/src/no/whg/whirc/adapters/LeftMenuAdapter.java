@@ -55,7 +55,7 @@ public class LeftMenuAdapter extends BaseExpandableListAdapter
 	public View getChildView(int parentPos, int childPos, boolean isLastChild, View childView, ViewGroup parentView) {
 		if(childView == null) {
 			LayoutInflater inflater = LayoutInflater.from(context);
-			childView = inflater.inflate(R.layout.list_item_left, null);
+			childView = inflater.inflate(R.layout.list_item_left, parentView, false);
 		}
 		
 		TextView child = (TextView) childView.findViewById(R.id.groupChild);
@@ -92,7 +92,7 @@ public class LeftMenuAdapter extends BaseExpandableListAdapter
 	public View getGroupView(int groupPos, boolean isExpanded, View groupView, ViewGroup parent) {
 		if (groupView == null) {
 			LayoutInflater inflater = LayoutInflater.from(context);
-			groupView = inflater.inflate(R.layout.list_group_left, null);
+			groupView = inflater.inflate(R.layout.list_group_left, parent, false);
 		}
 		
 		TextView group = (TextView) groupView.findViewById(R.id.tv_more);
@@ -116,6 +116,7 @@ public class LeftMenuAdapter extends BaseExpandableListAdapter
 	
 	public void addServer(Server s) {
 		serverList.add(s);
+		conversationList.add(s.getConversations());
 	}
 
 }

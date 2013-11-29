@@ -62,6 +62,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnChildClickListener;
+import android.widget.ExpandableListView.OnGroupClickListener;
 import android.widget.ListView;
 
 public class MainActivity extends FragmentActivity implements ServiceConnection, IRCEventListener {
@@ -190,6 +192,32 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 //        tempS.add(new Server("Nothing", tempC));
         elwAdapter = new LeftMenuAdapter(servers, this);
         elw.setAdapter(elwAdapter);
+        
+        elw.setOnGroupClickListener(new OnGroupClickListener() {
+
+			@Override
+			public boolean onGroupClick(ExpandableListView parent, View v,
+					int groupPosition, long id) {
+				cService.setCurrentServer(groupPosition);
+				generateFragments(cService.getCurrentServer());
+				
+				
+				return false;
+			}
+        	
+        });
+        
+        elw.setOnChildClickListener(new OnChildClickListener() {
+
+			@Override
+			public boolean onChildClick(ExpandableListView parent, View v,
+					int groupPosition, int childPosition, long id) {
+				Log.d("MainActivity", "onChildClick [groupID=" + groupPosition + "], [childID=" + childPosition + "]");
+				mConversationPagerAdapter.getItem(childPosition);
+				return false;
+			}
+        	
+        });
 	    
 		cService = null;
 		Intent intent = new Intent(this, ConnectionService.class);
@@ -251,9 +279,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
         //menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
     }
-    /**
-     * @param item
-     */
+    
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (mDrawerToggleLeft.onOptionsItemSelected(item)) {
@@ -272,19 +298,14 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
                 return super.onOptionsItemSelected(item);
         }
     }
-    /**
-     * 
-     */
+    
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             selectItem(position);
         }
     }
-    /**
-     * 
-     * @param position
-     */
+    
     private void selectItem(int position) {
         /* TODO Selection of menu item logic goes here, since we use sections we probably need an array/list of fragments
           for every network, while when we select e.g. "options" we need to start a new activity. */
@@ -292,6 +313,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
         // Bundle with args, ARG_FRAGMENT_NUMBER etc etc
     }
     /**
+     * sets action bar title
      * @param title
      */
     @Override
@@ -299,24 +321,20 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
         mTitle = title;
         getActionBar().setTitle(mTitle);
     }
-    /**
-     * @param savedInstanceState
-     */
+    
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         mDrawerToggleLeft.syncState();
     }
-    /**
-     * @param newConfig
-     */
+    
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         mDrawerToggleLeft.onConfigurationChanged(newConfig);
     }
 
-    /**
+    /**fires when the accompanying service has been bound to the app, and takes over event responses
      * @param name
      * @param binder
      */
@@ -327,7 +345,9 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		if (cService.getSessions().isEmpty()){
 			connect("irc.freenode.net");
 			Log.e(TAG, "onServiceConnected(): Forced a connection to quakenet for debug purposes.");
-		}
+		} 
+		
+		
 		
 		for (Session s : cService.getSessions()){
 			s.addIRCEventListener(this);
@@ -339,6 +359,9 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 	    Server s = cService.getCurrentServer();
 	    if (s != null){
 	    	if (s.getSession().isConnected()){
+	    		
+	    		
+	    		
 	    		generateFragments(s);
 	    	} else {
 	    		Log.d(TAG, "Not connected to current Server [" + s.getName() + "].");
@@ -347,9 +370,15 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 	    	Log.d(TAG, "onServiceConnected(): There is no current Server.");
 	    }
 	    
+	    if (cService.getAllServers() != null) {
+	    	for (Server ss : cService.getAllServers()) {
+	    		generateLeftMenu(ss);
+	    		elwAdapter.notifyDataSetChanged();
+	    	}
+	    }
 	    
 	}
-	/**
+	/**fires when service is disconnected, shuts down all event responses
 	 * @param name
 	 */
 	@Override
@@ -362,13 +391,14 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		
 	}
 	/**
-	 * 
-	 * @return
+	 * gets teh connectionservice object
+	 * @return the connectionservice object
 	 */
 	public ConnectionService getConnectionServiceObject() {
 		return cService;
 	}
-	/**
+	/**receives events from jerklib, and handles them on a case by case basis. unlike the corresponding function in ConnectionService, this also updates the view.
+	 * has failsafes to prevent an event from being handled twice 
 	 * @param E
 	 */
 	@Override
@@ -379,14 +409,12 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		    final Server tempServer = server;
 		    if (server != null){
 		    	if (server == cService.getCurrentServer()){
-		    		runOnUiThread(new Runnable(){
-						public void run(){
-							elwAdapter.addServer(tempServer);
-				    		elw.setAdapter(elwAdapter);
-						}
-					});
+		    		
 		    		removeFragments();
 					generateFragments(server);
+					//generateLeftMenu(server);
+					elwAdapter.notifyDataSetChanged();
+					elwAdapter.notifyDataSetInvalidated();
 					
 				}
 		    } else {
@@ -419,9 +447,11 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			JoinEvent je = (JoinEvent)e;
 			Server server = cService.getServer(je.getSession());
 			Conversation conversation = server.getConversation(je.getChannel().getName());
+			elwAdapter.notifyDataSetChanged();
 			if (!conversation.hasMessage(je.hashCode())){
 				conversation.addUser(je.getNick());
 				conversation.addMessage(je);
+				
 			} else {
 				Log.e(TAG, "receiveEvent() JOIN: JOIN Message already exists, did not add it to Conversation.");
 			}
@@ -523,6 +553,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			}
 			if (server == cService.getCurrentServer()){
 				generateFragments(server);
+				
 			}
 		} else if (e.getType() == Type.JOIN_COMPLETE){
 			Session session = e.getSession();
@@ -530,7 +561,9 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			Channel channel = jce.getChannel();
 			Conversation conversation = null;
 			Server server = cService.getServer(session.getRequestedConnection().getHostName());
+			
 			if (server != null){
+				elw.setAdapter(elwAdapter);
 				conversation = server.getConversation(channel.getName());
 				if (conversation == null){
 			    	conversation = new Conversation(channel);
@@ -682,7 +715,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		}
 	}
 	/**
-	 * 
+	 * removes a specific fragment from the adapter
 	 * @param title
 	 */
 	public void removeFragment(final String title){
@@ -693,7 +726,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		});
 	}
 	/**
-	 * 
+	 * removes all fragments from the adapter
 	 */
 	public void removeFragments(){
 		runOnUiThread(new Runnable(){
@@ -707,7 +740,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		});
 	}
 	/**
-	 * 
+	 * runs an invite dialog. jerklib crashes when an invite is fired, so this is not actually used.
 	 * @param channel
 	 * @param nick
 	 */
@@ -720,7 +753,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		});
 	}
 	/**
-	 * 
+	 * opens a dialog for WHO, WHOIS and WHOWAS information
 	 * @param channels
 	 * @param nick
 	 * @param name
@@ -743,7 +776,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		});
 	}
 	/**
-	 * 
+	 * regenerates the view by updating the fragments
 	 * @param s
 	 */
 	private void generateFragments(Server s){
@@ -772,15 +805,26 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			Log.e(TAG, "generateFragments(): Server is null, cannot look for conversations.");
 		}
 	}
+	
+	private void generateLeftMenu(final Server s) {
+		if (s != null) {
+			runOnUiThread(new Runnable(){
+				public void run(){
+					elwAdapter.addServer(s);
+			    	elw.setAdapter(elwAdapter);
+				}
+			});
+		}
+	}
 	/**
-	 * 
+	 * connects to the given server
 	 * @param server
 	 */
 	public void connect (String server){
 		cService.connect(server, this);
 	}
 	/**
-	 * 
+	 * changes the current server to the parameter server
 	 * @param server
 	 */
 	public void changeServer(Server server){
@@ -788,7 +832,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		generateFragments(server);
 	}
 	/**
-	 * 
+	 * changes the current server to the server at index i
 	 * @param i
 	 */
 	public void changeServer(int i){
