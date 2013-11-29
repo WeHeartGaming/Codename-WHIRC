@@ -19,6 +19,12 @@ public class LeftMenuAdapter extends BaseExpandableListAdapter
 	private List<ArrayList<Conversation>> conversationList; 
 	Context context;
 
+	/**
+	 * Constructor
+	 * 
+	 * @param servers ArrayList containing all servers
+	 * @param c Application context
+	 */
 	public LeftMenuAdapter(ArrayList<Server> servers, Context c) {
 		this.serverList = servers;
 		this.context = c;

@@ -38,6 +38,7 @@
     
     <string name="app_name">WHIRC</string>
     <string name="action_settings">Instillinger</string>
+     <string name="action_servers">Koble til server</string>
     <string name="changedTopic">%s byttet tema til</string> <!-- user -->
     <string name="topic"> %s</string> <!-- topic -->
     <string name="channel">Kanal</string>
