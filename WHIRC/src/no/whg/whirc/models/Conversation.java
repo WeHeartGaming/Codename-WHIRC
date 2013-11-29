@@ -2,6 +2,7 @@ package no.whg.whirc.models;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import jerklib.Channel;
 import jerklib.events.AwayEvent;
@@ -10,15 +11,15 @@ import jerklib.events.JoinEvent;
 import jerklib.events.KickEvent;
 import jerklib.events.MessageEvent;
 import jerklib.events.MotdEvent;
+import jerklib.events.NickListEvent;
 import jerklib.events.NoticeEvent;
 import jerklib.events.PartEvent;
 import jerklib.events.QuitEvent;
 import jerklib.events.ServerVersionEvent;
 import jerklib.events.TopicEvent;
+import jerklib.events.modes.ModeAdjustment;
 import jerklib.events.modes.ModeEvent;
-import no.whg.whirc.activities.MainActivity;
-import no.whg.whirc.adapters.MessageAdapter;
-import android.widget.ListView;
+import android.util.Log;
 
 
 /**
@@ -26,24 +27,29 @@ import android.widget.ListView;
  *
  */
 public class Conversation {
+	private static final String TAG = "Conversation";
     private ArrayList<Message> messages;
     private Channel channel;
-    private ListView messageView;
-    private MainActivity activity;
-    private MessageAdapter messageAdapter;
     private String channelTitle;
+    private ArrayList<String> userList;
+    //private char oSymbol = 'o';
 
     public Conversation(Channel channel){
         this.channel = channel;
         this.channelTitle = channel.getName();
-        messages = new ArrayList<Message>();
+        this.messages = new ArrayList<Message>();
         Message topic = new Message("none", "no topic", "never", 0);
-        messages.add(topic);
+        this.messages.add(topic);
+        //this.users = channel.getNicks();
+        //this.users = new List<String>();
+
     }
 
     public Conversation(Channel channel, String priv){
         this.channel = channel;
         this.channelTitle = priv;
+        this.userList = new ArrayList<String>();
+        this.userList.add(priv);
         messages = new ArrayList<Message>();
     }
 
@@ -51,6 +57,36 @@ public class Conversation {
         this.channelTitle = servername;
 
         messages = new ArrayList<Message>();
+    }
+    
+    public void makeUserList(NickListEvent nle){
+    	List<String> voices = channel.getNicksForMode(ModeAdjustment.Action.PLUS, 'v');
+    	List<String> ops = channel.getNicksForMode(ModeAdjustment.Action.PLUS, 'o');
+    	List<String> users = new ArrayList<String>();
+    	
+    	for (String s : channel.getNicks()){
+		  	if (!ops.contains(s) && !voices.contains(s)){
+		  		users.add(s);
+		  	}
+	  	}
+	  	
+    	this.userList = new ArrayList<String>();
+    	String opSymbol = "@ ";
+    	String voiceSymbol = "+ ";
+	  	
+	  	for (String op : ops){
+	  		userList.add(opSymbol.concat(op));
+	  	}
+	  	for (String voice : voices){
+	  		userList.add(voiceSymbol.concat(voice));
+	  	}
+	  	for (String user : users){
+	  		userList.add(user);
+	  	}
+    }
+    
+    public ArrayList<String> getUserList(){
+    	return this.userList;
     }
 
     public ArrayList<Message> getMessages(){
