@@ -37,6 +37,7 @@
         <ImageView
             android:id="@+id/ib_send"
             android:src="@android:drawable/ic_menu_send"
+            android:clickable="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="#FFFFFF"
