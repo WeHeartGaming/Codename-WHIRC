@@ -100,6 +100,6 @@
     <string name="on"> på </string>
     <string name="yourNick">Kallenavnet ditt </string>
     <string name="isInvalid"> er ugyldig. Bytter til </string>
-    <string name=changedNick"> har endret kallenavn til </string>
+    <string name="changedNick"> har endret kallenavn til </string>
     
 </resources>
