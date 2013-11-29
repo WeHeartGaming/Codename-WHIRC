@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import no.whg.whirc.R;
+import no.whg.whirc.activities.MainActivity;
 import no.whg.whirc.adapters.ConnectionListAdapter;
 import no.whg.whirc.dialogs.ServerDialog;
 import no.whg.whirc.helpers.WhircDB;
@@ -79,7 +80,7 @@ public class ConnectionFragment extends Fragment {
 
 		switch (item.getItemId()) {
 		case MENU_CONNECT:
-			// TODO: connection logic
+			// TODO: connect logic
 			break;
 		case MENU_DISCONNECT:
 			// TODO: disconnect logic

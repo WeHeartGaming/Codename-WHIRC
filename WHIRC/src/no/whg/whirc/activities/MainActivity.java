@@ -376,7 +376,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 	    		elwAdapter.notifyDataSetChanged();
 	    	}
 	    }
-	    
+
 	}
 	/**fires when service is disconnected, shuts down all event responses
 	 * @param name
