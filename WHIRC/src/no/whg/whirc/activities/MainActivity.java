@@ -137,9 +137,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			{
 				e.printStackTrace();
 			}
-        }
-        
-        
+        }   
         
         // Set placeholder title
         mTitle = mDrawerTitleLeft = getTitle();
@@ -186,7 +184,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
         mViewPager = (ViewPager) findViewById(R.id.pager);
         //mConversationPagerAdapter = new ConversationPagerAdapter(getSupportFragmentManager());
         mConnectionPagerAdapter = new ConnectionPagerAdapter(getSupportFragmentManager());
-        mViewPager.setAdapter(mConnectionPagerAdapter);
+        //mViewPager.setAdapter(mConnectionPagerAdapter);
         
 //        ArrayList<Server> tempS = new ArrayList<Server>();
 //        ArrayList<Conversation> tempC = new ArrayList<Conversation>();
@@ -281,7 +279,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
         //menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
     }
-
+    
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (mDrawerToggleLeft.onOptionsItemSelected(item)) {
@@ -295,40 +293,46 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
                 return super.onOptionsItemSelected(item);
         }
     }
-
+    
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             selectItem(position);
         }
     }
-
+    
     private void selectItem(int position) {
         /* TODO Selection of menu item logic goes here, since we use sections we probably need an array/list of fragments
           for every network, while when we select e.g. "options" we need to start a new activity. */
         // FragmentManager, beginTransaction, setItemChecked, setTitle, mDrawerLayout.closeDrawer etc goes here.
         // Bundle with args, ARG_FRAGMENT_NUMBER etc etc
     }
-
+    /**
+     * sets action bar title
+     * @param title
+     */
     @Override
     public void setTitle(CharSequence title) {
         mTitle = title;
         getActionBar().setTitle(mTitle);
     }
-
+    
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         mDrawerToggleLeft.syncState();
     }
-
+    
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         mDrawerToggleLeft.onConfigurationChanged(newConfig);
     }
 
-
+    /**fires when the accompanying service has been bound to the app, and takes over event responses
+     * @param name
+     * @param binder
+     */
 	@Override
 	public void onServiceConnected(ComponentName name, IBinder binder) {
 		Log.d(TAG, "onServiceConnected()");
@@ -369,7 +373,9 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 	    }
 	    
 	}
-
+	/**fires when service is disconnected, shuts down all event responses
+	 * @param name
+	 */
 	@Override
 	public void onServiceDisconnected(ComponentName name) {
 		for (Session s : cService.getSessions()){
@@ -379,11 +385,17 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		Log.e(TAG, "onServiceDisconnected(): Unexpected UnBind. Decoupled IRCEventListeners. This is not supposed to happen, you know.");
 		
 	}
-	
+	/**
+	 * gets teh connectionservice object
+	 * @return the connectionservice object
+	 */
 	public ConnectionService getConnectionServiceObject() {
 		return cService;
 	}
-	
+	/**receives events from jerklib, and handles them on a case by case basis. unlike the corresponding function in ConnectionService, this also updates the view.
+	 * has failsafes to prevent an event from being handled twice 
+	 * @param E
+	 */
 	@Override
 	public void receiveEvent(IRCEvent e) {
 		if (e.getType() == Type.CONNECT_COMPLETE) {
@@ -393,6 +405,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		    if (server != null){
 		    	if (server == cService.getCurrentServer()){
 		    		
+		    		removeFragments();
 					generateFragments(server);
 					//generateLeftMenu(server);
 					elwAdapter.notifyDataSetChanged();
@@ -443,12 +456,17 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		} else if (e.getType() == Type.PART){
 			PartEvent pe = (PartEvent)e;
 			Server server = cService.getServer(pe.getSession());
-			Conversation conversation = server.getConversation(pe.getChannel().getName());
-			if (!conversation.hasMessage(pe.hashCode())){
-				conversation.removeUser(pe.getWho());
-				conversation.addMessage(pe);
+			if (pe.getWho().equals(pe.getSession().getNick())){
+				server.removeConversation(pe.getChannel().getName());
+				removeFragment(pe.getChannelName());
 			} else {
-				Log.e(TAG, "receiveEvent() PART: PART Message already exists, did not add it to Conversation.");
+				Conversation conversation = server.getConversation(pe.getChannel().getName());
+				if (!conversation.hasMessage(pe.hashCode())){
+					conversation.removeUser(pe.getWho());
+					conversation.addMessage(pe);
+				} else {
+					Log.e(TAG, "receiveEvent() PART: PART Message already exists, did not add it to Conversation.");
+				}
 			}
 			if (server == cService.getCurrentServer()){
 				generateFragments(server);
@@ -692,7 +710,32 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		}
 	}
 	/**
-	 * 
+	 * removes a specific fragment from the adapter
+	 * @param title
+	 */
+	public void removeFragment(final String title){
+		runOnUiThread(new Runnable(){
+			public void run(){
+				mConversationPagerAdapter.removeFragment(title);
+			}
+		});
+	}
+	/**
+	 * removes all fragments from the adapter
+	 */
+	public void removeFragments(){
+		runOnUiThread(new Runnable(){
+			public void run(){
+				try {
+					mConversationPagerAdapter.removeFragments();
+				} catch (NullPointerException e){
+					
+				}
+			}
+		});
+	}
+	/**
+	 * runs an invite dialog. jerklib crashes when an invite is fired, so this is not actually used.
 	 * @param channel
 	 * @param nick
 	 */
@@ -705,7 +748,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		});
 	}
 	/**
-	 * 
+	 * opens a dialog for WHO, WHOIS and WHOWAS information
 	 * @param channels
 	 * @param nick
 	 * @param name
@@ -728,7 +771,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		});
 	}
 	/**
-	 * 
+	 * regenerates the view by updating the fragments
 	 * @param s
 	 */
 	private void generateFragments(Server s){
@@ -743,8 +786,14 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			}
 			runOnUiThread(new Runnable(){
 				public void run(){
-					mConversationPagerAdapter.notifyDataSetChanged();
-					mViewPager.setAdapter(mConversationPagerAdapter);
+					try {
+						mViewPager.setAdapter(mConversationPagerAdapter);
+						mConversationPagerAdapter.notifyDataSetChanged();
+					} catch (NullPointerException e){
+						
+					} catch (IllegalStateException e){
+						
+					}
 				}
 			});
 		} else {
@@ -763,14 +812,14 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		}
 	}
 	/**
-	 * 
+	 * connects to the given server
 	 * @param server
 	 */
 	public void connect (String server){
 		cService.connect(server, this);
 	}
 	/**
-	 * 
+	 * changes the current server to the parameter server
 	 * @param server
 	 */
 	public void changeServer(Server server){
@@ -778,91 +827,11 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		generateFragments(server);
 	}
 	/**
-	 * 
+	 * changes the current server to the server at index i
 	 * @param i
 	 */
 	public void changeServer(int i){
 		cService.setCurrentServer(i);
 		generateFragments(cService.getCurrentServer());
-	}
-	/**
-	 * 
-	 * @param action
-	 * @param channel
-	 */
-	public void channelAction(String action, Channel channel){
-		channel.action(action);
-	}
-	/**
-	 * 
-	 * @param name
-	 * @param channel
-	 */
-	public void channelDeop(String name, Channel channel){
-		channel.deop(name);
-	}
-	/**
-	 * 
-	 * @param name
-	 * @param channel
-	 */
-	public void channelDevoice(String name, Channel channel){
-		channel.deVoice(name);
-	}
-	/**
-	 * 
-	 * @param name
-	 * @param reason
-	 * @param channel
-	 */
-	public void channelKick(String name, String reason, Channel channel){
-		channel.kick(name, reason);
-	}
-	/**
-	 * 
-	 * @param mode
-	 * @param channel
-	 */
-	public void channelMode(String mode, Channel channel){
-		channel.mode(mode);
-	}
-	/**
-	 * 
-	 * @param name
-	 * @param channel
-	 */
-	public void channelOp(String name, Channel channel){
-		channel.op(name);
-	}
-	/**
-	 * 
-	 * @param channel
-	 */
-	public void channelPart(Channel channel){
-		channel.part("");
-	}
-	/**
-	 * 
-	 * @param say
-	 * @param channel
-	 */
-	public void channelSay(String say, Channel channel){
-		channel.say(say);
-	}
-	/**
-	 * 
-	 * @param topic
-	 * @param channel
-	 */
-	public void channelSetTopic(String topic, Channel channel){
-		channel.setTopic(topic);
-	}
-	/**
-	 * 
-	 * @param name
-	 * @param channel
-	 */
-	public void channelVoice(String name, Channel channel){
-		channel.voice(name);
 	}
 }

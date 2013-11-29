@@ -2,6 +2,7 @@ package no.whg.whirc.fragments;
 
 import java.util.ArrayList;
 
+import jerklib.Channel;
 import no.whg.whirc.R;
 import no.whg.whirc.activities.MainActivity;
 import no.whg.whirc.adapters.MessageAdapter;
@@ -15,6 +16,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 
@@ -36,19 +39,21 @@ import android.widget.ListView;
         AdapterView.AdapterContextMenuInfo info;
         private MessageAdapter messageAdapter;
         private ListView messageView;
+        private ImageView sendButton;
+        private EditText textBox;
         
         private Conversation conversation;
-
-        public ConversationFragment() {
-        	this(new Conversation("nope, Chuck Testa"), null);
-        }
-        
+		/**
+		 * 
+		 * @param conversation
+		 * @param c
+		 */
         public ConversationFragment(Conversation conversation, Context c) {
         	this.conversation = conversation;
             this.messageAdapter = new MessageAdapter(conversation.getMessages(), c);
         	//this.conversation.addMessageAdapter(messageAdapter);
         }
-
+        
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
@@ -56,6 +61,20 @@ import android.widget.ListView;
 
     		messageView = (ListView) rootView.findViewById(R.id.lw_chat);
     		messageView.setAdapter(messageAdapter);
+    		
+    		sendButton = (ImageView) rootView.findViewById(R.id.ib_send);
+    		textBox = (EditText) rootView.findViewById(R.id.et_send);
+    		
+    		sendButton.setOnClickListener(
+    		        new View.OnClickListener()
+    		        {
+    		            public void onClick(View view)
+    		            {
+    		                channelSend(textBox.getText().toString());
+    		                textBox.setText("");
+    		                
+    		            }
+    		        });
             
             return rootView;
         }
@@ -64,6 +83,9 @@ import android.widget.ListView;
 		 * @see android.support.v4.app.Fragment#onActivityCreated(android.os.Bundle)
 		 */
 		@Override
+		/**
+		 * @param savedInstanceState
+		 */
 		public void onActivityCreated(Bundle savedInstanceState) {
 			// TODO Auto-generated method stub
 			super.onActivityCreated(savedInstanceState);
@@ -72,8 +94,147 @@ import android.widget.ListView;
 			//int position = args.getInt(ARG_SECTION_NUMBER);
 
 		}
-		
+		/**
+		 * Gets the channel name
+		 * @return the name
+		 */
 		public String getName() {
 			return conversation.getChannelTitle();
+		}
+		/**
+		 * prepares a string to be sent to the channel
+		 * @param string
+		 */
+		public void channelSend(String string){
+			if (!conversation.isServ()){
+				if (string.startsWith("/mode ")){
+					if (string.startsWith(conversation.getChannelTitle() + " +o " , 6)) {
+						string = string.replace("/mode " + conversation.getChannelTitle() + " +o ", "");
+						channelOp(string, conversation.getChannel());
+					} else if (string.startsWith(conversation.getChannelTitle() + " -o " , 6)) {
+						string = string.replace("/mode " + conversation.getChannelTitle() + " -o ", "");
+						channelDeop(string, conversation.getChannel());
+					} else if (string.startsWith(conversation.getChannelTitle() + " +v " , 6)) {
+						string = string.replace("/mode " + conversation.getChannelTitle() + " +v ", "");
+						channelVoice(string, conversation.getChannel());
+					} else if (string.startsWith(conversation.getChannelTitle() + " -v " , 6)) {
+						string = string.replace("/mode " + conversation.getChannelTitle() + " -v ", "");
+						channelDevoice(string, conversation.getChannel());
+					}
+				} else if (string.startsWith("/kick " + conversation.getChannelTitle() + " ")){
+					string = string.replace("/kick " + conversation.getChannelTitle() + " ", "");
+					channelKick(string, "", conversation.getChannel());
+				} else if (string.startsWith("/topic " + conversation.getChannelTitle() + " ")){
+					string = string.replace("/topic " + conversation.getChannelTitle() + " ", "");
+					channelSetTopic(string, conversation.getChannel());
+				} else if (string.startsWith("/me ")){
+					string = string.replace("/me ", "");
+					channelAction(string, conversation.getChannel());
+				} else if (string.equals("/part")){
+					channelPart(conversation.getChannel());
+				} else if (string.startsWith("/join ")){
+					string = string.replace("/join ", "");
+					conversation.getChannel().getSession().join(string);
+				} else {
+					channelSay(string, conversation.getChannel());
+				}
+			} else if (conversation.getPriv()){
+				if (string.startsWith("/me ")){
+					string = string.replace("/me ", "");
+					channelAction(string, conversation.getChannel());
+				} else if (string.startsWith("/")){
+					string = string.replace("/", "./");
+					channelSay(string, conversation.getChannel());
+				} else {
+					channelSay(string, conversation.getChannel());
+				}
+			} else {
+				if (string.startsWith("/join ")){
+					string = string.replace("/join ", "");
+					conversation.getSession().join(string);
+				}
+			}
+		}
+		
+		/**
+		 * performs the pre-formatted action
+		 * @param action
+		 * @param channel
+		 */
+		public void channelAction(String action, Channel channel){
+			channel.action(action);
+		}
+		/**
+		 * performs the pre-formatted deop
+		 * @param name
+		 * @param channel
+		 */
+		public void channelDeop(String name, Channel channel){
+			channel.deop(name);
+		}
+		/**
+		 * performs the pre-formatted devoice
+		 * @param name
+		 * @param channel
+		 */
+		public void channelDevoice(String name, Channel channel){
+			channel.deVoice(name);
+		}
+		/**
+		 * performs the pre-formatted kick
+		 * @param name
+		 * @param reason
+		 * @param channel
+		 */
+		public void channelKick(String name, String reason, Channel channel){
+			channel.kick(name, reason);
+		}
+		/**
+		 * performs the pre-formatted mode set
+		 * @param mode
+		 * @param channel
+		 */
+		public void channelMode(String mode, Channel channel){
+			channel.mode(mode);
+		}
+		/**
+		 * performs the pre-formatted op
+		 * @param name
+		 * @param channel
+		 */
+		public void channelOp(String name, Channel channel){
+			channel.op(name);
+		}
+		/**
+		 * leaves the channel
+		 * @param channel
+		 */
+		public void channelPart(Channel channel){
+			channel.part("");
+		}
+		/**
+		 * performs the pre-formatted say
+		 * @param say
+		 * @param channel
+		 */
+		public void channelSay(String say, Channel channel){
+			channel.say(say);
+			conversation.addMessage(new Message(channel.getSession().getNick(), say, conversation.getTime(), say.hashCode()));
+		}
+		/**
+		 * performs the pre-formatted topic set
+		 * @param topic
+		 * @param channel
+		 */
+		public void channelSetTopic(String topic, Channel channel){
+			channel.setTopic(topic);
+		}
+		/**
+		 * performs the pre-formatted voice
+		 * @param name
+		 * @param channel
+		 */
+		public void channelVoice(String name, Channel channel){
+			channel.voice(name);
 		}
     }
