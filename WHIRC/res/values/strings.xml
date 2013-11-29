@@ -78,13 +78,19 @@
     <string name="title_section3">Section 3</string>
     
     <string name="user">User</string>
-    <string name="userJoinChannel">%s has joined the channel</string>	<!-- username -->
-    <string name="userLeftChannel">%s has quit</string> <!-- username -->
+    <string name="userJoinChannel">User %s has joined the channel</string>	<!-- username -->
+    <string name="userLeftChannel">User %s has quit</string> <!-- username -->
     <string name="userBanned">%s was banned by</string> <!-- username -->
     <string name="userChangeName">%s is now known as</string> <!-- old username -->
-    <string name="userKicked">%s was kicked by</string> <!-- username -->
+    <string name="userKicked">User %s was kicked from channel</string> <!-- username -->
     <string name="userName"> %s</string> <!-- username -->
     <string name="userPromoted">%s was promoted to </string> <!-- username -->
     <string name="title"> %s</string> <!-- title -->
+    
+    <string name="awayStatus">You are now listed as AWAY</string>
+    <string name="modeSet">Mode set to %s</string>
+    <string name="noLongerAway">You are no longer listed as AWAY</string>
+    <string name="othersAwayStatus">%s is now listed as</string>
+    <string name="othersNoLongerAway">%s is no longer listed as AWAY</string>
     
 </resources>
