@@ -55,10 +55,8 @@ public class ConnectionService extends Service implements IRCEventListener {
 	private ArrayList<Runnable> threads;
 	Notification notification;
 	
-	
 	// irc object
 	ConnectionManager connection;
-	//Session qnet = null;
 	
 	private ArrayList <Server> serverList;
 	private int currentServer;
@@ -81,7 +79,6 @@ public class ConnectionService extends Service implements IRCEventListener {
 	@Override
 	public IBinder onBind(Intent intent) {
 		// TODO Auto-generated method stub
-		Log.d(TAG, "Service bound! [onBind() called]");
 		
 		// lets see if shit keeps running or not now
 		startService(new Intent(this, ConnectionService.class));
@@ -108,7 +105,6 @@ public class ConnectionService extends Service implements IRCEventListener {
 				s.addIRCEventListener(this);
 			}
 		}
-		Log.d(TAG, "onUnbind()");
 		return super.onUnbind(intent);
 	}
 
@@ -119,7 +115,6 @@ public class ConnectionService extends Service implements IRCEventListener {
 	public void onCreate() {
 		// TODO Load servers from file
 		super.onCreate();
-		Log.d("ConnectionService", "Service created! [onCreate() called]");
 		serverList = new ArrayList <Server>();
 		
 		//connect("irc.quakenet.org", this);
@@ -149,10 +144,8 @@ public class ConnectionService extends Service implements IRCEventListener {
 	public void onDestroy() {
 		// TODO Auto-generated method stub
 		super.onDestroy();
-		Log.d(TAG, "Service destroyed! [onDestroy() called]");
 		for(Runnable t : threads) {
 			handler.removeCallbacks(t);
-			Log.d(TAG, "Removed callback on thread " + t.toString() + " (" + t.hashCode() + ")");
 		}
 		stopSelf();
 	}
@@ -163,7 +156,6 @@ public class ConnectionService extends Service implements IRCEventListener {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		// TODO Auto-generated method stub
-		Log.d(TAG, "Service started! [onStartCommand() called]");
 		return START_STICKY;
 	}
 	
@@ -180,7 +172,6 @@ public class ConnectionService extends Service implements IRCEventListener {
 		};
 		threads.add(thread);
 		handler.postDelayed(thread, 1000);
-		Log.d(TAG, "Thread created! toString: " + thread.toString() + " - hash: " + thread.hashCode());
 	}
 	
 	public void connect(final String server, final MainActivity service) {
@@ -194,7 +185,6 @@ public class ConnectionService extends Service implements IRCEventListener {
 					
 			}
 		};
-		Log.d(TAG, "Thread created! toString: " + thread.toString() + " - hash: " + thread.hashCode());
 		threads.add(thread);
 		handler.postDelayed(thread, 1000);
 	}
@@ -530,7 +520,6 @@ public class ConnectionService extends Service implements IRCEventListener {
 		if (getServer(session.getServerInformation().getServerName()) == null){
 			Server myServer = new Server(session);
 			serverList.add(myServer);
-			Log.d(TAG, "Added " + session.getConnectedHostName() + " to serverList.");
 		}
 	}
 	/**
