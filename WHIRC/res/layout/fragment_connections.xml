@@ -27,7 +27,9 @@
         android:id="@+id/lw_connections"
         android:layout_width="match_parent"
         android:layout_height="0dip"
-        android:transcriptMode="alwaysScroll" >
+        android:layout_weight="1"
+        android:transcriptMode="alwaysScroll" 
+        android:layout_marginTop="5dip">
     </ListView>
 
 </LinearLayout>

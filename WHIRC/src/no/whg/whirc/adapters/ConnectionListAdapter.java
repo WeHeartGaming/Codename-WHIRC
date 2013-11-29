@@ -64,10 +64,13 @@ public class ConnectionListAdapter extends BaseAdapter {
 		
 		name.setText(server.getSimpleName());
 		
-		if (server.getSession().isConnected())
-			status.setText(R.string.connected);
-		else
+		if (server.getSession() == null) {
 			status.setText(R.string.disconnected);
+		} else {
+			if (server.getSession().isConnected()) {
+				status.setText(R.string.connected);
+			}
+		}
 		
 		
 		return v;
