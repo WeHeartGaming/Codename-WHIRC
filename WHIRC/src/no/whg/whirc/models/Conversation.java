@@ -11,7 +11,7 @@ import jerklib.events.KickEvent;
 import jerklib.events.MessageEvent;
 import jerklib.events.MotdEvent;
 import jerklib.events.PartEvent;
-import jerklib.events.ServerInformationEvent;
+import jerklib.events.QuitEvent;
 import jerklib.events.ServerVersionEvent;
 import jerklib.events.TopicEvent;
 import jerklib.events.modes.ModeEvent;
@@ -69,7 +69,7 @@ public class Conversation {
     }
 
     public void addMessage(TopicEvent te){
-        Message topic = new Message(te.getSetBy(), te.getTopic(), te.getSetWhen().toString(), 0);
+        Message topic = new Message(getChannelTitle(), te.getTopic() + "\nSet by " + te.getSetBy() + " on " + te.getSetWhen().toString(), getTime(), 0);
         messages.set(0, topic);
     }
 
@@ -111,6 +111,10 @@ public class Conversation {
 	
 	public void addMessage(ServerVersionEvent sve){
 		addMessage(new Message(sve.getHostName(), sve.getComment(), getTime(), sve.hashCode()));
+	}
+	
+	public void addMessage(QuitEvent qe){
+		addMessage(new Message(getChannelTitle(), "User " + qe.getNick() + " has quit IRC (" + qe.getUserName() + "@" + qe.getHostName() + "):\n" + qe.getQuitMessage(), getTime(), qe.hashCode()));
 	}
 
     public String getChannelTitle(){
