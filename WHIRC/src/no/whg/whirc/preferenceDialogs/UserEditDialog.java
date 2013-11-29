@@ -76,6 +76,8 @@ public class UserEditDialog extends DialogPreference {
 			temp.setNickThree(nickThree);
 			temp.setName(name);
 			temp.setSimpleName(String.valueOf(this.getTitle()));
+			
+			SettingsFragment.db.updateServerUser(temp);
 
 			SettingsFragment.db.close();
 			
