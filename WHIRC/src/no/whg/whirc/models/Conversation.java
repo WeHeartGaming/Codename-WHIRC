@@ -39,6 +39,8 @@ public class Conversation {
     private List<String> ops;
     private List<String> users;
     private static Context context;
+    private boolean isServer = false;
+    private boolean isPriv = false;
     /**
      * 
      * @param channel
@@ -49,8 +51,11 @@ public class Conversation {
         this.messages = new ArrayList<Message>();
         Message topic = new Message("none", "no topic", "never", 0);
         this.messages.add(topic);
-        //this.users = channel.getNicks();
-        //this.users = new List<String>();
+        this.ops = new ArrayList<String>();
+        this.voices = new ArrayList<String>();
+        this.users = new ArrayList<String>();
+        this.userList = new ArrayList<String>();
+        makeUserList();
 
     }
     /**
@@ -61,6 +66,7 @@ public class Conversation {
     public Conversation(Channel channel, String priv){
         this.channel = channel;
         this.channelTitle = priv;
+        this.isPriv = true;
         this.userList = new ArrayList<String>();
         this.userList.add(priv);
         messages = new ArrayList<Message>();
@@ -73,6 +79,7 @@ public class Conversation {
         this.channelTitle = servername;
 
         messages = new ArrayList<Message>();
+        this.isServer = true;
     }
     /**
      * 
@@ -105,7 +112,8 @@ public class Conversation {
     	this.userList = new ArrayList<String>();
     	String opSymbol = "@ ";
     	String voiceSymbol = "+ ";
-	  	
+
+	  	Log.d(TAG, ops.toString());
 	  	for (String op : ops){
 	  		userList.add(opSymbol.concat(op));
 	  	}
@@ -115,6 +123,8 @@ public class Conversation {
 	  	for (String user : users){
 	  		userList.add(user);
 	  	}
+	  	Log.d(TAG, ops.toString());
+	  	Log.d(TAG, userList.toString());
     }
     /**
      * 
@@ -193,21 +203,40 @@ public class Conversation {
      * @return
      */
     public boolean hasUser(String user){
-    	for (String op : ops){
-    		if (op.equals(user)){
-    			return true;
+    	if (!isServer){
+    		if (!isPriv){
+		    	for (String op : ops){
+		    		if (op.equals(user)){
+		    			return true;
+		    		}
+		    	}
+		    	for (String voice : voices){
+		    		if (voice.equals(user)){
+		    			return true;
+		    		}
+		    	}
+		    	for (String u : users){
+		    		if (u.equals(user)){
+		    			return true;
+		    		}
+		    	}
+    		} else {
+    			for (String s : userList){
+    				if (s.equals(user)){
+    					return true;
+    				}
+    			}
     		}
     	}
-    	for (String voice : voices){
-    		if (voice.equals(user)){
-    			return true;
-    		}
-    	}
-    	for (String u : users){
-    		if (u.equals(user)){
-    			return true;
-    		}
-    	}
+//    	String op = "@ ";
+//    	String voice = "+ ";
+//    	op += user;
+//    	voice += user;
+//    	for (String s : userList){
+//    		if (s.equals(user) || (s.equals(voice) || s.equals(op))){
+//    			return true;
+//    		}
+//    	}
     	return false;
     }
     /**
