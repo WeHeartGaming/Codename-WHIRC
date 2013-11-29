@@ -298,7 +298,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		if (cService.getSessions().isEmpty()){
 			//Session temp = cService.connect("irc.quakenet.org");
 			//cService.getSessions().get(cService.getSessions().indexOf(temp)).addIRCEventListener(this);
-			cService.connect("irc.quakenet.org", this);
+			connect("irc.quakenet.org");
 			Log.d(TAG, "onServiceConnected(): Forced a connection to quakenet for debug purposes.");
 		}
 		
@@ -540,17 +540,6 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 				}
 			}
 		} else if (e.getType() == Type.NOTICE){
-//			NoticeEvent ne = (NoticeEvent)e;
-//			Server server = cService.getServer(ne.getSession());
-//			Conversation conversation = server.getConversation(0); // 0 is always the position of the server conversation. 
-//			if (!conversation.hasMessage(ne.hashCode())){
-//				conversation.addMessage(ne);
-//			} else {
-//				Log.e(TAG, "receiveEvent() NOTICE: Message already exists, did not add it to Conversation.");
-//			}
-//			if (server == cService.getCurrentServer()){
-//				generateFragments(server);
-//			}
 			System.out.println(e.getType() + " : " + e.getRawEventData());
 		} else if (e.getType() == Type.WHO_EVENT){
 			WhoEvent we = (WhoEvent)e;
@@ -674,5 +663,19 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		} else {
 			Log.e(TAG, "generateFragments(): Server is null, cannot look for conversations.");
 		}
+	}
+	
+	public void connect (String server){
+		cService.connect(server, this);
+	}
+	
+	public void changeServer(Server server){
+		cService.setCurrentServer(server);
+		generateFragments(server);
+	}
+	
+	public void changeServer(int i){
+		cService.setCurrentServer(i);
+		generateFragments(cService.getCurrentServer());
 	}
 }

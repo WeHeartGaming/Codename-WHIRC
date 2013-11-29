@@ -75,7 +75,7 @@ public class ConnectionService extends Service implements IRCEventListener {
 		this.handler = new Handler();
 		this.threads = new ArrayList<Runnable>();
 		this.binder = new ConnectionServiceBinder(this);
-		Log.e(TAG, "constructor");
+		this.currentServer = 0;
 	}
 	
 	@Override
@@ -450,12 +450,15 @@ public class ConnectionService extends Service implements IRCEventListener {
 	}
 	
 	public Server getCurrentServer(){
-		// TODO make this not static
 		if (serverList.size() > 0){
-			return serverList.get(0);
+			return serverList.get(currentServer);
 		} else {
 			return null;
 		}
+	}
+	
+	public void setCurrentServer(Server server){
+		currentServer = serverList.indexOf(server);
 	}
 	
 	public ArrayList<Server> getServerList(){
