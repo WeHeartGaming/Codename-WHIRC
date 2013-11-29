@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- NORWEGIAN -->
+    <!-- IRC CHANNEL FRAGMENTS  -->
+    
+    <!-- LEFT MENU -->
+    <string name="menu_networks">Nettverk</string>
+    <string name="menu_settings">Instillinger</string>
+    
+    <!-- CONNECTIONS LIST -->
+    <string name="addNetwork">Legg til nettverk</string>
+    <string name="servername">Netverks navn (f.eks QuakeNet)</string>
+    <string name="hostname">Hostnavn (f.eks irc.quakenet.org)</string>
+    <string name="nick">Kallenavn (f.eks HotVanilla44)</string>
+    <string name="port">Port (f.eks 6667)</string>
+    <string name="name">Virkelig navn (f.eks Dave)</string>
+    <string name="alternateNick2">Sekundært kallenavn</string>
+    <string name="alternateNick3">Tertiært kallenavn</string>
+    <string name="more">Mer</string>
+    <string name="connected">Tilkoblet</string>
+    <string name="disconnected">Koblet fra</string>
+    <string name="context_connect">Koblet til</string>
+    <string name="context_disconnect">Koblet fra</string>
+    <string name="context_edit">Rediger</string>
+    <string name="context_remove">Slett</string>
+    
+    <!-- DIALOG STUFF -->
+    <string name="dialog_invite_recieved"><b>%1$s</b> inviterte deg til å bli med i #<b>%2$s</b></string>
+    <string name="dialog_who_channels">Kanal(er)</string>
+    <string name="dialog_who_nick">Kallenavn</string>
+    <string name="dialog_who_name">Navn</string>
+    <string name="dialog_who_idle">Står stille</string>
+    <string name="dialog_who_signedOn">Kom på</string>
+    <string name="dialog_who_server">Server</string>
+    <string name="dialog_who_serverInfo">Serverinformasjon</string>
+    <string name="dialog_who_isAway">Er borte</string>
+    
+    <string name="app_name">WHIRC</string>
+    <string name="action_settings">Instillinger</string>
+    <string name="changedTopic">%s byttet tema til</string> <!-- user -->
+    <string name="topic"> %s</string> <!-- topic -->
+    <string name="channel">Kanal</string>
+    <string name="channelList">Få kanal-liste</string>
+    <string name="channelTopic">Tema for %s :</string> <!-- channel name -->
+    <string name="dataSync">Data og Synk</string>
+    <string name="diconnectServer">Koble fra</string>
+    <string name="displayName">Visningsnavn</string>
+    <string name="drawer_open">Åpne navigerings-skuff</string>
+    <string name="drawer_close">Lukk navigerings-skuff</string>
+    <string name="enterChannel">Du snakker nå i %s </string>	<!-- channel name -->
+  	<string name="joinChannel">Bli med i kanal</string>
+  	<string name="joinNetwork">Bli med i nettverk</string>
+    <string name="Help">Hjelp</string>
+    <string name="networkList">Nettverkliste</string>
+    <string name="quit">Avslutt</string>
+    <string name="reconnectServer">Koble til på bytt</string>
+    <string name="sendMessage">Send en beskjed</string>
+    
+    <!-- SETTINGSACTIVITY -->
+	<string name="settings_userCat">Bruker info</string>
+	<string name="settings_userEdit">Rediger bruker info</string>
+	<string name="settings_userEditServers">Velg server</string>
+	<string name="settings_userDelete">Slett bruker data</string>
+	<string name="settings_userDeleteSum">Sletter all bruker data</string>
+	<string name="settings_systemCat">System</string>
+	<string name="settings_notifications">Notifikasjoner</string>
+	<string name="settings_notificationsOn">Skru på notifikasjoner</string>
+	<string name="settings_notificationsPM">Notifiser meg når jeg får en PM</string>
+	<string name="settings_options">Valg</string>
+	
+	<!-- SETTINGSDIALOGS -->
+	<string name="setDialog_userEdit_nick">Kallenavn</string>
+	<string name="setDialog_userEdit_nick_hint">Ditt kallenavn</string>
+	<string name="setDialog_userEdit_nickTwo">Sekundært kallenavn</string>
+	<string name="setDialog_userEdit_nickThree">Tertiært kallenavn</string>
+	<string name="setDialog_userEdit_name">Virkelig navn</string>
+	<string name="setDialog_userEdit_name_hint">Ditt navn (valgfritt)</string>
+	<string name="setDialog_userEdit_password">Passord</string>
+	<string name="setDialog_userDeleteWarning">ADVARSEL! All brukerdata vil bli slettet. Er du sikker?</string>
+
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+    
+    <string name="user">Bruker</string>
+    <string name="userJoinChannel">Bruker %s har kommet inn i kanalen</string>	<!-- username -->
+    <string name="userLeftChannel">Bruker %s har avsluttet</string> <!-- username -->
+    <string name="userBanned">%s ble bannlyst av</string> <!-- username -->
+    <string name="userChangeName">%s er nå kjent som</string> <!-- old username -->
+    <string name="userKicked">Bruker %s ble sparket fra kanalen</string> <!-- username -->
+    <string name="userName"> %s</string> <!-- username -->
+    <string name="userPromoted">%s ble forfremmet til </string> <!-- username -->
+    <string name="title"> %s</string> <!-- title -->
+    
+    <string name="awayStatus">Du er nå listet som BORTE</string>
+    <string name="modeSet">Modus satt til %s</string>
+    <string name="noLongerAway">Du er ikke lenger listet som BORTE</string>
+    <string name="othersAwayStatus">%s er nå listet som BORTE</string>
+    <string name="othersNoLongerAway">%s er ikke lenger listet som BORTE</string>
+    
+</resources>

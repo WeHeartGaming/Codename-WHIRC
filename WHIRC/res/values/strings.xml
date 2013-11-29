@@ -84,20 +84,26 @@
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>
     
-    <string name="user">User</string>
-    <string name="userJoinChannel">User %s has joined the channel</string>	<!-- username -->
-    <string name="userLeftChannel">User %s has quit</string> <!-- username -->
-    <string name="userBanned">%s was banned by</string> <!-- username -->
-    <string name="userChangeName">%s is now known as</string> <!-- old username -->
-    <string name="userKicked">User %s was kicked from channel</string> <!-- username -->
-    <string name="userName"> %s</string> <!-- username -->
-    <string name="userPromoted">%s was promoted to </string> <!-- username -->
-    <string name="title"> %s</string> <!-- title -->
+    <string name="user">User </string>
+    <string name="userJoinChannel"> has joined the channel</string>	<!-- username -->
+    <string name="userLeftChannel"> has left the channel</string> <!-- username -->
+    <string name="userBanned"> was banned by</string> <!-- username -->
+    <string name="userChangeName"> is now known as</string> <!-- old username -->
+    <string name="userKicked"> was kicked from channel</string> <!-- username -->
+    <string name="userPromoted"> was promoted to </string> <!-- username -->
+    <string name="userQuit"> has quit IRC </string>
     
     <string name="awayStatus">You are now listed as AWAY</string>
-    <string name="modeSet">Mode set to %s</string>
+    <string name="modeSet"> Mode set to </string>
     <string name="noLongerAway">You are no longer listed as AWAY</string>
-    <string name="othersAwayStatus">%s is now listed as</string>
-    <string name="othersNoLongerAway">%s is no longer listed as AWAY</string>
+    <string name="othersAwayStatus"> is now listed as</string>
+    <string name="othersNoLongerAway"> is no longer listed as AWAY</string>
+    
+    <string name="setBy">\nSet by </string>
+    <string name="on"> on </string>
+    <string name="yourNick">Your nickname </string>
+    <string name="isInvalid"> is invalid. Changing to </string>
+    <string name="changedNick"> has changed nick to </string>
+    
     
 </resources>
