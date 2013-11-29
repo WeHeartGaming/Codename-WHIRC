@@ -2,6 +2,7 @@ package no.whg.whirc.activities;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
 import jerklib.Channel;
@@ -21,7 +22,6 @@ import jerklib.events.MotdEvent;
 import jerklib.events.NickChangeEvent;
 import jerklib.events.NickInUseEvent;
 import jerklib.events.NickListEvent;
-import jerklib.events.NoticeEvent;
 import jerklib.events.PartEvent;
 import jerklib.events.QuitEvent;
 import jerklib.events.ServerVersionEvent;
@@ -371,11 +371,11 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 				generateFragments(server);
 			}
 		} else if (e.getType() == Type.JOIN){
-			System.out.println(e.getType() + " : " + e.getRawEventData());
 			JoinEvent je = (JoinEvent)e;
 			Server server = cService.getServer(je.getSession());
 			Conversation conversation = server.getConversation(je.getChannel().getName());
 			if (!conversation.hasMessage(je.hashCode())){
+				conversation.addUser(je.getNick());
 				conversation.addMessage(je);
 			} else {
 				Log.e(TAG, "receiveEvent() JOIN: JOIN Message already exists, did not add it to Conversation.");
@@ -384,11 +384,11 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 				generateFragments(server);
 			}
 		} else if (e.getType() == Type.PART){
-			System.out.println(e.getType() + " : " + e.getRawEventData());
 			PartEvent pe = (PartEvent)e;
 			Server server = cService.getServer(pe.getSession());
 			Conversation conversation = server.getConversation(pe.getChannel().getName());
 			if (!conversation.hasMessage(pe.hashCode())){
+				conversation.removeUser(pe.getWho());
 				conversation.addMessage(pe);
 			} else {
 				Log.e(TAG, "receiveEvent() PART: PART Message already exists, did not add it to Conversation.");
@@ -401,6 +401,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			Server server = cService.getServer(ke.getSession());
 			Conversation conversation = server.getConversation(ke.getChannel().getName());
 			if (!conversation.hasMessage(ke.hashCode())){
+				conversation.removeUser(ke.getWho());
 				conversation.addMessage(ke);
 			} else {
 				Log.e(TAG, "receiveEvent() KICK: KICK Message already exists, did not add it to Conversation.");
@@ -409,6 +410,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 				generateFragments(server);
 			}
 		} else if (e.getType() == Type.MODE_EVENT){
+			System.out.println(e.getType() + " : " + e.getRawEventData());
 			ModeEvent me = (ModeEvent)e;
 			Server server = cService.getServer(me.getSession());
 			Conversation conversation;
@@ -416,6 +418,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 				conversation = server.getConversation(0); // 0 is always the position of the server conversation. 
 			} else {
 				conversation = server.getConversation(me.getChannel().getName());
+				conversation.makeUserList();
 			}
 			if (!conversation.hasMessage(me.hashCode())){
 				conversation.addMessage(me);
@@ -526,6 +529,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			if (conversations != null){
 				for (Conversation conversation : conversations){
 					if (!conversation.hasMessage(qe.hashCode())){
+						conversation.removeUser(qe.getNick());
 						conversation.addMessage(qe);
 					} else {
 						Log.e(TAG, "receiveEvent() QUIT: QUIT Message already exists, did not add it to Conversation.");
@@ -560,22 +564,29 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		} else if (e.getType() == Type.WHOWAS_EVENT){
 			WhowasEvent we = (WhowasEvent)e;
 			whoDialog(null, we.getNick(), we.getRealName(), "", "", "", false, false);
-		} else if (e.getType() == Type.CHANNEL_LIST_EVENT){
-			ChannelListEvent cle = (ChannelListEvent)e;
-			System.out.println(e.getType() + " : " + e.getRawEventData());
-		} else if (e.getType() == Type.NICK_CHANGE){
-			System.out.println(e.getType() + " : " + e.getRawEventData());
-			NickChangeEvent nce = (NickChangeEvent)e;
-			System.out.println(e.getType() + " : " + e.getRawEventData());
 		} else if (e.getType() == Type.NICK_IN_USE){
 			NickInUseEvent niue = (NickInUseEvent)e;
+			Random random = new Random();
+			String newNick = niue.getInUseNick();
+			newNick += (String.valueOf(random.nextInt(9)) + String.valueOf(random.nextInt(9)) + String.valueOf(random.nextInt(9)));
+			Server server = cService.getServer(niue.getSession());
+			Conversation conversation = server.getConversation(0); // 0 is always the position of the server conversation.
+			if (!conversation.hasMessage(niue.hashCode())){
+				conversation.addMessage(niue, newNick);
+				niue.getSession().changeNick(newNick);
+			}
 			System.out.println(e.getType() + " : " + e.getRawEventData());
 		} else if (e.getType() == Type.NICK_LIST_EVENT){
-			System.out.println(e.getType() + " : " + e.getRawEventData());
 			NickListEvent nle = (NickListEvent)e;
 			Server server = cService.getServer(nle.getSession());
 			Conversation conversation = server.getConversation(nle.getChannel().getName());
-			conversation.makeUserList(nle);
+			conversation.makeUserList();
+		} else if (e.getType() == Type.NICK_CHANGE){
+			NickChangeEvent nce = (NickChangeEvent)e;
+			System.out.println(e.getType() + " : " + e.getRawEventData());
+		} else if (e.getType() == Type.CHANNEL_LIST_EVENT){
+			ChannelListEvent cle = (ChannelListEvent)e;
+			System.out.println(e.getType() + " : " + e.getRawEventData());
 		}
 			
 
