@@ -2,14 +2,15 @@ package no.whg.whirc.adapters;
 
 import java.util.List;
 
+import no.whg.whirc.R;
 import no.whg.whirc.models.Conversation;
 import no.whg.whirc.models.Server;
-import android.R;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.TextView;
 
 public class LeftMenuAdapter extends BaseExpandableListAdapter
 {
@@ -25,7 +26,7 @@ public class LeftMenuAdapter extends BaseExpandableListAdapter
 	}
 	
 	@Override
-	public Object getChild(int parentPos, int childPos)
+	public Conversation getChild(int parentPos, int childPos)
 	{
 		// TODO Auto-generated method stub
 		return conversationList.get(parentPos).get(childPos);
@@ -36,16 +37,20 @@ public class LeftMenuAdapter extends BaseExpandableListAdapter
 		// TODO Auto-generated method stub
 		return childPos;
 	}
+	
 	@Override
-	public View getChildView(int parentPos, int childPos, boolean isLastChild, View childView, ViewGroup parentView)
-	{
-		if(childView == null)
-		{
+	public View getChildView(int parentPos, int childPos, boolean isLastChild, View childView, ViewGroup parentView) {
+		if(childView == null) {
 			LayoutInflater inflater = LayoutInflater.from(context);
+			childView = inflater.inflate(R.layout.list_item_left, null);
 		}
-		// TODO Auto-generated method stub
-		return null;
+		
+		TextView child = (TextView) childView.findViewById(R.id.groupChild);
+		child.setText(getChild(parentPos, childPos).getChannelTitle());
+		
+		return childView;
 	}
+	
 	@Override
 	public int getChildrenCount(int parentPos) 
 	{
@@ -53,9 +58,8 @@ public class LeftMenuAdapter extends BaseExpandableListAdapter
 		return conversationList.get(parentPos).size();
 	}
 	@Override
-	public Object getGroup(int parentPos)
+	public Server getGroup(int parentPos)
 	{
-		// TODO Auto-generated method stub
 		return serverList.get(parentPos);
 	}
 	@Override
@@ -70,12 +74,20 @@ public class LeftMenuAdapter extends BaseExpandableListAdapter
 		// TODO Auto-generated method stub
 		return parentPos;
 	}
+	
 	@Override
-	public View getGroupView(int arg0, boolean arg1, View arg2, ViewGroup arg3)
-	{
-		// TODO Auto-generated method stub
-		return null;
+	public View getGroupView(int groupPos, boolean isExpanded, View groupView, ViewGroup parent) {
+		if (groupView == null) {
+			LayoutInflater inflater = LayoutInflater.from(context);
+			groupView = inflater.inflate(R.layout.list_group_left, null);
+		}
+		
+		TextView group = (TextView) groupView.findViewById(R.id.tv_more);
+		group.setText(getGroup(groupPos).getSimpleName());
+		
+		return groupView;
 	}
+	
 	@Override
 	public boolean hasStableIds() 
 	{
