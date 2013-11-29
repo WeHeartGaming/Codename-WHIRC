@@ -71,6 +71,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
     private ListView mDrawerListLeft;
     private ActionBarDrawerToggle mDrawerToggleLeft;
     private String filePath;
+    private Conversation convers;
     
     private CharSequence mDrawerTitleLeft;
     private CharSequence mTitle;
@@ -104,14 +105,13 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        convers.getContext(this.getApplicationContext());
         setContentView(R.layout.activity_main);
         
         downloadServer = new ServerListDownload(this.getApplicationContext());
         server = new WhircDB(this.getApplicationContext());
         int l = server.getSize();
         
-        String t = "" + l;
-        Log.d("ServerListDownload", t );
         
         if(server.getSize() == 0)
         {

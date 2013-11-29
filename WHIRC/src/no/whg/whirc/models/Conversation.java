@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import no.whg.whirc.R;
 import jerklib.Channel;
 import jerklib.events.AwayEvent;
 import jerklib.events.CtcpEvent;
@@ -20,6 +21,7 @@ import jerklib.events.ServerVersionEvent;
 import jerklib.events.TopicEvent;
 import jerklib.events.modes.ModeAdjustment;
 import jerklib.events.modes.ModeEvent;
+import android.content.Context;
 import android.util.Log;
 
 
@@ -36,8 +38,10 @@ public class Conversation {
     private List<String> voices;
     private List<String> ops;
     private List<String> users;
+    private static Context context;
     //private char oSymbol = 'o';
 
+    
     public Conversation(Channel channel){
         this.channel = channel;
         this.channelTitle = channel.getName();
@@ -49,6 +53,7 @@ public class Conversation {
 
     }
 
+    
     public Conversation(Channel channel, String priv){
         this.channel = channel;
         this.channelTitle = priv;
@@ -61,6 +66,11 @@ public class Conversation {
         this.channelTitle = servername;
 
         messages = new ArrayList<Message>();
+    }
+    
+    public static void getContext(Context c)
+    {
+    	context = c;
     }
     
     public void makeUserList(){
@@ -187,40 +197,40 @@ public class Conversation {
     }
 
     public void addMessage(TopicEvent te){
-        Message topic = new Message(getChannelTitle(), te.getTopic() + "\nSet by " + te.getSetBy() + " on " + te.getSetWhen().toString(), getTime(), 0);
+        Message topic = new Message(getChannelTitle(), te.getTopic() + context.getString(R.string.setBy) + te.getSetBy() + context.getString(R.string.on) + te.getSetWhen().toString(), getTime(), 0);
         messages.set(0, topic);
     }
 
     public void addMessage(JoinEvent je){
-        addMessage(new Message(getChannelTitle(), "User " + je.getNick() + " joined the channel (" + je.getUserName() + " " + je.getHostName() + ").", getTime(), je.hashCode()));
+        addMessage(new Message(getChannelTitle(), context.getString(R.string.user) + je.getNick() + context.getString(R.string.userJoinChannel) +" (" + je.getUserName() + " " + je.getHostName() + ").", getTime(), je.hashCode()));
     }
 
     public void addMessage(PartEvent pe){
-        addMessage(new Message(getChannelTitle(), "User " + pe.getWho() + " left the channel (" + pe.getUserName() + " " + pe.getHostName() + "):\n" + pe.getPartMessage(), getTime(), pe.hashCode()));
+        addMessage(new Message(getChannelTitle(), context.getString(R.string.user) + pe.getWho() + context.getString(R.string.userLeftChannel)+ " (" + pe.getUserName() + " " + pe.getHostName() + "):\n" + pe.getPartMessage(), getTime(), pe.hashCode()));
     }
 
     public void addMessage(KickEvent ke){
-        addMessage(new Message(getChannelTitle(), "User " + ke.getWho() + " was kicked from channel (" + ke.getUserName() + " " + ke.getHostName() + "):\n" + ke.getMessage(), getTime(), ke.hashCode()));
+        addMessage(new Message(getChannelTitle(), context.getString(R.string.user) + ke.getWho() + context.getString(R.string.userKicked) + " (" + ke.getUserName() + " " + ke.getHostName() + "):\n" + ke.getMessage(), getTime(), ke.hashCode()));
     }
 
     public void addMessage(AwayEvent ae){
         if (ae.isYou()){
             if (ae.isAway()){
-                addMessage(new Message(ae.getSession().getConnectedHostName(), "You are now listed as AWAY.", getTime(), ae.hashCode()));
+                addMessage(new Message(ae.getSession().getConnectedHostName(), context.getString(R.string.awayStatus), getTime(), ae.hashCode()));
             } else {
-                addMessage(new Message(ae.getSession().getConnectedHostName(), "You are no longer listed as AWAY.", getTime(), ae.hashCode()));
+                addMessage(new Message(ae.getSession().getConnectedHostName(), context.getString(R.string.noLongerAway), getTime(), ae.hashCode()));
             }
         } else {
             if (ae.isAway()){
-                addMessage(new Message(ae.getSession().getConnectedHostName(), ae.getNick() + " is now listed as AWAY (" + ae.getAwayMessage() + ").", getTime(), ae.hashCode()));
+                addMessage(new Message(ae.getSession().getConnectedHostName(), ae.getNick() + context.getString(R.string.othersAwayStatus) + ae.getAwayMessage() + ").", getTime(), ae.hashCode()));
             } else {
-                addMessage(new Message(ae.getSession().getConnectedHostName(), ae.getNick() + " is no longer listed as AWAY.", getTime(), ae.hashCode()));
+                addMessage(new Message(ae.getSession().getConnectedHostName(), ae.getNick() + context.getString(R.string.othersNoLongerAway), getTime(), ae.hashCode()));
             }
         }
     }
 
     public void addMessage(ModeEvent me){
-        addMessage(new Message(me.setBy(), "Mode set to " + me.getModeAdjustments().toString(), getTime(), me.hashCode()));
+        addMessage(new Message(me.setBy(), context.getString(R.string.modeSet) + me.getModeAdjustments().toString(), getTime(), me.hashCode()));
 	}
 	
 	public void addMessage(CtcpEvent ce, String ctcp){
@@ -232,7 +242,7 @@ public class Conversation {
 	}
 	
 	public void addMessage(QuitEvent qe){
-		addMessage(new Message(getChannelTitle(), "User " + qe.getNick() + " has quit IRC (" + qe.getUserName() + "@" + qe.getHostName() + "):\n" + qe.getQuitMessage(), getTime(), qe.hashCode()));
+		addMessage(new Message(getChannelTitle(), context.getString(R.string.user) + qe.getNick() + context.getString(R.string.userQuit) + " (" + qe.getUserName() + "@" + qe.getHostName() + "):\n" + qe.getQuitMessage(), getTime(), qe.hashCode()));
 	}
 	
 	public void addMessage(NoticeEvent ne){
@@ -240,11 +250,11 @@ public class Conversation {
 	}
 	
 	public void addMessage(NickInUseEvent niue, String newNick){
-		addMessage(new Message(niue.getSession().getConnectedHostName(), "Your nickname " + niue.getInUseNick() + " is invalid. Changing to " + newNick + ".", getTime(), niue.hashCode()));
+		addMessage(new Message(niue.getSession().getConnectedHostName(), context.getString(R.string.yourNick) + niue.getInUseNick() + context.getString(R.string.isInvalid) + newNick + ".", getTime(), niue.hashCode()));
 	}
 	
 	public void addMessage(NickChangeEvent nce){
-		addMessage(new Message(getChannelTitle(), "User " + nce.getOldNick() + " has changed nick to " + nce.getNewNick(), getTime(), nce.hashCode()));
+		addMessage(new Message(getChannelTitle(), context.getString(R.string.user) + nce.getOldNick() + context.getString(R.string.changedNick) + nce.getNewNick(), getTime(), nce.hashCode()));
 	}
 
     public String getChannelTitle(){
