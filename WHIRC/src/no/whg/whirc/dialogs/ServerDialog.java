@@ -15,6 +15,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -41,6 +42,7 @@ public class ServerDialog extends DialogFragment {
 	private ConnectionListAdapter cListAdapter;
 	private WhircDB db;
 	private boolean isNew;
+	private Server server;
 
 	public ServerDialog() {
 
@@ -53,6 +55,17 @@ public class ServerDialog extends DialogFragment {
 		this.cListAdapter = cListAdapter;
 		this.db = new WhircDB(getActivity());
 		this.isNew = isNew;
+
+	}
+	
+	/**
+     * 
+     */
+	public ServerDialog(ConnectionListAdapter cListAdapter, boolean isNew, Server s) {
+		this.cListAdapter = cListAdapter;
+		this.db = new WhircDB(getActivity());
+		this.isNew = isNew;
+		this.server = s;
 
 	}
 
@@ -132,11 +145,23 @@ public class ServerDialog extends DialogFragment {
 		} else {
 			builder.setTitle(R.string.editNetwork);
 		}
+		if (!isNew) {
+			
+			Log.d("ServerDialog", server.getNickOne());
+			nick.setText(server.getNickOne());
+			nickTwo.setText(server.getNickTwo());
+			nickThree.setText(server.getNickThree());
+			name.setText(server.getName());
+			host.setText(server.getHost());
+			port.setText(server.getPort());
+			serverName.setText(server.getSimpleName());
+		}
 		builder.setView(textEntryView);
 		builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
 
 				if (isNew) {
+					Log.d("ServerDialog", "isNew is true");
 					db.addServer(nick.getText().toString(), nickTwo.getText()
 							.toString(), nickThree.getText().toString(), name
 							.getText().toString(), host.getText().toString(),
@@ -145,12 +170,16 @@ public class ServerDialog extends DialogFragment {
 					cListAdapter.addServer(db.getServer(serverName.getText()
 							.toString()));
 				} else {
-					Server s = new Server(null, nick.getText().toString(), nickTwo.getText()
+					Log.d("ServerDialog", "equals: " + nickTwo.getText().toString().equals(""));
+					Log.d("ServerDialog", "isNew is false");
+					
+					Server s = new Server(nick.getText().toString(), nickTwo.getText()
 							.toString(), nickThree.getText().toString(), name
 							.getText().toString(), host.getText().toString(),
 							port.getText().toString(), serverName.getText()
 									.toString());
-					db.updateServer(s);
+					Log.i("ServerDialog", s.toString());
+					db.updateServerUser(s);
 					cListAdapter.refreshArray((ArrayList<Server>) db.getAllServers());
 					
 				}
