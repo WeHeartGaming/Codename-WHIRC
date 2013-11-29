@@ -23,7 +23,7 @@ import android.widget.ListView;
 
 
     /**
-     * A fragment representing current "section" in use by the app, which in this specific app will contain the currently selected IRC channel
+     * A fragment class that represents channels and private messages, holds array of messages, which is updated through an adapter
      *
      */
     @SuppressLint("ValidFragment")

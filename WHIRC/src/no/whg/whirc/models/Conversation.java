@@ -27,7 +27,7 @@ import android.content.Context;
 
 /**
  * @author Snorre
- *
+ * Model class that holds the data of every Conversation object
  */
 public class Conversation {
 	private static final String TAG = "Conversation";
@@ -42,6 +42,7 @@ public class Conversation {
     private boolean isServer = false;
     private boolean isPriv = false;
     private Session session;
+   
     /**
      * 
      * @param channel
