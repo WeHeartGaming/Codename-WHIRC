@@ -115,7 +115,6 @@ public class Conversation {
 	  	for (String user : users){
 	  		userList.add(user);
 	  	}
-	  	Log.d(TAG, userList.toString());
     }
     /**
      * 

@@ -9,7 +9,6 @@ import jerklib.Channel;
 import jerklib.ConnectionManager;
 import jerklib.Session;
 import jerklib.events.AwayEvent;
-import jerklib.events.ChannelListEvent;
 import jerklib.events.CtcpEvent;
 import jerklib.events.IRCEvent;
 import jerklib.events.IRCEvent.Type;
@@ -656,17 +655,15 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 	        mConversationPagerAdapter = new ConversationPagerAdapter(getSupportFragmentManager());
 			if (!s.getConversations().isEmpty()){
 				for (Conversation c : s.getConversations()){
-		        	Log.d(TAG, "generateFragments(): Found Conversation " + c.getChannelTitle() + ", making a fragment.");
 		        	mConversationPagerAdapter.addFragment(new ConversationFragment(c, getApplicationContext()));
 				}
 			} else {
-				Log.d(TAG, "generateFragments(): No conversations to add for Server.");
+				Log.E(TAG, "generateFragments(): No conversations to add for Server.");
 			}
 			runOnUiThread(new Runnable(){
 				public void run(){
 					mConversationPagerAdapter.notifyDataSetChanged();
 					mViewPager.setAdapter(mConversationPagerAdapter);
-					Log.d(TAG, "generateFragments(): Forced an update to the adapter.");
 				}
 			});
 		} else {
