@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -35,7 +36,7 @@ public class ConnectionFragment extends Fragment {
 
 	public ConnectionFragment() {
 		//this.cListAdapter = new ConnectionListAdapter(getActivity());
-
+		
 	}
 
 	/*
@@ -67,6 +68,14 @@ public class ConnectionFragment extends Fragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
+		
+		db = new WhircDB(getActivity());
+		Iterator<Server> iterator = db.getAllServers().iterator();
+		
+		while (iterator.hasNext()) {
+			servers.add(iterator.next());
+		}
+		cListAdapter = new ConnectionListAdapter(servers, getActivity());
 
 		TextView addServer = (TextView) getActivity().findViewById(
 				R.id.tv_addConnection);
@@ -157,23 +166,10 @@ public class ConnectionFragment extends Fragment {
 								new DialogInterface.OnClickListener() {
 									public void onClick(DialogInterface dialog,
 											int whichButton) {
-
-										Log.i("AlertDialog", "Server name: "
-												+ serverName.getText()
-														.toString());
-										Log.i("AlertDialog", "Host: "
-												+ host.getText().toString());
-										Log.i("AlertDialog", "Port: "
-												+ port.getText().toString());
-										Log.i("AlertDialog", "Nick: "
-												+ nick.getText().toString());
-										Log.i("AlertDialog", "NickTwo: "
-												+ nickTwo.getText().toString());
-										Log.i("AlertDialog", "NickThree: "
-												+ nickThree.getText()
-														.toString());
-										Log.i("AlertDialog", "Name: "
-												+ name.getText().toString());
+										
+										db.addServer(nick.getText().toString(), nickTwo.getText().toString(), nickThree.getText().toString(), 
+												name.getText().toString(), host.getText().toString(), port.getText().toString(), serverName.getText().toString());
+										cListAdapter.addServer(db.getServer(serverName.getText().toString()));
 									}
 								})
 						.setNegativeButton("Cancel",
@@ -187,30 +183,35 @@ public class ConnectionFragment extends Fragment {
 			}
 		});
 
-		db = new WhircDB(getActivity());
+		
 		
 		Log.d("ConnectionFragment", "Size: " + db.getAllServers().size() + "\nRest: " + db.getAllServers().toString());
 		
-		Iterator<Server> iterator = db.getAllServers().iterator();
 		
-		while (iterator.hasNext()) {
-			servers.add(iterator.next());
-		}
-		cList.setAdapter(new ConnectionListAdapter(servers, getActivity()));
-		//cListAdapter.notifyDataSetChanged();
+		cList.setAdapter(cListAdapter);
+		
+		cList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-		// msgs = new ArrayList<Messages>();
-		// Messages msg;
-		//
-		// for (int i = 0; i < 7; i++) {
-		// msg = new Messages();
-		// msg.setName("Fredrik"+i);
-		// msg.setMessage("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Message id: "+i);
-		// msg.setTime("22:0"+i);
-		// msgs.add(msg);
-		// }
-		//
-		// msgList.setAdapter(new MessageAdapter(msgs, getActivity()));
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position,
+					long id) {
+				Log.d("ConnectionFragment", "onItemClick pressed! [position=" + position + "], [id=" + id + "]");
+				// TODO: connect logic here
+				
+			}
+		});
+		
+		cList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				Log.d("ConnectionFragment", "onItemLongClick pressed! [position=" + position + "], [id=" + id + "]");
+				// TODO: contextmenu logic here
+				return false;
+			}
+			
+		});
 
 	}
 }
