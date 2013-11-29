@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import no.whg.whirc.R;
 import jerklib.Channel;
+import jerklib.Session;
 import jerklib.events.AwayEvent;
 import jerklib.events.CtcpEvent;
 import jerklib.events.JoinEvent;
@@ -21,8 +21,8 @@ import jerklib.events.ServerVersionEvent;
 import jerklib.events.TopicEvent;
 import jerklib.events.modes.ModeAdjustment;
 import jerklib.events.modes.ModeEvent;
+import no.whg.whirc.R;
 import android.content.Context;
-import android.util.Log;
 
 
 /**
@@ -41,6 +41,7 @@ public class Conversation {
     private static Context context;
     private boolean isServer = false;
     private boolean isPriv = false;
+    private Session session;
     /**
      * 
      * @param channel
@@ -76,11 +77,21 @@ public class Conversation {
      * 
      * @param servername
      */
-    public Conversation(String servername){
+    public Conversation(String servername, Session session){
         this.channelTitle = servername;
-
+        this.session = session;
         messages = new ArrayList<Message>();
         this.isServer = true;
+    }
+    /**
+     * 
+     * @return
+     */
+    public Session getSession(){
+    	if (isServer){
+    		return session;
+    	}
+    	return null;
     }
     /**
      * 
@@ -106,6 +117,13 @@ public class Conversation {
 		  	}
 	    	updateUserList();
     	}
+    }
+    /**
+     * 
+     * @return
+     */
+    public boolean isServ(){
+    	return isServer;
     }
     /**
      * 
@@ -197,11 +215,17 @@ public class Conversation {
     	}
     	return 'u';
     }
-    
+    /**
+     * 
+     * @return
+     */
     public boolean getPriv(){
     	return isPriv;
     }
-    
+    /**
+     * 
+     * @param user
+     */
     public void changePrivNick(String user){
     	userList.remove(0);
     	userList.add(user);
@@ -411,7 +435,10 @@ public class Conversation {
     public Channel getChannel(){
     	return this.channel;
     }
-    
+    /**
+     * 
+     * @param channel
+     */
     public void setChannel(Channel channel){
     	this.channel = channel;
     }

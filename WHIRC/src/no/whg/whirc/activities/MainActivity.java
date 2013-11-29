@@ -251,7 +251,9 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
         //menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
     }
-
+    /**
+     * @param item
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (mDrawerToggleLeft.onOptionsItemSelected(item)) {
@@ -265,40 +267,54 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
                 return super.onOptionsItemSelected(item);
         }
     }
-
+    /**
+     * 
+     */
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             selectItem(position);
         }
     }
-
+    /**
+     * 
+     * @param position
+     */
     private void selectItem(int position) {
         /* TODO Selection of menu item logic goes here, since we use sections we probably need an array/list of fragments
           for every network, while when we select e.g. "options" we need to start a new activity. */
         // FragmentManager, beginTransaction, setItemChecked, setTitle, mDrawerLayout.closeDrawer etc goes here.
         // Bundle with args, ARG_FRAGMENT_NUMBER etc etc
     }
-
+    /**
+     * @param title
+     */
     @Override
     public void setTitle(CharSequence title) {
         mTitle = title;
         getActionBar().setTitle(mTitle);
     }
-
+    /**
+     * @param savedInstanceState
+     */
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         mDrawerToggleLeft.syncState();
     }
-
+    /**
+     * @param newConfig
+     */
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         mDrawerToggleLeft.onConfigurationChanged(newConfig);
     }
 
-
+    /**
+     * @param name
+     * @param binder
+     */
 	@Override
 	public void onServiceConnected(ComponentName name, IBinder binder) {
 		Log.d(TAG, "onServiceConnected()");
@@ -328,7 +344,9 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 	    
 	    
 	}
-
+	/**
+	 * @param name
+	 */
 	@Override
 	public void onServiceDisconnected(ComponentName name) {
 		for (Session s : cService.getSessions()){
@@ -338,11 +356,16 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		Log.e(TAG, "onServiceDisconnected(): Unexpected UnBind. Decoupled IRCEventListeners. This is not supposed to happen, you know.");
 		
 	}
-	
+	/**
+	 * 
+	 * @return
+	 */
 	public ConnectionService getConnectionServiceObject() {
 		return cService;
 	}
-	
+	/**
+	 * @param E
+	 */
 	@Override
 	public void receiveEvent(IRCEvent e) {
 		if (e.getType() == Type.CONNECT_COMPLETE) {
@@ -653,7 +676,10 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			// This is just for show
 		}
 	}
-	
+	/**
+	 * 
+	 * @param title
+	 */
 	public void removeFragment(final String title){
 		runOnUiThread(new Runnable(){
 			public void run(){
@@ -661,11 +687,17 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			}
 		});
 	}
-	
+	/**
+	 * 
+	 */
 	public void removeFragments(){
 		runOnUiThread(new Runnable(){
 			public void run(){
-				mConversationPagerAdapter.removeFragments();
+				try {
+					mConversationPagerAdapter.removeFragments();
+				} catch (NullPointerException e){
+					
+				}
 			}
 		});
 	}
@@ -721,8 +753,14 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			}
 			runOnUiThread(new Runnable(){
 				public void run(){
-					mConversationPagerAdapter.notifyDataSetChanged();
-					mViewPager.setAdapter(mConversationPagerAdapter);
+					try {
+						mViewPager.setAdapter(mConversationPagerAdapter);
+						mConversationPagerAdapter.notifyDataSetChanged();
+					} catch (NullPointerException e){
+						
+					} catch (IllegalStateException e){
+						
+					}
 				}
 			});
 		} else {

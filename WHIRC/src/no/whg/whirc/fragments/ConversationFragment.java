@@ -42,13 +42,17 @@ import android.widget.ListView;
         private EditText textBox;
         
         private Conversation conversation;
-
+		/**
+		 * 
+		 * @param conversation
+		 * @param c
+		 */
         public ConversationFragment(Conversation conversation, Context c) {
         	this.conversation = conversation;
             this.messageAdapter = new MessageAdapter(conversation.getMessages(), c);
         	//this.conversation.addMessageAdapter(messageAdapter);
         }
-
+        
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
@@ -78,6 +82,9 @@ import android.widget.ListView;
 		 * @see android.support.v4.app.Fragment#onActivityCreated(android.os.Bundle)
 		 */
 		@Override
+		/**
+		 * @param savedInstanceState
+		 */
 		public void onActivityCreated(Bundle savedInstanceState) {
 			// TODO Auto-generated method stub
 			super.onActivityCreated(savedInstanceState);
@@ -86,39 +93,65 @@ import android.widget.ListView;
 			//int position = args.getInt(ARG_SECTION_NUMBER);
 
 		}
-		
+		/**
+		 * 
+		 * @return
+		 */
 		public String getName() {
 			return conversation.getChannelTitle();
 		}
-		
+		/**
+		 * 
+		 * @param string
+		 */
 		public void channelSend(String string){
-			if (string.startsWith("/mode ")){
-				if (string.startsWith(conversation.getChannelTitle() + " +o " , 6)) {
-					string.replace("/mode " + conversation.getChannelTitle() + " +o ", "");
-					channelOp(string, conversation.getChannel());
-				} else if (string.startsWith(conversation.getChannelTitle() + " -o " , 6)) {
-					string.replace("/mode " + conversation.getChannelTitle() + " -o ", "");
-					channelDeop(string, conversation.getChannel());
-				} else if (string.startsWith(conversation.getChannelTitle() + " +v " , 6)) {
-					string.replace("/mode " + conversation.getChannelTitle() + " +v ", "");
-					channelVoice(string, conversation.getChannel());
-				} else if (string.startsWith(conversation.getChannelTitle() + " -v " , 6)) {
-					string.replace("/mode " + conversation.getChannelTitle() + " -v ", "");
-					channelDevoice(string, conversation.getChannel());
+			if (!conversation.isServ()){
+				if (string.startsWith("/mode ")){
+					if (string.startsWith(conversation.getChannelTitle() + " +o " , 6)) {
+						string = string.replace("/mode " + conversation.getChannelTitle() + " +o ", "");
+						channelOp(string, conversation.getChannel());
+					} else if (string.startsWith(conversation.getChannelTitle() + " -o " , 6)) {
+						string = string.replace("/mode " + conversation.getChannelTitle() + " -o ", "");
+						channelDeop(string, conversation.getChannel());
+					} else if (string.startsWith(conversation.getChannelTitle() + " +v " , 6)) {
+						string = string.replace("/mode " + conversation.getChannelTitle() + " +v ", "");
+						channelVoice(string, conversation.getChannel());
+					} else if (string.startsWith(conversation.getChannelTitle() + " -v " , 6)) {
+						string = string.replace("/mode " + conversation.getChannelTitle() + " -v ", "");
+						channelDevoice(string, conversation.getChannel());
+					}
+				} else if (string.startsWith("/kick " + conversation.getChannelTitle() + " ")){
+					string = string.replace("/kick " + conversation.getChannelTitle() + " ", "");
+					channelKick(string, "", conversation.getChannel());
+				} else if (string.startsWith("/topic " + conversation.getChannelTitle() + " ")){
+					string = string.replace("/topic " + conversation.getChannelTitle() + " ", "");
+					channelSetTopic(string, conversation.getChannel());
+				} else if (string.startsWith("/me ")){
+					string = string.replace("/me ", "");
+					channelAction(string, conversation.getChannel());
+				} else if (string.equals("/part")){
+					channelPart(conversation.getChannel());
+				} else if (string.startsWith("/join ")){
+					string = string.replace("/join ", "");
+					conversation.getChannel().getSession().join(string);
+				} else {
+					channelSay(string, conversation.getChannel());
 				}
-			} else if (string.startsWith("/kick " + conversation.getChannelTitle() + " ")){
-				string.replace("/kick " + conversation.getChannelTitle() + " ", "");
-				channelKick(string, "", conversation.getChannel());
-			} else if (string.startsWith("/topic " + conversation.getChannelTitle() + " ")){
-				string.replace("/topic " + conversation.getChannelTitle() + " ", "");
-				channelSetTopic(string, conversation.getChannel());
-			} else if (string.startsWith("/me ")){
-				string.replace("/me ", "");
-				channelAction(string, conversation.getChannel());
-			} else if (string.equals("/part")){
-				channelPart(conversation.getChannel());
+			} else if (conversation.getPriv()){
+				if (string.startsWith("/me ")){
+					string = string.replace("/me ", "");
+					channelAction(string, conversation.getChannel());
+				} else if (string.startsWith("/")){
+					string = string.replace("/", "./");
+					channelSay(string, conversation.getChannel());
+				} else {
+					channelSay(string, conversation.getChannel());
+				}
 			} else {
-				channelSay(string, conversation.getChannel());
+				if (string.startsWith("/join ")){
+					string = string.replace("/join ", "");
+					conversation.getSession().join(string);
+				}
 			}
 		}
 		
@@ -129,7 +162,6 @@ import android.widget.ListView;
 		 */
 		public void channelAction(String action, Channel channel){
 			channel.action(action);
-			conversation.addMessage(new Message("", channel.getSession().getNick() + " " + action, conversation.getTime(), 0));
 		}
 		/**
 		 * 

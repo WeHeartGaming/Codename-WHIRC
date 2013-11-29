@@ -56,7 +56,10 @@ public class Message {
 	public void setTime(String time) {
 		this.time = time;
 	}
-	
+	/**
+	 * 
+	 * @return
+	 */
 	public int getHashcode(){
 		return hashcode;
 	}

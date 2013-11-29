@@ -21,7 +21,10 @@ public class ConversationPagerAdapter extends FragmentPagerAdapter {
 	private ArrayList<ConversationFragment> fragments;
 	private FragmentManager manager;
 	
-
+	/**
+	 * 
+	 * @param fm
+	 */
     public ConversationPagerAdapter(FragmentManager fm) {
         super(fm);
         this.manager = fm;
@@ -29,6 +32,9 @@ public class ConversationPagerAdapter extends FragmentPagerAdapter {
     }
 
 	@Override
+	/**
+	 * @param index
+	 */
     public Fragment getItem(int index) {	
 
         // getItem is called to instantiate the fragment for the given page.
@@ -46,6 +52,9 @@ public class ConversationPagerAdapter extends FragmentPagerAdapter {
     }
 
     @Override
+    /**
+     * 
+     */
     public int getCount() {
         if (fragments.size() == 0) {
         	return 1;
@@ -56,6 +65,9 @@ public class ConversationPagerAdapter extends FragmentPagerAdapter {
     }
 
     @Override
+    /**
+     * @param position
+     */
     public CharSequence getPageTitle(int position) {
         if (fragments.size() == 0) {
         	return "Networks"; // TODO: internationalize
@@ -66,6 +78,9 @@ public class ConversationPagerAdapter extends FragmentPagerAdapter {
     
 
 	@Override
+	/**
+	 * @param object
+	 */
 	public int getItemPosition(Object object) {
 		Log.d("ConversationPagerAdapter", "getItemPosition ran");
 		int position = fragments.indexOf(object);
@@ -75,16 +90,24 @@ public class ConversationPagerAdapter extends FragmentPagerAdapter {
 			return POSITION_NONE;
 		}
 	}
-
+	/**
+	 * 
+	 * @param f
+	 */
 	public void addFragment(ConversationFragment f) {
     	fragments.add(f);
     	//notifyDataSetChanged();
     }
-	
+	/**
+	 * 
+	 */
 	public void removeFragments(){
 		fragments.clear();
 	}
-    
+    /**
+     * 
+     * @param position
+     */
     public void removeFragment(int position) {
     	FragmentTransaction t = manager.beginTransaction();
     	
@@ -97,7 +120,10 @@ public class ConversationPagerAdapter extends FragmentPagerAdapter {
     	fragments.remove(position);
     	notifyDataSetChanged();
     }
-    
+    /**
+     * 
+     * @param title
+     */
     public void removeFragment(String title){
     	for (ConversationFragment f : fragments){
     		if (getPageTitle(getItemPosition(f)).toString().equals(title)){

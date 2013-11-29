@@ -84,23 +84,32 @@ public class Server {
 	}
 
 
-
+	/**
+	 * 
+	 */
 	public Server() {
 		// EMPTY CONSTRUCTOR
 	}
-	
+	/**
+	 * 
+	 * @param session
+	 */
 	public Server(Session session){
 		this.simpleName = session.getRequestedConnection().getHostName();
 		this.session = session;
 		//this.conversations = new HashMap<String, Conversation>();
 		this.conversations = new ArrayList<Conversation>();
-		addConversation(new Conversation(this.simpleName));
+		addConversation(new Conversation(this.simpleName, session));
 		for (Channel c : session.getChannels()){
 			addConversation(new Conversation(c));
 		}
 	}
 
-
+	/**
+	 * 
+	 * @param title
+	 * @return
+	 */
 	public Conversation getConversation(String title) {
 		for (Conversation c : conversations){
 			if (c.getChannelTitle().equals(title)){
@@ -108,90 +117,147 @@ public class Server {
 			}
 		}
 		return null;
-		//return conversations.get(title);
 	}
-	
+	/**
+	 * 
+	 * @param i
+	 * @return
+	 */
 	public Conversation getConversation(int i) {
 		return conversations.get(i);
 	}
-	
+	/**
+	 * 
+	 * @param c
+	 */
 	public void addConversation(Conversation c) {
-		//conversations.put(c.getChannelTitle(), c);
 		conversations.add(c);
 	}
-	
+	/**
+	 * 
+	 * @param title
+	 */
 	public void removeConversation(String title) {
 		conversations.remove(title);
 	}
 	
-//	public HashMap<String, Conversation> getConversations() {
-//		return conversations;
-//	}
-	
+	/**
+	 * 
+	 * @return
+	 */
 	public ArrayList<Conversation> getConversations(){
 		return conversations;
 	}
-	
+	/**
+	 * 
+	 * @return
+	 */
 	public String getName(){
 		return name;
 	}
-	
+	/**
+	 * 
+	 * @param name
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+	/**
+	 * 
+	 * @return
+	 */
 	public Session getSession(){
 		return session;
 	}
-
+	/**
+	 * 
+	 * @return
+	 */
 	public String getNickOne() {
 		return nickOne;
 	}
-
+	/**
+	 * 
+	 * @param nickOne
+	 */
 	public void setNickOne(String nickOne) {
 		this.nickOne = nickOne;
 	}
-
+	/**
+	 * 
+	 * @return
+	 */
 	public String getNickTwo() {
 		return nickTwo;
 	}
-
+	/**
+	 * 
+	 * @param nickTwo
+	 */
 	public void setNickTwo(String nickTwo) {
 		this.nickTwo = nickTwo;
 	}
-
+	/**
+	 * 
+	 * @return
+	 */
 	public String getNickThree() {
 		return nickThree;
 	}
-
+	/**
+	 * 
+	 * @param nickThree
+	 */
 	public void setNickThree(String nickThree) {
 		this.nickThree = nickThree;
 	}
-
+	/**
+	 * 
+	 * @return
+	 */
 	public String getHost() {
 		return host;
 	}
-
+	/**
+	 * 
+	 * @param host
+	 */
 	public void setHost(String host) {
 		this.host = host;
 	}
-
+	/**
+	 * 
+	 * @return
+	 */
 	public String getPort() {
 		return port;
 	}
-
+	/**
+	 * 
+	 * @param port
+	 */
 	public void setPort(String port) {
 		this.port = port;
 	}
-
+	/**
+	 * 
+	 * @return
+	 */
 	public String getSimpleName() {
 		return simpleName;
 	}
-
+	/**
+	 * 
+	 * @param simpleName
+	 */
 	public void setSimpleName(String simpleName) {
 		this.simpleName = simpleName;
 	}
-	
+	/**
+	 * 
+	 * @param channels
+	 * @return
+	 */
 	public ArrayList<Conversation> getMatchingConversations(List<Channel> channels){
 		ArrayList<Conversation> cons = new ArrayList<Conversation>();
 		for (Conversation con : conversations){
