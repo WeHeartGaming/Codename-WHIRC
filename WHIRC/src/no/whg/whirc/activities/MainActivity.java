@@ -619,7 +619,11 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			// This is just for show
 		}
 	}
-	
+	/**
+	 * 
+	 * @param channel
+	 * @param nick
+	 */
 	private void inviteDialog(final String channel, final String nick){
 		runOnUiThread(new Runnable(){
 			public void run(){
@@ -628,7 +632,17 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			}
 		});
 	}
-	
+	/**
+	 * 
+	 * @param channels
+	 * @param nick
+	 * @param name
+	 * @param server
+	 * @param serverInfo
+	 * @param signedOn
+	 * @param idle
+	 * @param away
+	 */
 	private void whoDialog(final String[] channels, final String nick, final String name,
 			final String server, final String serverInfo, final String signedOn,
 			final boolean idle, final boolean away) {
@@ -641,7 +655,10 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			}
 		});
 	}
-	
+	/**
+	 * 
+	 * @param s
+	 */
 	private void generateFragments(Server s){
 		if (s != null){
 	        mConversationPagerAdapter = new ConversationPagerAdapter(getSupportFragmentManager());
@@ -664,16 +681,25 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			Log.e(TAG, "generateFragments(): Server is null, cannot look for conversations.");
 		}
 	}
-	
+	/**
+	 * 
+	 * @param server
+	 */
 	public void connect (String server){
 		cService.connect(server, this);
 	}
-	
+	/**
+	 * 
+	 * @param server
+	 */
 	public void changeServer(Server server){
 		cService.setCurrentServer(server);
 		generateFragments(server);
 	}
-	
+	/**
+	 * 
+	 * @param i
+	 */
 	public void changeServer(int i){
 		cService.setCurrentServer(i);
 		generateFragments(cService.getCurrentServer());

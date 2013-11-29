@@ -448,7 +448,10 @@ public class ConnectionService extends Service implements IRCEventListener {
 			Log.d(TAG, e.getType() + " : " + e.getRawEventData());
 		}
 	}
-	
+	/**
+	 * 
+	 * @return
+	 */
 	public Server getCurrentServer(){
 		if (serverList.size() > 0){
 			return serverList.get(currentServer);
@@ -456,15 +459,32 @@ public class ConnectionService extends Service implements IRCEventListener {
 			return null;
 		}
 	}
-	
+	/**
+	 * 
+	 * @param server
+	 */
 	public void setCurrentServer(Server server){
-		currentServer = serverList.indexOf(server);
+		this.currentServer = serverList.indexOf(server);
 	}
-	
+	/**
+	 * 
+	 * @param i
+	 */
+	public void setCurrentServer(int i){
+		this.currentServer = i;
+	}
+	/**
+	 * 
+	 * @return
+	 */
 	public ArrayList<Server> getServerList(){
 		return serverList;
 	}
-	
+	/**
+	 * 
+	 * @param i
+	 * @return
+	 */
 	public Server getServer(int i){
 		if (i >= serverList.size()){
 			return null;
@@ -472,45 +492,65 @@ public class ConnectionService extends Service implements IRCEventListener {
 			return serverList.get(i);
 		}
 	}
-	
-	public Server getServer(String s){
+	/**
+	 * 
+	 * @param server
+	 * @return
+	 */
+	public Server getServer(String server){
 		if (!serverList.isEmpty()){
 			for (Server serv : serverList){
-				if (serv.getName().equals(s)){
+				if (serv.getName().equals(server)){
 					return serv;
 				}
 			}
 		}
 		return null;
 	}
-	
-	public Server getServer(Session s){
+	/**
+	 * 
+	 * @param session
+	 * @return
+	 */
+	public Server getServer(Session session){
 		if (!serverList.isEmpty()){
 			for (Server serv : serverList){
-				if (serv.getSession() == s){
+				if (serv.getSession() == session){
 					return serv;
 				}
 			}
 		}
 		return null;
 	}
-	
-	public void addServer (Session s){
-		if (getServer(s.getServerInformation().getServerName()) == null){
-			Server myServer = new Server (s);
+	/**
+	 * 
+	 * @param session
+	 */
+	public void addServer (Session session){
+		if (getServer(session.getServerInformation().getServerName()) == null){
+			Server myServer = new Server(session);
 			serverList.add(myServer);
-			Log.d(TAG, "Added " + s.getConnectedHostName() + " to serverList.");
+			Log.d(TAG, "Added " + session.getConnectedHostName() + " to serverList.");
 		}
 	}
-	
+	/**
+	 * 
+	 * @return
+	 */
 	public ConnectionManager getConnection(){
 		return connection;
 	}
-	
+	/**
+	 * 
+	 * @return
+	 */
 	public ArrayList<Runnable> getThreads(){
 		return threads;
 	}
-	
+	/**
+	 * 
+	 * @return
+	 */
 	public Handler getHandler(){
 		return handler;
 	}
