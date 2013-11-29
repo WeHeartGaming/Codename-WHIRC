@@ -704,4 +704,84 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		cService.setCurrentServer(i);
 		generateFragments(cService.getCurrentServer());
 	}
+	/**
+	 * 
+	 * @param action
+	 * @param channel
+	 */
+	public void channelAction(String action, Channel channel){
+		channel.action(action);
+	}
+	/**
+	 * 
+	 * @param name
+	 * @param channel
+	 */
+	public void channelDeop(String name, Channel channel){
+		channel.deop(name);
+	}
+	/**
+	 * 
+	 * @param name
+	 * @param channel
+	 */
+	public void channelDevoice(String name, Channel channel){
+		channel.deVoice(name);
+	}
+	/**
+	 * 
+	 * @param name
+	 * @param reason
+	 * @param channel
+	 */
+	public void channelKick(String name, String reason, Channel channel){
+		channel.kick(name, reason);
+	}
+	/**
+	 * 
+	 * @param mode
+	 * @param channel
+	 */
+	public void channelMode(String mode, Channel channel){
+		channel.mode(mode);
+	}
+	/**
+	 * 
+	 * @param name
+	 * @param channel
+	 */
+	public void channelOp(String name, Channel channel){
+		channel.op(name);
+	}
+	/**
+	 * 
+	 * @param channel
+	 */
+	public void channelPart(Channel channel){
+		channel.part("");
+	}
+	/**
+	 * 
+	 * @param say
+	 * @param channel
+	 */
+	public void channelSay(String say, Channel channel){
+		channel.say(say);
+	}
+	/**
+	 * 
+	 * @param topic
+	 * @param channel
+	 */
+	public void channelSetTopic(String topic, Channel channel){
+		channel.setTopic(topic);
+	}
+	/**
+	 * 
+	 * @param name
+	 * @param channel
+	 */
+	public void channelVoice(String name, Channel channel){
+		channel.voice(name);
+	}
 }
