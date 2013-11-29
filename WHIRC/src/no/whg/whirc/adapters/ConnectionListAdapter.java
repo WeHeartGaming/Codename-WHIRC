@@ -85,4 +85,12 @@ public class ConnectionListAdapter extends BaseAdapter {
 		data.remove(position);
 		notifyDataSetChanged();
 	}
+	
+	public void refreshArray(ArrayList<Server> servers) {
+		data.clear();
+		for (Server s : servers) {
+			data.add(s);
+		}
+		notifyDataSetChanged();
+	}
 }

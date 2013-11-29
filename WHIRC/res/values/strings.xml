@@ -10,6 +10,7 @@
     
     <!-- CONNECTIONS LIST -->
     <string name="addNetwork">Add network</string>
+    <string name="editNetwork">Edit network</string>
     <string name="servername">Network name (e.g. QuakeNet)</string>
     <string name="hostname">Hostname (eg. irc.quakenet.org)</string>
     <string name="nick">Nick name (e.g. HotVanilla44)</string>
