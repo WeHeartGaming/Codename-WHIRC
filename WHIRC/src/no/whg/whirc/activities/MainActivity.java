@@ -580,7 +580,14 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			    	});
 				} else {
 			    	Log.e(TAG, "receiveEvent() JOIN_COMPLETE: Conversation " + session.getRequestedConnection().getHostName() + channel.getName() + "already exists.");
-			    	mDrawerListRight.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, conversation.getUserList()));
+			    	//mDrawerListRight.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, conversation.getUserList()));
+			    	final Conversation con = conversation;
+			    	runOnUiThread(new Runnable(){
+						public void run(){
+			    	//mDrawerListRight.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, conversation.getUserList().toArray())));
+							setrightadapter(con);
+						}
+			    	});
 				}
 				if (server == cService.getCurrentServer()){
 					generateFragments(server);
