@@ -121,7 +121,7 @@ public class ConversationPagerAdapter extends FragmentPagerAdapter {
     	notifyDataSetChanged();
     }
     /**
-     * 
+     * finds a fragment by title and removes it
      * @param title
      */
     public void removeFragment(String title){

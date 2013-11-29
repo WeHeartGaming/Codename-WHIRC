@@ -94,14 +94,14 @@ import android.widget.ListView;
 
 		}
 		/**
-		 * 
-		 * @return
+		 * Gets the channel name
+		 * @return the name
 		 */
 		public String getName() {
 			return conversation.getChannelTitle();
 		}
 		/**
-		 * 
+		 * prepares a string to be sent to the channel
 		 * @param string
 		 */
 		public void channelSend(String string){
@@ -156,7 +156,7 @@ import android.widget.ListView;
 		}
 		
 		/**
-		 * 
+		 * performs the pre-formatted action
 		 * @param action
 		 * @param channel
 		 */
@@ -164,35 +164,32 @@ import android.widget.ListView;
 			channel.action(action);
 		}
 		/**
-		 * 
+		 * performs the pre-formatted deop
 		 * @param name
 		 * @param channel
 		 */
 		public void channelDeop(String name, Channel channel){
 			channel.deop(name);
-			conversation.addMessage(new Message(conversation.getChannelTitle(), "TEMP DEOP STRING " + name, conversation.getTime(), 0));
 		}
 		/**
-		 * 
+		 * performs the pre-formatted devoice
 		 * @param name
 		 * @param channel
 		 */
 		public void channelDevoice(String name, Channel channel){
 			channel.deVoice(name);
-			conversation.addMessage(new Message(conversation.getChannelTitle(), "TEMP DEVOICE STRING " + name, conversation.getTime(), 0));
 		}
 		/**
-		 * 
+		 * performs the pre-formatted kick
 		 * @param name
 		 * @param reason
 		 * @param channel
 		 */
 		public void channelKick(String name, String reason, Channel channel){
 			channel.kick(name, reason);
-			conversation.addMessage(new Message(conversation.getChannelTitle(), "TEMP KICK STRING " + name, conversation.getTime(), 0));
 		}
 		/**
-		 * 
+		 * performs the pre-formatted mode set
 		 * @param mode
 		 * @param channel
 		 */
@@ -200,23 +197,22 @@ import android.widget.ListView;
 			channel.mode(mode);
 		}
 		/**
-		 * 
+		 * performs the pre-formatted op
 		 * @param name
 		 * @param channel
 		 */
 		public void channelOp(String name, Channel channel){
-			conversation.addMessage(new Message(conversation.getChannelTitle(), "TEMP OP STRING " + name, conversation.getTime(), 0));
 			channel.op(name);
 		}
 		/**
-		 * 
+		 * leaves the channel
 		 * @param channel
 		 */
 		public void channelPart(Channel channel){
 			channel.part("");
 		}
 		/**
-		 * 
+		 * performs the pre-formatted say
 		 * @param say
 		 * @param channel
 		 */
@@ -225,21 +221,19 @@ import android.widget.ListView;
 			conversation.addMessage(new Message(channel.getSession().getNick(), say, conversation.getTime(), say.hashCode()));
 		}
 		/**
-		 * 
+		 * performs the pre-formatted topic set
 		 * @param topic
 		 * @param channel
 		 */
 		public void channelSetTopic(String topic, Channel channel){
 			channel.setTopic(topic);
-			conversation.addMessage(new Message(conversation.getChannelTitle(), "TEMP TOPIC STRING " + topic, conversation.getTime(), 0));
 		}
 		/**
-		 * 
+		 * performs the pre-formatted voice
 		 * @param name
 		 * @param channel
 		 */
 		public void channelVoice(String name, Channel channel){
 			channel.voice(name);
-			conversation.addMessage(new Message(conversation.getChannelTitle(), "TEMP VOICE STRING " + name, conversation.getTime(), 0));
 		}
     }

@@ -251,9 +251,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
         //menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
     }
-    /**
-     * @param item
-     */
+    
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (mDrawerToggleLeft.onOptionsItemSelected(item)) {
@@ -267,19 +265,14 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
                 return super.onOptionsItemSelected(item);
         }
     }
-    /**
-     * 
-     */
+    
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             selectItem(position);
         }
     }
-    /**
-     * 
-     * @param position
-     */
+    
     private void selectItem(int position) {
         /* TODO Selection of menu item logic goes here, since we use sections we probably need an array/list of fragments
           for every network, while when we select e.g. "options" we need to start a new activity. */
@@ -287,6 +280,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
         // Bundle with args, ARG_FRAGMENT_NUMBER etc etc
     }
     /**
+     * sets action bar title
      * @param title
      */
     @Override
@@ -294,24 +288,20 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
         mTitle = title;
         getActionBar().setTitle(mTitle);
     }
-    /**
-     * @param savedInstanceState
-     */
+    
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         mDrawerToggleLeft.syncState();
     }
-    /**
-     * @param newConfig
-     */
+    
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         mDrawerToggleLeft.onConfigurationChanged(newConfig);
     }
 
-    /**
+    /**fires when the accompanying service has been bound to the app, and takes over event responses
      * @param name
      * @param binder
      */
@@ -344,7 +334,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 	    
 	    
 	}
-	/**
+	/**fires when service is disconnected, shuts down all event responses
 	 * @param name
 	 */
 	@Override
@@ -357,13 +347,14 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		
 	}
 	/**
-	 * 
-	 * @return
+	 * gets teh connectionservice object
+	 * @return the connectionservice object
 	 */
 	public ConnectionService getConnectionServiceObject() {
 		return cService;
 	}
-	/**
+	/**receives events from jerklib, and handles them on a case by case basis. unlike the corresponding function in ConnectionService, this also updates the view.
+	 * has failsafes to prevent an event from being handled twice 
 	 * @param E
 	 */
 	@Override
@@ -677,7 +668,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		}
 	}
 	/**
-	 * 
+	 * removes a specific fragment from the adapter
 	 * @param title
 	 */
 	public void removeFragment(final String title){
@@ -688,7 +679,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		});
 	}
 	/**
-	 * 
+	 * removes all fragments from the adapter
 	 */
 	public void removeFragments(){
 		runOnUiThread(new Runnable(){
@@ -702,7 +693,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		});
 	}
 	/**
-	 * 
+	 * runs an invite dialog. jerklib crashes when an invite is fired, so this is not actually used.
 	 * @param channel
 	 * @param nick
 	 */
@@ -715,7 +706,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		});
 	}
 	/**
-	 * 
+	 * opens a dialog for WHO, WHOIS and WHOWAS information
 	 * @param channels
 	 * @param nick
 	 * @param name
@@ -738,7 +729,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		});
 	}
 	/**
-	 * 
+	 * regenerates the view by updating the fragments
 	 * @param s
 	 */
 	private void generateFragments(Server s){
@@ -768,14 +759,14 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		}
 	}
 	/**
-	 * 
+	 * connects to the given server
 	 * @param server
 	 */
 	public void connect (String server){
 		cService.connect(server, this);
 	}
 	/**
-	 * 
+	 * changes the current server to the parameter server
 	 * @param server
 	 */
 	public void changeServer(Server server){
@@ -783,7 +774,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		generateFragments(server);
 	}
 	/**
-	 * 
+	 * changes the current server to the server at index i
 	 * @param i
 	 */
 	public void changeServer(int i){
