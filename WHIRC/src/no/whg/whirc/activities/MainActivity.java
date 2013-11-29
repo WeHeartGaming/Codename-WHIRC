@@ -75,6 +75,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
     private ListView mDrawerListLeft;
     private ActionBarDrawerToggle mDrawerToggleLeft;
     private String filePath;
+    private Conversation convers;
     
     private CharSequence mDrawerTitleLeft;
     private CharSequence mTitle;
@@ -108,21 +109,19 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        convers.getContext(this.getApplicationContext());
         setContentView(R.layout.activity_main);
         
         downloadServer = new ServerListDownload(this.getApplicationContext());
         server = new WhircDB(this.getApplicationContext());
         int l = server.getSize();
         
-        String t = "" + l;
-        Log.d("ServerListDownload", t );
         
         if(server.getSize() == 0)
         {
 	        try 
 	        {
 				filePath = downloadServer.execute("http://www.mirc.com/servers.ini", null, "").get();
-				Log.d("ServerListDownload", filePath);
 			}
 	        catch (InterruptedException e)
 	        {
@@ -185,7 +184,6 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		cService = null;
 		Intent intent = new Intent(this, ConnectionService.class);
 		startService(intent);
-		Log.d(TAG, "onCreate() has been run.");
     }
 
 
@@ -198,14 +196,12 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		super.onStart();
 		Intent intent = new Intent(this, ConnectionService.class);
 	    bindService(intent, this, Context.BIND_ABOVE_CLIENT);
-	    Log.d(TAG, "onStart(): Added IRCEventListeners.");
 	}
 	
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		Log.d(TAG, "onResume()");
 	}
 	
 
@@ -220,14 +216,12 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		for (Session s : cService.getSessions()){
 			s.removeIRCEventListener(this);
 		}
-		Log.d(TAG, "onStop(): Decoupled IRCEventListeners.");
 	}
 	
 	@Override
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
-		Log.d(TAG, "onPause()");
 	}
 
 
@@ -300,9 +294,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		Log.d(TAG, "onServiceConnected()");
 		cService = ((ConnectionServiceBinder) binder).getService();
 		if (cService.getSessions().isEmpty()){
-			//Session temp = cService.connect("irc.quakenet.org");
-			//cService.getSessions().get(cService.getSessions().indexOf(temp)).addIRCEventListener(this);
-			cService.connect("irc.quakenet.org", this);
+			connect("irc.quakenet.org");
 			Log.d(TAG, "onServiceConnected(): Forced a connection to quakenet for debug purposes.");
 		}
 		
@@ -544,17 +536,6 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 				}
 			}
 		} else if (e.getType() == Type.NOTICE){
-//			NoticeEvent ne = (NoticeEvent)e;
-//			Server server = cService.getServer(ne.getSession());
-//			Conversation conversation = server.getConversation(0); // 0 is always the position of the server conversation. 
-//			if (!conversation.hasMessage(ne.hashCode())){
-//				conversation.addMessage(ne);
-//			} else {
-//				Log.e(TAG, "receiveEvent() NOTICE: Message already exists, did not add it to Conversation.");
-//			}
-//			if (server == cService.getCurrentServer()){
-//				generateFragments(server);
-//			}
 			System.out.println(e.getType() + " : " + e.getRawEventData());
 		} else if (e.getType() == Type.WHO_EVENT){
 			WhoEvent we = (WhoEvent)e;
@@ -579,7 +560,6 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 				conversation.addMessage(niue, newNick);
 				niue.getSession().changeNick(newNick);
 			}
-			System.out.println(e.getType() + " : " + e.getRawEventData());
 		} else if (e.getType() == Type.NICK_LIST_EVENT){
 			NickListEvent nle = (NickListEvent)e;
 			Server server = cService.getServer(nle.getSession());
@@ -587,9 +567,18 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			conversation.makeUserList();
 		} else if (e.getType() == Type.NICK_CHANGE){
 			NickChangeEvent nce = (NickChangeEvent)e;
-			System.out.println(e.getType() + " : " + e.getRawEventData());
-		} else if (e.getType() == Type.CHANNEL_LIST_EVENT){
-			ChannelListEvent cle = (ChannelListEvent)e;
+			Server server = cService.getServer(nce.getSession());
+			ArrayList<Conversation> conversations = server.getConversations();
+			for (Conversation conversation : conversations){
+				if (conversation.hasUser(nce.getOldNick())){
+					if (!conversation.hasMessage(nce.hashCode())){
+						conversation.makeUserList();
+						conversation.addMessage(nce);
+					} else {
+						Log.e(TAG, "receiveEvent() NICK_CHANGE: NICK_CHANGE Message already exists, did not add it to Conversation.");
+					}
+				}
+			}
 			System.out.println(e.getType() + " : " + e.getRawEventData());
 		}
 			
@@ -601,7 +590,9 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			inviteDialog(ie.getChannelName(), ie.getNick());
 		}	
 		// Everything under here is being ignored.
-		else if (e.getType() == Type.UPDATE_HOST_NAME){
+		 else if (e.getType() == Type.CHANNEL_LIST_EVENT){
+				System.out.println(e.getType() + " : " + e.getRawEventData());
+		} else if (e.getType() == Type.UPDATE_HOST_NAME){
 			// We don't need this
 			System.out.println(e.getType() + " : " + e.getRawEventData());
 		} else if (e.getType() == Type.SERVER_INFORMATION){
@@ -624,7 +615,11 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			// This is just for show
 		}
 	}
-	
+	/**
+	 * 
+	 * @param channel
+	 * @param nick
+	 */
 	private void inviteDialog(final String channel, final String nick){
 		runOnUiThread(new Runnable(){
 			public void run(){
@@ -633,7 +628,17 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			}
 		});
 	}
-	
+	/**
+	 * 
+	 * @param channels
+	 * @param nick
+	 * @param name
+	 * @param server
+	 * @param serverInfo
+	 * @param signedOn
+	 * @param idle
+	 * @param away
+	 */
 	private void whoDialog(final String[] channels, final String nick, final String name,
 			final String server, final String serverInfo, final String signedOn,
 			final boolean idle, final boolean away) {
@@ -646,7 +651,10 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			}
 		});
 	}
-	
+	/**
+	 * 
+	 * @param s
+	 */
 	private void generateFragments(Server s){
 		if (s != null){
 	        mConversationPagerAdapter = new ConversationPagerAdapter(getSupportFragmentManager());
@@ -668,5 +676,108 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		} else {
 			Log.e(TAG, "generateFragments(): Server is null, cannot look for conversations.");
 		}
+	}
+	/**
+	 * 
+	 * @param server
+	 */
+	public void connect (String server){
+		cService.connect(server, this);
+	}
+	/**
+	 * 
+	 * @param server
+	 */
+	public void changeServer(Server server){
+		cService.setCurrentServer(server);
+		generateFragments(server);
+	}
+	/**
+	 * 
+	 * @param i
+	 */
+	public void changeServer(int i){
+		cService.setCurrentServer(i);
+		generateFragments(cService.getCurrentServer());
+	}
+	/**
+	 * 
+	 * @param action
+	 * @param channel
+	 */
+	public void channelAction(String action, Channel channel){
+		channel.action(action);
+	}
+	/**
+	 * 
+	 * @param name
+	 * @param channel
+	 */
+	public void channelDeop(String name, Channel channel){
+		channel.deop(name);
+	}
+	/**
+	 * 
+	 * @param name
+	 * @param channel
+	 */
+	public void channelDevoice(String name, Channel channel){
+		channel.deVoice(name);
+	}
+	/**
+	 * 
+	 * @param name
+	 * @param reason
+	 * @param channel
+	 */
+	public void channelKick(String name, String reason, Channel channel){
+		channel.kick(name, reason);
+	}
+	/**
+	 * 
+	 * @param mode
+	 * @param channel
+	 */
+	public void channelMode(String mode, Channel channel){
+		channel.mode(mode);
+	}
+	/**
+	 * 
+	 * @param name
+	 * @param channel
+	 */
+	public void channelOp(String name, Channel channel){
+		channel.op(name);
+	}
+	/**
+	 * 
+	 * @param channel
+	 */
+	public void channelPart(Channel channel){
+		channel.part("");
+	}
+	/**
+	 * 
+	 * @param say
+	 * @param channel
+	 */
+	public void channelSay(String say, Channel channel){
+		channel.say(say);
+	}
+	/**
+	 * 
+	 * @param topic
+	 * @param channel
+	 */
+	public void channelSetTopic(String topic, Channel channel){
+		channel.setTopic(topic);
+	}
+	/**
+	 * 
+	 * @param name
+	 * @param channel
+	 */
+	public void channelVoice(String name, Channel channel){
+		channel.voice(name);
 	}
 }

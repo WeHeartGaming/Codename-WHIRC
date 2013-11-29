@@ -44,6 +44,31 @@ public class Server {
 		this.password = password;
 	}
 	
+	
+	
+	/**
+	 * @param nickOne
+	 * @param nickTwo
+	 * @param nickThree
+	 * @param name
+	 * @param host
+	 * @param port
+	 * @param simpleName
+	 */
+	public Server(String nickOne, String nickTwo, String nickThree,
+			String name, String host, String port, String simpleName) {
+		super();
+		this.nickOne = nickOne;
+		this.nickTwo = nickTwo;
+		this.nickThree = nickThree;
+		this.name = name;
+		this.host = host;
+		this.port = port;
+		this.simpleName = simpleName;
+	}
+
+
+
 	public Server() {
 		// EMPTY CONSTRUCTOR
 	}

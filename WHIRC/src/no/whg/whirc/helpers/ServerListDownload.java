@@ -22,9 +22,8 @@ import android.util.Log;
 
 /**
  * 
- * @author Peer Andreas Stange
+ * @author Peer Andreas
  *
- * @param String the input for the doInBackground
  */
 public class ServerListDownload extends AsyncTask<String, Integer, String>
 {
@@ -35,6 +34,10 @@ public class ServerListDownload extends AsyncTask<String, Integer, String>
 	private ServerParser iniParser;
 	String filePath;
 	
+	/**
+	 * 
+	 * @param c Passes the apps context
+	 */
 	public ServerListDownload(Context c)
 	{
 		context = c;
@@ -42,28 +45,9 @@ public class ServerListDownload extends AsyncTask<String, Integer, String>
 		iniParser = new ServerParser(context);
 	}
 	
-	public static boolean isDownloadManagerAvailable(Context context)
-	{
-		
-		try
-		{
-			if(Build.VERSION.SDK_INT < Build.VERSION_CODES.GINGERBREAD)
-			{
-				return false;
-			}
-			Intent intent = new Intent(Intent.ACTION_MAIN);
-			intent.addCategory(Intent.CATEGORY_LAUNCHER);
-			intent.setClassName("com.android.providers.download.ui", "com.android.providers.download.ui.DownloadList");
-			List<ResolveInfo> list = context.getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
-			
-			return list.size() > 0;
-		}
-		catch(Exception e)
-		{
-			return false;
-		}
-	}
-
+	/**
+	 *  Function that runs on separate thread from the UI
+	 */
 	@Override
 	protected String doInBackground(String... arg0)
 	{
@@ -91,19 +75,23 @@ public class ServerListDownload extends AsyncTask<String, Integer, String>
 			Log.d("ServerListDownload", E.toString());
 		}
 			
-		// TODO Auto-generated method stub
+
 		return filePath;
 	}
 	
+	/**
+	 * 
+	 *  Function that runs automatically after doInBackground ends
+	 *  @param result The string that is passed from doInBackgrounds return
+	 *  
+	 */
 	@Override
 	protected void onPostExecute(String result)
 	{
-		Log.d("parserInfo", result);
-		Log.d("parserInfo", filePath);
 		
 		try 
         {
-			iniParser.parseIni(result);
+			iniParser.parseIni(result);	//parses the info downloaded from mirc.com/servers.ini
 		} 
         catch (InvalidFileFormatException e)
 		{
