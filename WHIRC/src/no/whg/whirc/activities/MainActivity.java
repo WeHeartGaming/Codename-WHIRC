@@ -563,16 +563,24 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			Server server = cService.getServer(session.getRequestedConnection().getHostName());
 			
 			if (server != null){
-				elw.setAdapter(elwAdapter);
+				elwsetadapter();
+				//elw.setAdapter(elwAdapter);
 				conversation = server.getConversation(channel.getName());
 				
 				if (conversation == null){
 			    	conversation = new Conversation(channel);
 			    	server.addConversation(conversation);
-			    	//mDrawerListRight.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, conversation.getUserList()));
+			    	//setrightadapter(conversation);
+			    	final Conversation con = conversation;
+			    	runOnUiThread(new Runnable(){
+						public void run(){
+			    	//mDrawerListRight.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, conversation.getUserList().toArray())));
+							setrightadapter(con);
+						}
+			    	});
 				} else {
 			    	Log.e(TAG, "receiveEvent() JOIN_COMPLETE: Conversation " + session.getRequestedConnection().getHostName() + channel.getName() + "already exists.");
-			    	//mDrawerListRight.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, conversation.getUserList()));
+			    	mDrawerListRight.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, conversation.getUserList()));
 				}
 				if (server == cService.getCurrentServer()){
 					generateFragments(server);
@@ -842,5 +850,21 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 	public void changeServer(int i){
 		cService.setCurrentServer(i);
 		generateFragments(cService.getCurrentServer());
+	}
+	public void elwsetadapter(){
+		runOnUiThread(new Runnable(){
+			public void run(){
+				//elwAdapter.addServer(s);
+		    	elw.setAdapter(elwAdapter);
+			}
+		});
+	}
+	
+	public void setrightadapter(Conversation conversation){
+		//runOnUiThread(new Runnable(){
+			//public void run(){
+				mDrawerListRight.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, conversation.getUserList()));
+			//}
+		//});
 	}
 }
