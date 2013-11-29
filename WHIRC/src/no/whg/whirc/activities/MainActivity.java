@@ -118,7 +118,6 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 	        try 
 	        {
 				filePath = downloadServer.execute("http://www.mirc.com/servers.ini", null, "").get();
-				Log.d("ServerListDownload", filePath);
 			}
 	        catch (InterruptedException e)
 	        {
@@ -181,7 +180,6 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		cService = null;
 		Intent intent = new Intent(this, ConnectionService.class);
 		startService(intent);
-		Log.d(TAG, "onCreate() has been run.");
     }
 
 
@@ -194,14 +192,12 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		super.onStart();
 		Intent intent = new Intent(this, ConnectionService.class);
 	    bindService(intent, this, Context.BIND_ABOVE_CLIENT);
-	    Log.d(TAG, "onStart(): Added IRCEventListeners.");
 	}
 	
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		Log.d(TAG, "onResume()");
 	}
 	
 
@@ -216,14 +212,12 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		for (Session s : cService.getSessions()){
 			s.removeIRCEventListener(this);
 		}
-		Log.d(TAG, "onStop(): Decoupled IRCEventListeners.");
 	}
 	
 	@Override
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
-		Log.d(TAG, "onPause()");
 	}
 
 
@@ -296,8 +290,6 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		Log.d(TAG, "onServiceConnected()");
 		cService = ((ConnectionServiceBinder) binder).getService();
 		if (cService.getSessions().isEmpty()){
-			//Session temp = cService.connect("irc.quakenet.org");
-			//cService.getSessions().get(cService.getSessions().indexOf(temp)).addIRCEventListener(this);
 			connect("irc.quakenet.org");
 			Log.d(TAG, "onServiceConnected(): Forced a connection to quakenet for debug purposes.");
 		}
