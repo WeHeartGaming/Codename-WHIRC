@@ -186,11 +186,11 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
         mConnectionPagerAdapter = new ConnectionPagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mConnectionPagerAdapter);
         
-        ArrayList<Server> tempS = new ArrayList<Server>();
-        ArrayList<Conversation> tempC = new ArrayList<Conversation>();
-        tempC.add(new Conversation("Nothing"));
-        tempS.add(new Server("Nothing", tempC));
-        elwAdapter = new LeftMenuAdapter(tempS, this);
+//        ArrayList<Server> tempS = new ArrayList<Server>();
+//        ArrayList<Conversation> tempC = new ArrayList<Conversation>();
+//        tempC.add(new Conversation("Nothing"));
+//        tempS.add(new Server("Nothing", tempC));
+        elwAdapter = new LeftMenuAdapter(servers, this);
         elw.setAdapter(elwAdapter);
 	    
 		cService = null;
