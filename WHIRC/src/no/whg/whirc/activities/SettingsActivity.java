@@ -38,6 +38,7 @@ public class SettingsActivity extends PreferenceActivity {
 		
 		// Allows the user to go back home via the top-left button
 		getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setHomeButtonEnabled(true);
 		
 		// Sets the correct fragment
 		getFragmentManager().beginTransaction().replace(android.R.id.content, new SettingsFragment()).commit();

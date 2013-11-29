@@ -46,6 +46,22 @@ public class Server {
 	
 	
 	
+	
+	
+	/**
+	 * @param simpleName
+	 * @param conversations
+	 */
+	public Server(String simpleName, ArrayList<Conversation> conversations) {
+		super();
+		this.simpleName = simpleName;
+		this.conversations = conversations;
+	}
+
+
+
+
+
 	/**
 	 * @param nickOne
 	 * @param nickTwo
