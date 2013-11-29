@@ -343,7 +343,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		Log.d(TAG, "onServiceConnected()");
 		cService = ((ConnectionServiceBinder) binder).getService();
 		if (cService.getSessions().isEmpty()){
-			connect("irc.freenode.net");
+			connect("irc.quakenet.org");
 			Log.e(TAG, "onServiceConnected(): Forced a connection to quakenet for debug purposes.");
 		} 
 		
@@ -412,9 +412,8 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		    		
 		    		removeFragments();
 					generateFragments(server);
-					//generateLeftMenu(server);
-					elwAdapter.notifyDataSetChanged();
-					elwAdapter.notifyDataSetInvalidated();
+					generateLeftMenu(server);
+					
 					
 				}
 		    } else {
@@ -566,11 +565,14 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			if (server != null){
 				elw.setAdapter(elwAdapter);
 				conversation = server.getConversation(channel.getName());
+				
 				if (conversation == null){
 			    	conversation = new Conversation(channel);
 			    	server.addConversation(conversation);
+			    	//mDrawerListRight.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, conversation.getUserList()));
 				} else {
 			    	Log.e(TAG, "receiveEvent() JOIN_COMPLETE: Conversation " + session.getRequestedConnection().getHostName() + channel.getName() + "already exists.");
+			    	//mDrawerListRight.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, conversation.getUserList()));
 				}
 				if (server == cService.getCurrentServer()){
 					generateFragments(server);
@@ -723,6 +725,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		runOnUiThread(new Runnable(){
 			public void run(){
 				mConversationPagerAdapter.removeFragment(title);
+				mConversationPagerAdapter.notifyDataSetChanged();
 			}
 		});
 	}

@@ -56,11 +56,12 @@ public class ConversationPagerAdapter extends FragmentPagerAdapter {
      * 
      */
     public int getCount() {
-        if (fragments.size() == 0) {
-        	return 1;
-        } else {
-        	return fragments.size();
-        }
+//        if (fragments.size() == 0) {
+//        	return 1;
+//        } else {
+//        	return fragments.size();
+//        }
+    	return fragments.size();
 
     }
 
