@@ -1,7 +1,7 @@
 package no.whg.whirc.models;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 
 import jerklib.Channel;
 import jerklib.Session;
@@ -151,5 +151,15 @@ public class Server {
 		this.simpleName = simpleName;
 	}
 	
-	
+	public ArrayList<Conversation> getMatchingConversations(List<Channel> channels){
+		ArrayList<Conversation> cons = new ArrayList<Conversation>();
+		for (Conversation con : conversations){
+			for (Channel chan : channels){
+				if (con.getChannelTitle().equals(chan.getName())){
+					cons.add(con);
+				}
+			}
+		}
+		return cons;
+	}
 }
