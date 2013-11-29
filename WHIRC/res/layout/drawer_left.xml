@@ -59,8 +59,8 @@
     	android:layout_height="1dp"
     	android:background="@android:color/darker_gray"/>
 
-    <ListView
-        android:id="@+id/lw_networks"
+    <ExpandableListView
+        android:id="@+id/elw_networks"
         android:layout_width="match_parent"
         android:layout_height="0dip"
         android:transcriptMode="alwaysScroll" />
