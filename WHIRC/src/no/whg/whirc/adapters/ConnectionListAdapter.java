@@ -75,4 +75,14 @@ public class ConnectionListAdapter extends BaseAdapter {
 		
 		return v;
 	}
+	
+	public void addServer(Server s) {
+		data.add(s);
+		notifyDataSetChanged();
+	}
+	
+	public void removeServer(int position) {
+		data.remove(position);
+		notifyDataSetChanged();
+	}
 }
