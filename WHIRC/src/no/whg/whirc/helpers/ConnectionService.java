@@ -490,7 +490,7 @@ public class ConnectionService extends Service implements IRCEventListener {
 	public Server getServer(String server){
 		if (!serverList.isEmpty()){
 			for (Server serv : serverList){
-				if (serv.getName().equals(server)){
+				if (serv.getSimpleName().equals(server)){
 					return serv;
 				}
 			}

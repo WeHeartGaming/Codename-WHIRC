@@ -294,14 +294,14 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		cService = ((ConnectionServiceBinder) binder).getService();
 		if (cService.getSessions().isEmpty()){
 			connect("irc.quakenet.org");
-			Log.d(TAG, "onServiceConnected(): Forced a connection to quakenet for debug purposes.");
+			Log.e(TAG, "onServiceConnected(): Forced a connection to quakenet for debug purposes.");
 		}
 		
 		for (Session s : cService.getSessions()){
 			s.addIRCEventListener(this);
-			if (!s.isConnected()){
-				cService.connect(s.getServerInformation().getServerName(), this);
-			}
+//			if (!s.isConnected()){
+//				cService.connect(s.getServerInformation().getServerName(), this);
+//			}
 		}
 	    
 	    Server s = cService.getCurrentServer();
@@ -486,7 +486,6 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			} else {
 				Log.e(TAG, "receiveEvent() JOIN_COMPLETE: This server does not exist.");
 			}
-			Log.e(TAG, "receiveEvent() JOIN_COMPLETE.");
 		} else if (e.getType() == Type.CTCP_EVENT){
 			CtcpEvent ce = (CtcpEvent)e;
 			String cm = ce.getCtcpString();
@@ -570,6 +569,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			ArrayList<Conversation> conversations = server.getConversations();
 			for (Conversation conversation : conversations){
 				if (conversation.hasUser(nce.getOldNick())){
+					Log.d(TAG, nce.getOldNick());
 					if (!conversation.hasMessage(nce.hashCode())){
 						conversation.makeUserList();
 						conversation.addMessage(nce);
@@ -578,7 +578,6 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 					}
 				}
 			}
-			System.out.println(e.getType() + " : " + e.getRawEventData());
 		}
 			
 
