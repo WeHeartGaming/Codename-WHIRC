@@ -532,21 +532,18 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 					generateFragments(server);
 				}
 			}
-		} else if (e.getType() == Type.CHANNEL_LIST_EVENT){
-			ChannelListEvent cle = (ChannelListEvent)e;
-			System.out.println(e.getType() + " : " + e.getRawEventData());
-		} else if (e.getType() == Type.NICK_CHANGE){
-			NickChangeEvent nce = (NickChangeEvent)e;
-			System.out.println(e.getType() + " : " + e.getRawEventData());
-		} else if (e.getType() == Type.NICK_IN_USE){
-			NickInUseEvent niue = (NickInUseEvent)e;
-			System.out.println(e.getType() + " : " + e.getRawEventData());
-		} else if (e.getType() == Type.NICK_LIST_EVENT){
-			NickListEvent nle = (NickListEvent)e;
-			System.out.println(e.getType() + " : " + e.getRawEventData());
 		} else if (e.getType() == Type.NOTICE){
 			NoticeEvent ne = (NoticeEvent)e;
-			System.out.println(e.getType() + " : " + e.getRawEventData());
+			Server server = cService.getServer(ne.getSession());
+			Conversation conversation = server.getConversation(0); // 0 is always the position of the server conversation. 
+			if (!conversation.hasMessage(ne.hashCode())){
+				conversation.addMessage(ne);
+			} else {
+				Log.e(TAG, "receiveEvent() NOTICE: Message already exists, did not add it to Conversation.");
+			}
+			if (server == cService.getCurrentServer()){
+				generateFragments(server);
+			}
 		} else if (e.getType() == Type.WHO_EVENT){
 			WhoEvent we = (WhoEvent)e;
 			String[] temp = new String [1];
@@ -559,6 +556,18 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		} else if (e.getType() == Type.WHOWAS_EVENT){
 			WhowasEvent we = (WhowasEvent)e;
 			whoDialog(null, we.getNick(), we.getRealName(), "", "", "", false, false);
+		} else if (e.getType() == Type.CHANNEL_LIST_EVENT){
+			ChannelListEvent cle = (ChannelListEvent)e;
+			System.out.println(e.getType() + " : " + e.getRawEventData());
+		} else if (e.getType() == Type.NICK_CHANGE){
+			NickChangeEvent nce = (NickChangeEvent)e;
+			System.out.println(e.getType() + " : " + e.getRawEventData());
+		} else if (e.getType() == Type.NICK_IN_USE){
+			NickInUseEvent niue = (NickInUseEvent)e;
+			System.out.println(e.getType() + " : " + e.getRawEventData());
+		} else if (e.getType() == Type.NICK_LIST_EVENT){
+			NickListEvent nle = (NickListEvent)e;
+			System.out.println(e.getType() + " : " + e.getRawEventData());
 		}
 			
 

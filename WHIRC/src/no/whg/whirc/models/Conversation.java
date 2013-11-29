@@ -10,6 +10,7 @@ import jerklib.events.JoinEvent;
 import jerklib.events.KickEvent;
 import jerklib.events.MessageEvent;
 import jerklib.events.MotdEvent;
+import jerklib.events.NoticeEvent;
 import jerklib.events.PartEvent;
 import jerklib.events.QuitEvent;
 import jerklib.events.ServerVersionEvent;
@@ -115,6 +116,10 @@ public class Conversation {
 	
 	public void addMessage(QuitEvent qe){
 		addMessage(new Message(getChannelTitle(), "User " + qe.getNick() + " has quit IRC (" + qe.getUserName() + "@" + qe.getHostName() + "):\n" + qe.getQuitMessage(), getTime(), qe.hashCode()));
+	}
+	
+	public void addMessage(NoticeEvent ne){
+		addMessage(new Message(ne.byWho(), ne.getNoticeMessage(), getTime(), ne.hashCode()));
 	}
 
     public String getChannelTitle(){
