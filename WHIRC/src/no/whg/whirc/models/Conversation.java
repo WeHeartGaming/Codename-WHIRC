@@ -11,7 +11,7 @@ import jerklib.events.JoinEvent;
 import jerklib.events.KickEvent;
 import jerklib.events.MessageEvent;
 import jerklib.events.MotdEvent;
-import jerklib.events.NickListEvent;
+import jerklib.events.NickInUseEvent;
 import jerklib.events.NoticeEvent;
 import jerklib.events.PartEvent;
 import jerklib.events.QuitEvent;
@@ -32,6 +32,9 @@ public class Conversation {
     private Channel channel;
     private String channelTitle;
     private ArrayList<String> userList;
+    private List<String> voices;
+    private List<String> ops;
+    private List<String> users;
     //private char oSymbol = 'o';
 
     public Conversation(Channel channel){
@@ -59,10 +62,10 @@ public class Conversation {
         messages = new ArrayList<Message>();
     }
     
-    public void makeUserList(NickListEvent nle){
-    	List<String> voices = channel.getNicksForMode(ModeAdjustment.Action.PLUS, 'v');
-    	List<String> ops = channel.getNicksForMode(ModeAdjustment.Action.PLUS, 'o');
-    	List<String> users = new ArrayList<String>();
+    public void makeUserList(){
+    	this.ops = channel.getNicksForMode(ModeAdjustment.Action.PLUS, 'o');
+    	this.voices = channel.getNicksForMode(ModeAdjustment.Action.PLUS, 'v');
+    	this.users = new ArrayList<String>();
     	
     	for (String s : channel.getNicks()){
 		  	if (!ops.contains(s) && !voices.contains(s)){
@@ -70,6 +73,10 @@ public class Conversation {
 		  	}
 	  	}
 	  	
+    	updateUserList();
+    }
+    
+    private void updateUserList(){
     	this.userList = new ArrayList<String>();
     	String opSymbol = "@ ";
     	String voiceSymbol = "+ ";
@@ -83,6 +90,61 @@ public class Conversation {
 	  	for (String user : users){
 	  		userList.add(user);
 	  	}
+	  	Log.d(TAG, userList.toString());
+    }
+    
+    public void addUser(String user, String mode){
+		String opSymbol = "@ ";
+    	String voiceSymbol = "+ ";
+    	if (mode.equals(opSymbol)){
+    		ops.add(opSymbol.concat(user));
+    	} else if (mode.equals(voiceSymbol)){
+    		voices.add(voiceSymbol.concat(user));
+    	} else {
+    		users.add(user);
+    	}
+    	updateUserList();
+    }
+    
+    public void addUser(String user){
+    	users.add(user);
+    	updateUserList();
+    }
+    
+    public void removeUser(String user){
+    	char temp = fetchMode(user);
+    	switch (temp){
+    	case 'o':
+    		ops.remove(user);
+    		break;
+    	case 'v':
+    		voices.remove(user);
+    		break;
+    	case 'u':
+    		users.remove(user);
+    		break;
+    		}
+    	updateUserList();
+    }
+    
+    public void changeMode(String user, String mode){
+    	removeUser(user);
+    	addUser(user, mode);
+    }
+    
+    private char fetchMode(String user){
+		Log.e(TAG, user);
+    	for (String op : ops){
+    		if (op.equals(user)){
+    			return 'o';
+    		}
+    	}
+    	for (String voice : voices){
+    		if (voice.equals(user)){
+    			return 'v';
+    		}
+    	}
+    	return 'u';
     }
     
     public ArrayList<String> getUserList(){
@@ -156,6 +218,10 @@ public class Conversation {
 	
 	public void addMessage(NoticeEvent ne){
 		addMessage(new Message(ne.byWho(), ne.getNoticeMessage(), getTime(), ne.hashCode()));
+	}
+	
+	public void addMessage(NickInUseEvent niue, String newNick){
+		addMessage(new Message(niue.getSession().getConnectedHostName(), "Your nickname " + niue.getInUseNick() + " is invalid. Changing to " + newNick + ".", getTime(), niue.hashCode()));
 	}
 
     public String getChannelTitle(){
