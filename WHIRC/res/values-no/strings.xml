@@ -83,19 +83,23 @@
     <string name="title_section3">Section 3</string>
     
     <string name="user">Bruker</string>
-    <string name="userJoinChannel">Bruker %s har kommet inn i kanalen</string>	<!-- username -->
-    <string name="userLeftChannel">Bruker %s har avsluttet</string> <!-- username -->
-    <string name="userBanned">%s ble bannlyst av</string> <!-- username -->
-    <string name="userChangeName">%s er nå kjent som</string> <!-- old username -->
-    <string name="userKicked">Bruker %s ble sparket fra kanalen</string> <!-- username -->
-    <string name="userName"> %s</string> <!-- username -->
-    <string name="userPromoted">%s ble forfremmet til </string> <!-- username -->
-    <string name="title"> %s</string> <!-- title -->
+    <string name="userJoinChannel"> har kommet inn i kanalen</string>	<!-- username -->
+    <string name="userLeftChannel"> har avsluttet</string> <!-- username -->
+    <string name="userBanned"> ble bannlyst av</string> <!-- username -->
+    <string name="userChangeName"> er nå kjent som</string> <!-- old username -->
+    <string name="userKicked"> ble sparket fra kanalen</string> <!-- username -->
+    <string name="userPromoted"> ble forfremmet til </string> <!-- username -->
     
     <string name="awayStatus">Du er nå listet som BORTE</string>
-    <string name="modeSet">Modus satt til %s</string>
+    <string name="modeSet">Modus satt til </string>
     <string name="noLongerAway">Du er ikke lenger listet som BORTE</string>
-    <string name="othersAwayStatus">%s er nå listet som BORTE</string>
-    <string name="othersNoLongerAway">%s er ikke lenger listet som BORTE</string>
+    <string name="othersAwayStatus"> er nå listet som BORTE</string>
+    <string name="othersNoLongerAway"> er ikke lenger listet som BORTE</string>
+    
+    <string name="setBy">\nSatt av </string>
+    <string name="on"> på </string>
+    <string name="yourNick">Kallenavnet ditt </string>
+    <string name="isInvalid"> er ugyldig. Bytter til </string>
+    <string name="changedNick"> har endret kallenavn til </string>
     
 </resources>
