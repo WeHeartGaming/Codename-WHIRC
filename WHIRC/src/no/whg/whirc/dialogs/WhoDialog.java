@@ -39,9 +39,12 @@ public class WhoDialog extends DialogFragment {
 	
 	public WhoDialog(String[] channels, String nick, String name, 
 			String server, String serverInfo, String signedOn, boolean idle, boolean away) {
-		for (int i = 0; i < channels.length; i++) {
-			this.channels += ("@#" + channels[i] + " ");
+		if (channels != null) {
+			for (int i = 0; i < channels.length; i++) {
+				this.channels += ("@#" + channels[i] + " ");
+			}
 		}
+		
 		this.nick = nick;
 		this.name = name;
 		this.server = server;
