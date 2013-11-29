@@ -11,6 +11,7 @@ import jerklib.events.JoinEvent;
 import jerklib.events.KickEvent;
 import jerklib.events.MessageEvent;
 import jerklib.events.MotdEvent;
+import jerklib.events.NickChangeEvent;
 import jerklib.events.NickInUseEvent;
 import jerklib.events.NoticeEvent;
 import jerklib.events.PartEvent;
@@ -133,7 +134,6 @@ public class Conversation {
     }
     
     private char fetchMode(String user){
-		Log.e(TAG, user);
     	for (String op : ops){
     		if (op.equals(user)){
     			return 'o';
@@ -145,6 +145,25 @@ public class Conversation {
     		}
     	}
     	return 'u';
+    }
+    
+    public boolean hasUser(String user){
+    	for (String op : ops){
+    		if (op.equals(user)){
+    			return true;
+    		}
+    	}
+    	for (String voice : voices){
+    		if (voice.equals(user)){
+    			return true;
+    		}
+    	}
+    	for (String u : users){
+    		if (u.equals(user)){
+    			return true;
+    		}
+    	}
+    	return false;
     }
     
     public ArrayList<String> getUserList(){
@@ -223,6 +242,10 @@ public class Conversation {
 	public void addMessage(NickInUseEvent niue, String newNick){
 		addMessage(new Message(niue.getSession().getConnectedHostName(), "Your nickname " + niue.getInUseNick() + " is invalid. Changing to " + newNick + ".", getTime(), niue.hashCode()));
 	}
+	
+	public void addMessage(NickChangeEvent nce){
+		addMessage(new Message(getChannelTitle(), "User " + nce.getOldNick() + " has changed nick to " + nce.getNewNick(), getTime(), nce.hashCode()));
+	}
 
     public String getChannelTitle(){
         return channelTitle;
@@ -242,5 +265,9 @@ public class Conversation {
         Calendar cal = Calendar.getInstance();
 
         return cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE);
+    }
+    
+    public Channel getChannel(){
+    	return this.channel;
     }
 }

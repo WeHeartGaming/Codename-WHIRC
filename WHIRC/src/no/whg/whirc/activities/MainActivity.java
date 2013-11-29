@@ -575,7 +575,6 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 				conversation.addMessage(niue, newNick);
 				niue.getSession().changeNick(newNick);
 			}
-			System.out.println(e.getType() + " : " + e.getRawEventData());
 		} else if (e.getType() == Type.NICK_LIST_EVENT){
 			NickListEvent nle = (NickListEvent)e;
 			Server server = cService.getServer(nle.getSession());
@@ -583,9 +582,18 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			conversation.makeUserList();
 		} else if (e.getType() == Type.NICK_CHANGE){
 			NickChangeEvent nce = (NickChangeEvent)e;
-			System.out.println(e.getType() + " : " + e.getRawEventData());
-		} else if (e.getType() == Type.CHANNEL_LIST_EVENT){
-			ChannelListEvent cle = (ChannelListEvent)e;
+			Server server = cService.getServer(nce.getSession());
+			ArrayList<Conversation> conversations = server.getConversations();
+			for (Conversation conversation : conversations){
+				if (conversation.hasUser(nce.getOldNick())){
+					if (!conversation.hasMessage(nce.hashCode())){
+						conversation.makeUserList();
+						conversation.addMessage(nce);
+					} else {
+						Log.e(TAG, "receiveEvent() NICK_CHANGE: NICK_CHANGE Message already exists, did not add it to Conversation.");
+					}
+				}
+			}
 			System.out.println(e.getType() + " : " + e.getRawEventData());
 		}
 			
@@ -597,7 +605,9 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			inviteDialog(ie.getChannelName(), ie.getNick());
 		}	
 		// Everything under here is being ignored.
-		else if (e.getType() == Type.UPDATE_HOST_NAME){
+		 else if (e.getType() == Type.CHANNEL_LIST_EVENT){
+				System.out.println(e.getType() + " : " + e.getRawEventData());
+		} else if (e.getType() == Type.UPDATE_HOST_NAME){
 			// We don't need this
 			System.out.println(e.getType() + " : " + e.getRawEventData());
 		} else if (e.getType() == Type.SERVER_INFORMATION){
