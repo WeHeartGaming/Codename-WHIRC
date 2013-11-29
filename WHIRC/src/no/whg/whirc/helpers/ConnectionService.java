@@ -154,7 +154,7 @@ public class ConnectionService extends Service implements IRCEventListener {
 		final Runnable thread = new Runnable() {
 			@Override
 			public void run() {
-				Log.d(TAG, "Connection thread started! [connect() called]");
+				Log.d(TAG, "Connection thread started! [connect() called from ConnectionService]");
 				Session mySession = null;
 				mySession = connection.requestConnection(server);
 				mySession.addIRCEventListener(service);
@@ -169,7 +169,7 @@ public class ConnectionService extends Service implements IRCEventListener {
 		final Runnable thread = new Runnable() {
 			@Override
 			public void run() {
-				Log.d(TAG, "Connection thread started! [connect() called]");
+				Log.d(TAG, "Connection thread started! [connect() called from MainActivity]");
 				Session mySession = null;
 				mySession = connection.requestConnection(server);
 				mySession.addIRCEventListener(service);

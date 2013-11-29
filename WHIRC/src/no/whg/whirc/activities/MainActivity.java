@@ -371,6 +371,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 				generateFragments(server);
 			}
 		} else if (e.getType() == Type.JOIN){
+			System.out.println(e.getType() + " : " + e.getRawEventData());
 			JoinEvent je = (JoinEvent)e;
 			Server server = cService.getServer(je.getSession());
 			Conversation conversation = server.getConversation(je.getChannel().getName());
@@ -383,6 +384,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 				generateFragments(server);
 			}
 		} else if (e.getType() == Type.PART){
+			System.out.println(e.getType() + " : " + e.getRawEventData());
 			PartEvent pe = (PartEvent)e;
 			Server server = cService.getServer(pe.getSession());
 			Conversation conversation = server.getConversation(pe.getChannel().getName());
@@ -486,6 +488,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			} else {
 				Log.e(TAG, "receiveEvent() JOIN_COMPLETE: This server does not exist.");
 			}
+			Log.e(TAG, "receiveEvent() JOIN_COMPLETE.");
 		} else if (e.getType() == Type.CTCP_EVENT){
 			CtcpEvent ce = (CtcpEvent)e;
 			String cm = ce.getCtcpString();
@@ -533,17 +536,18 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 				}
 			}
 		} else if (e.getType() == Type.NOTICE){
-			NoticeEvent ne = (NoticeEvent)e;
-			Server server = cService.getServer(ne.getSession());
-			Conversation conversation = server.getConversation(0); // 0 is always the position of the server conversation. 
-			if (!conversation.hasMessage(ne.hashCode())){
-				conversation.addMessage(ne);
-			} else {
-				Log.e(TAG, "receiveEvent() NOTICE: Message already exists, did not add it to Conversation.");
-			}
-			if (server == cService.getCurrentServer()){
-				generateFragments(server);
-			}
+//			NoticeEvent ne = (NoticeEvent)e;
+//			Server server = cService.getServer(ne.getSession());
+//			Conversation conversation = server.getConversation(0); // 0 is always the position of the server conversation. 
+//			if (!conversation.hasMessage(ne.hashCode())){
+//				conversation.addMessage(ne);
+//			} else {
+//				Log.e(TAG, "receiveEvent() NOTICE: Message already exists, did not add it to Conversation.");
+//			}
+//			if (server == cService.getCurrentServer()){
+//				generateFragments(server);
+//			}
+			System.out.println(e.getType() + " : " + e.getRawEventData());
 		} else if (e.getType() == Type.WHO_EVENT){
 			WhoEvent we = (WhoEvent)e;
 			String[] temp = new String [1];
@@ -560,14 +564,18 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			ChannelListEvent cle = (ChannelListEvent)e;
 			System.out.println(e.getType() + " : " + e.getRawEventData());
 		} else if (e.getType() == Type.NICK_CHANGE){
+			System.out.println(e.getType() + " : " + e.getRawEventData());
 			NickChangeEvent nce = (NickChangeEvent)e;
 			System.out.println(e.getType() + " : " + e.getRawEventData());
 		} else if (e.getType() == Type.NICK_IN_USE){
 			NickInUseEvent niue = (NickInUseEvent)e;
 			System.out.println(e.getType() + " : " + e.getRawEventData());
 		} else if (e.getType() == Type.NICK_LIST_EVENT){
-			NickListEvent nle = (NickListEvent)e;
 			System.out.println(e.getType() + " : " + e.getRawEventData());
+			NickListEvent nle = (NickListEvent)e;
+			Server server = cService.getServer(nle.getSession());
+			Conversation conversation = server.getConversation(nle.getChannel().getName());
+			conversation.makeUserList(nle);
 		}
 			
 
@@ -583,15 +591,20 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			System.out.println(e.getType() + " : " + e.getRawEventData());
 		} else if (e.getType() == Type.SERVER_INFORMATION){
 			// Fuck this
+			System.out.println(e.getType() + " : " + e.getRawEventData());
 		} else if (e.getType() == Type.DCC_EVENT){
 			// We don't need this
+			System.out.println(e.getType() + " : " + e.getRawEventData());
 		} else if (e.getType() == Type.ERROR){
 			// We don't need this
+			System.out.println(e.getType() + " : " + e.getRawEventData());
 		} else if (e.getType() == Type.EXCEPTION){
 			// We don't need this
 			// TODO: I don't even pretend to know
+			System.out.println(e.getType() + " : " + e.getRawEventData());
 		} else if (e.getType() == Type.DEFAULT){
 			// TODO: Nothing to do, really.
+			System.out.println(e.getType() + " : " + e.getRawEventData());
 		} else {
 			// This is just for show
 		}
