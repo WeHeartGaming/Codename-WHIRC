@@ -130,9 +130,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 			{
 				e.printStackTrace();
 			}
-        }
-        
-        
+        }   
         
         // Set placeholder title
         mTitle = mDrawerTitleLeft = getTitle();
