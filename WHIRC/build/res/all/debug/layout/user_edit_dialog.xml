@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <!-- Nickname #1 -->
+	<TextView 
+	    style="@style/dialog_header"
+	    android:text="@string/setDialog_userEdit_nick"/>
+	
+	<View 
+	    style="@style/dialog_black_line"/>
+	
+	<EditText 
+	    style="@style/dialog_edit_text"
+	    android:id="@+id/setDialog_edit_nickOne"
+	    android:hint="@string/setDialog_userEdit_nick_hint"/>
+	
+	<!-- Nickname #2 -->
+	<TextView 
+	    style="@style/dialog_header"
+	    android:text="@string/setDialog_userEdit_nickTwo"/>
+	
+	<View 
+	    style="@style/dialog_black_line"/>
+	
+	<EditText 
+	    style="@style/dialog_edit_text"
+	    android:id="@+id/setDialog_edit_nickTwo"
+	    android:hint="@string/setDialog_userEdit_nick_hint"/>
+	
+	<!-- Nickname #3 -->
+	<TextView 
+	    style="@style/dialog_header"
+	    android:text="@string/setDialog_userEdit_nickThree"/>
+	
+	<View 
+	    style="@style/dialog_black_line"/>
+	
+	<EditText 
+	    style="@style/dialog_edit_text"
+	    android:id="@+id/setDialog_edit_nickThree"
+	    android:hint="@string/setDialog_userEdit_nick_hint"/>
+	
+	<!-- Name -->
+	<TextView 
+	    style="@style/dialog_header"
+	    android:text="@string/setDialog_userEdit_name"/>
+	
+	<View 
+	    style="@style/dialog_black_line"/>
+	
+	<EditText 
+	    style="@style/dialog_edit_text"
+	    android:id="@+id/setDialog_edit_name"
+	    android:hint="@string/setDialog_userEdit_name_hint"/>
+    
+</LinearLayout>
+<!-- From: file:/C:/Users/Fredrik/Documents/GitHub/Codename-WHIRC/WHIRC/res/layout/user_edit_dialog.xml -->

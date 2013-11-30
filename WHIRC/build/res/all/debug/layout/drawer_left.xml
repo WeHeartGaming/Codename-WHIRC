@@ -1,0 +1,70 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context=".MainActivity$DummySectionFragment">
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="0dp"
+        android:layout_margin="0dp"
+        android:orientation="horizontal" >
+        
+        <ImageView
+            android:id="@+id/iv_menuConnect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left" />
+        
+        <TextView
+            android:id="@+id/tv_menuConnect"
+            android:layout_width="wrap_content"
+            android:layout_weight="10"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:text="@string/menu_networks" />
+    </LinearLayout>
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="0dp"
+        android:layout_margin="0dp"
+        android:orientation="horizontal"
+        android:paddingBottom="10dip" >
+        
+        <ImageView
+            android:id="@+id/iv_menuSettings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left" />
+        
+        <TextView
+            android:id="@+id/tv_menuSettings"
+            android:layout_width="wrap_content"
+            android:layout_weight="10"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:text="@string/menu_settings" />
+    </LinearLayout>
+    
+    <View
+    	android:layout_width="fill_parent"
+    	android:layout_height="1dp"
+    	android:background="@android:color/darker_gray"/>
+
+    <ExpandableListView
+        android:id="@+id/elw_networks"
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:transcriptMode="alwaysScroll" />
+    
+
+		
+</LinearLayout><!-- From: file:/C:/Users/Fredrik/Documents/GitHub/Codename-WHIRC/WHIRC/res/layout/drawer_left.xml -->

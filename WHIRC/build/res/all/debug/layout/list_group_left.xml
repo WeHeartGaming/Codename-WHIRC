@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/tv_more"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/activatedBackgroundIndicator"
+        android:gravity="center_vertical"
+        android:minHeight="?android:attr/listPreferredItemHeightSmall"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
+        android:textColor="#fff" />
+
+</LinearLayout><!-- From: file:/C:/Users/Fredrik/Documents/GitHub/Codename-WHIRC/WHIRC/res/layout/list_group_left.xml -->

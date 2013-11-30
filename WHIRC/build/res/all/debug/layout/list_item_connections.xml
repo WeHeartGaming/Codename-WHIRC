@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingRight="5dp"
+    android:paddingLeft="5dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp" >
+
+
+    <TextView
+        android:id="@+id/tv_connectionName"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+    
+    <TextView
+        android:id="@+id/tv_connectionStatus"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="#333333" />
+
+
+</LinearLayout><!-- From: file:/C:/Users/Fredrik/Documents/GitHub/Codename-WHIRC/WHIRC/res/layout/list_item_connections.xml -->

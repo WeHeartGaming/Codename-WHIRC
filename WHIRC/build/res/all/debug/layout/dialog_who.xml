@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+	<LinearLayout 
+	    style="@style/dialog_who_linear"
+	    android:id="@+id/dialog_who_channels">
+	    
+	    <TextView 
+	        style="@style/dialog_who_textTitle"
+	        android:text="@string/dialog_who_channels"/>
+	    
+	    <TextView 
+	        style="@style/dialog_who_textContent"
+	        android:id="@+id/dialog_who_channels_content"/>
+	    
+	</LinearLayout>
+	
+	<LinearLayout 
+	    style="@style/dialog_who_linear"
+	    android:id="@+id/dialog_who_nick">
+	    
+	    <TextView 
+	        style="@style/dialog_who_textTitle"
+	        android:text="@string/dialog_who_nick"/>
+	    
+	    <TextView 
+	        style="@style/dialog_who_textContent"
+	        android:id="@+id/dialog_who_nick_content"/>
+	    
+	</LinearLayout>
+	
+	<LinearLayout 
+	    style="@style/dialog_who_linear"
+	    android:id="@+id/dialog_who_name">
+	    
+	    <TextView 
+	        style="@style/dialog_who_textTitle"
+	        android:text="@string/dialog_who_name"/>
+	    
+	    <TextView 
+	        style="@style/dialog_who_textContent"
+	        android:id="@+id/dialog_who_name_content"/>
+	    
+	</LinearLayout>
+	
+		<LinearLayout 
+	    style="@style/dialog_who_linear"
+	    android:id="@+id/dialog_who_server">
+	    
+	    <TextView 
+	        style="@style/dialog_who_textTitle"
+	        android:text="@string/dialog_who_server"/>
+	    
+	    <TextView 
+	        style="@style/dialog_who_textContent"
+	        android:id="@+id/dialog_who_server_content"/>
+	    
+	</LinearLayout>
+	
+	<LinearLayout 
+	    style="@style/dialog_who_linear"
+	    android:id="@+id/dialog_who_serverInfo">
+	    
+	    <TextView 
+	        style="@style/dialog_who_textTitle"
+	        android:text="@string/dialog_who_serverInfo"/>
+	    
+	    <TextView 
+	        style="@style/dialog_who_textContent"
+	        android:id="@+id/dialog_who_serverInfo_content"/>
+	    
+	</LinearLayout>
+	
+	<LinearLayout 
+	    style="@style/dialog_who_linear"
+	    android:id="@+id/dialog_who_signedOn">
+	    
+	    <TextView 
+	        style="@style/dialog_who_textTitle"
+	        android:text="@string/dialog_who_signedOn"/>
+	    
+	    <TextView 
+	        style="@style/dialog_who_textContent"
+	        android:id="@+id/dialog_who_signedOn_content"/>
+	    
+	</LinearLayout>
+	
+	<LinearLayout 
+	    style="@style/dialog_who_linear"
+	    android:id="@+id/dialog_who_idle">
+	    
+	    <TextView 
+	        style="@style/dialog_who_textContent"
+	        android:layout_marginLeft="15dp"
+	        android:text="@string/dialog_who_idle"/>
+	    
+	</LinearLayout>
+	
+	<LinearLayout 
+	    style="@style/dialog_who_linear"
+	    android:id="@+id/dialog_who_away">
+	    
+	    <TextView 
+	        style="@style/dialog_who_textContent"
+	        android:layout_marginLeft="15dp"
+	        android:text="@string/dialog_who_isAway"/>
+	    
+	</LinearLayout>
+	
+</LinearLayout>
+<!-- From: file:/C:/Users/Fredrik/Documents/GitHub/Codename-WHIRC/WHIRC/res/layout/dialog_who.xml -->

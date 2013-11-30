@@ -1,0 +1,814 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger>
+
+    <dataSet config="main" >
+        <source path="C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\res" >
+            <file
+                name="action_search"
+                path="C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\res\drawable-hdpi\action_search.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="drawer_shadow"
+                path="C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\res\drawable-hdpi\drawer_shadow.9.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="drawer_shadow_right"
+                path="C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\res\drawable-hdpi\drawer_shadow_right.9.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="ic_btn_round_more_normal"
+                path="C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\res\drawable-hdpi\ic_btn_round_more_normal.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="ic_drawer"
+                path="C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\res\drawable-hdpi\ic_drawer.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="ic_launcher"
+                path="C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\res\drawable-hdpi\ic_launcher.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="action_search"
+                path="C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\res\drawable-mdpi\action_search.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="drawer_shadow"
+                path="C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\res\drawable-mdpi\drawer_shadow.9.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="ic_drawer"
+                path="C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\res\drawable-mdpi\ic_drawer.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="ic_launcher"
+                path="C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\res\drawable-mdpi\ic_launcher.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="action_search"
+                path="C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\res\drawable-xhdpi\action_search.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="drawer_shadow"
+                path="C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\res\drawable-xhdpi\drawer_shadow.9.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="ic_drawer"
+                path="C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\res\drawable-xhdpi\ic_drawer.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="ic_launcher"
+                path="C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\res\drawable-xhdpi\ic_launcher.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="ic_launcher"
+                path="C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\res\drawable-xxhdpi\ic_launcher.png"
+                qualifiers="xxhdpi"
+                type="drawable" />
+            <file
+                name="activity_main"
+                path="C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\res\layout\activity_main.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="dialog_connect"
+                path="C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\res\layout\dialog_connect.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="dialog_invite"
+                path="C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\res\layout\dialog_invite.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="dialog_who"
+                path="C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\res\layout\dialog_who.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="drawer_left"
+                path="C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\res\layout\drawer_left.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="drawer_list_item"
+                path="C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\res\layout\drawer_list_item.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="fragment_connections"
+                path="C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\res\layout\fragment_connections.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="fragment_conversation"
+                path="C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\res\layout\fragment_conversation.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="list_group_left"
+                path="C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\res\layout\list_group_left.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="list_item_connections"
+                path="C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\res\layout\list_item_connections.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="list_item_left"
+                path="C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\res\layout\list_item_left.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="list_item_message"
+                path="C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\res\layout\list_item_message.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="user_delete_dialog"
+                path="C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\res\layout\user_delete_dialog.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="user_edit_dialog"
+                path="C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\res\layout\user_edit_dialog.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="main"
+                path="C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\res\menu\main.xml"
+                qualifiers=""
+                type="menu" />
+            <file
+                path="C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\res\values\dimens.xml"
+                qualifiers="" >
+                <dimen name="activity_horizontal_margin" >16dp
+                </dimen>
+                <dimen name="activity_vertical_margin" >16dp
+                </dimen>
+            </file>
+            <file
+                path="C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\res\values\strings.xml"
+                qualifiers="" >
+                <string name="title_section1" >Section 1
+                </string>
+                <string name="changedTopic" >%s changed topic to
+                </string>
+                <string name="title_section3" >Section 3
+                </string>
+                <string name="title_section2" >Section 2
+                </string>
+                <string name="isInvalid" > is invalid. Changing to 
+                </string>
+                <string name="settings_notifications" >Notifications
+                </string>
+                <string name="context_connect" >Connect
+                </string>
+                <string name="setDialog_userEdit_nickTwo" >Nickname #2
+                </string>
+                <string name="alternateNick2" >Second nick
+                </string>
+                <string name="alternateNick3" >Third nick
+                </string>
+                <string name="dataSync" >Data and Sync
+                </string>
+                <string name="settings_systemCat" >System
+                </string>
+                <string name="userKicked" > was kicked from channel
+                </string>
+                <string name="name" >Real name (e.g. Dave)
+                </string>
+                <string name="settings_userEditServers" >Select server
+                </string>
+                <string name="othersAwayStatus" > is now listed as
+                </string>
+                <string name="userPromoted" > was promoted to 
+                </string>
+                <string name="settings_userDelete" >Delete user data
+                </string>
+                <string name="menu_settings" >Settings
+                </string>
+                <string name="dialog_who_name" >Name
+                </string>
+                <string name="userQuit" > has quit IRC 
+                </string>
+                <string name="userLeftChannel" > has left the channel
+                </string>
+                <string name="settings_userCat" >User info
+                </string>
+                <string name="editNetwork" >Edit network
+                </string>
+                <string name="sendMessage" >Send a message
+                </string>
+                <string name="settings_userDeleteSum" >Deletes all user data
+                </string>
+                <string name="joinChannel" >Join channel
+                </string>
+                <string name="setDialog_userDeleteWarning" >WARNING! All user data will be deleted. Are you sure?
+                </string>
+                <string name="dialog_invite_recieved" ><b>
+%1$s
+                    </b> has invited you to join #
+<b>
+%2$s
+                    </b></string>
+                <string name="context_edit" >Edit
+                </string>
+                <string name="connected" >Connected
+                </string>
+                <string name="userJoinChannel" > has joined the channel
+                </string>
+                <string name="dialog_who_server" >Server
+                </string>
+                <string name="drawer_close" >Close navigation drawer
+                </string>
+                <string name="userChangeName" > is now known as
+                </string>
+                <string name="dialog_who_channels" >Channel(s)
+                </string>
+                <string name="settings_notificationsPM" >Notifiy when private messaged
+                </string>
+                <string name="hostname" >Hostname (eg. irc.quakenet.org)
+                </string>
+                <string name="setDialog_userEdit_nickThree" >Nickname #3
+                </string>
+                <string name="displayName" >Display name
+                </string>
+                <string name="channelList" >Get channel list
+                </string>
+                <string name="settings_notificationsOn" >Turn on notifications
+                </string>
+                <string name="diconnectServer" >Disconnect
+                </string>
+                <string name="drawer_open" >Open navigation drawer
+                </string>
+                <string name="setDialog_userEdit_name_hint" >Your name (Optional)
+                </string>
+                <string name="setDialog_userEdit_name" >Name
+                </string>
+                <string name="setBy" >\nSet by 
+                </string>
+                <string name="changedNick" > has changed nick to 
+                </string>
+                <string name="networkList" >Network list
+                </string>
+                <string name="action_settings" >Settings
+                </string>
+                <string name="quit" >Quit
+                </string>
+                <string name="nick" >Nick name (e.g. HotVanilla44)
+                </string>
+                <string name="settings_options" >Options
+                </string>
+                <string name="setDialog_userEdit_password" >Password
+                </string>
+                <string name="settings_userEdit" >Edit user info
+                </string>
+                <string name="othersNoLongerAway" > is no longer listed as AWAY
+                </string>
+                <string name="dialog_who_serverInfo" >Serverinfo
+                </string>
+                <string name="topic" > %s
+                </string>
+                <string name="on" > on 
+                </string>
+                <string name="port" >Port (e.g. 6667)
+                </string>
+                <string name="userBanned" > was banned by
+                </string>
+                <string name="user" >User 
+                </string>
+                <string name="context_disconnect" >Disconnect
+                </string>
+                <string name="yourNick" >Your nickname 
+                </string>
+                <string name="context_remove" >Delete
+                </string>
+                <string name="menu_networks" >Networks
+                </string>
+                <string name="setDialog_userEdit_nick_hint" >Your desired nickname
+                </string>
+                <string name="addNetwork" >Add network
+                </string>
+                <string name="channel" >Channel
+                </string>
+                <string name="dialog_who_signedOn" >Signed on
+                </string>
+                <string name="setDialog_userEdit_nick" >Nickname
+                </string>
+                <string name="action_servers" >Join Server
+                </string>
+                <string name="Help" >Help
+                </string>
+                <string name="channelTopic" >Topic for %s :
+                </string>
+                <string name="joinNetwork" >Join network
+                </string>
+                <string name="dialog_who_idle" >Currently idle
+                </string>
+                <string name="disconnected" >Disconnected
+                </string>
+                <string name="enterChannel" >Now talking on %s 
+                </string>
+                <string name="dialog_who_isAway" >Is away
+                </string>
+                <string name="noLongerAway" >You are no longer listed as AWAY
+                </string>
+                <string name="more" >More
+                </string>
+                <string name="reconnectServer" >Reconnect
+                </string>
+                <string name="modeSet" > Mode set to 
+                </string>
+                <string name="dialog_who_nick" >Nickname
+                </string>
+                <string name="app_name" >WHIRC
+                </string>
+                <string name="servername" >Network name (e.g. QuakeNet)
+                </string>
+                <string name="awayStatus" >You are now listed as AWAY
+                </string>
+            </file>
+            <file
+                path="C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\res\values\strings_activity_settings.xml"
+                qualifiers="" >
+                <string-array name="pref_sync_frequency_values" >
+                    <item>
+15
+                    </item>
+                    <item>
+30
+                    </item>
+                    <item>
+60
+                    </item>
+                    <item>
+180
+                    </item>
+                    <item>
+360
+                    </item>
+                    <item>
+-1
+                    </item>
+                </string-array>
+
+                <string name="title_activity_settings" >Settings
+                </string>
+                <string name="pref_ringtone_silent" >Silent
+                </string>
+
+                <string-array name="pref_example_list_values" >
+                    <item>
+1
+                    </item>
+                    <item>
+0
+                    </item>
+                    <item>
+-1
+                    </item>
+                </string-array>
+
+                <string name="pref_title_display_name" >Display name
+                </string>
+                <string name="pref_title_sync_frequency" >Sync frequency
+                </string>
+                <string name="pref_description_social_recommendations" >Recommendations for people to contact based on your message history
+                </string>
+                <string name="pref_header_general" >General
+                </string>
+                <string name="pref_title_add_friends_to_messages" >Add friends to messages
+                </string>
+                <string name="pref_default_display_name" >John Smith
+                </string>
+
+                <string-array name="pref_example_list_titles" >
+                    <item>
+Always
+                    </item>
+                    <item>
+When possible
+                    </item>
+                    <item>
+Never
+                    </item>
+                </string-array>
+
+                <string name="pref_title_new_message_notifications" >New message notifications
+                </string>
+                <string name="pref_title_vibrate" >Vibrate
+                </string>
+                <string name="pref_title_ringtone" >Ringtone
+                </string>
+                <string name="pref_title_social_recommendations" >Enable social recommendations
+                </string>
+                <string name="pref_header_notifications" >Notifications
+                </string>
+
+                <string-array name="pref_sync_frequency_titles" >
+                    <item>
+15 minutes
+                    </item>
+                    <item>
+30 minutes
+                    </item>
+                    <item>
+1 hour
+                    </item>
+                    <item>
+3 hours
+                    </item>
+                    <item>
+6 hours
+                    </item>
+                    <item>
+Never
+                    </item>
+                </string-array>
+
+                <string name="pref_title_system_sync_settings" >System sync settings
+                </string>
+                <string name="pref_header_data_sync" >Data &amp; sync
+                </string>
+            </file>
+            <file
+                path="C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\res\values\styles.xml"
+                qualifiers="" >
+
+                <style name="dialog_who_linear" >
+                    <item name="android:layout_width">
+match_parent
+                    </item>
+                    <item name="android:layout_height">
+wrap_content
+                    </item>
+                    <item name="android:orientation">
+horizontal
+                    </item>
+                    <item name="android:weightSum">
+4
+                    </item>
+                    <item name="android:layout_marginTop">
+5dp
+                    </item>
+                </style>
+
+                <style name="dialog_centered_textview" >
+                    <item name="android:layout_width">
+match_parent
+                    </item>
+                    <item name="android:layout_height">
+wrap_content
+                    </item>
+                    <item name="android:padding">
+10dp
+                    </item>
+                    <item name="android:gravity">
+center
+                    </item>
+                </style>
+
+                <style name="dialog_edit_text" >
+                    <item name="android:layout_width">
+match_parent
+                    </item>
+                    <item name="android:layout_height">
+wrap_content
+                    </item>
+                    <item name="android:layout_marginLeft">
+15dp
+                    </item>
+                    <item name="android:layout_marginRight">
+15dp
+                    </item>
+                    <item name="android:inputType">
+text
+                    </item>
+                </style>
+
+                <style name="dialog_black_line" >
+                    <item name="android:layout_width">
+match_parent
+                    </item>
+                    <item name="android:layout_height">
+1dp
+                    </item>
+                    <item name="android:layout_marginLeft">
+15dp
+                    </item>
+                    <item name="android:layout_marginRight">
+15dp
+                    </item>
+                    <item name="android:background">
+@color/black
+                    </item>
+                </style>
+
+                <color name="black" >#000000
+                </color>
+
+                <style name="dialog_who_textTitle" >
+                    <item name="android:layout_width">
+match_parent
+                    </item>
+                    <item name="android:layout_height">
+wrap_content
+                    </item>
+                    <item name="android:layout_marginLeft">
+15dp
+                    </item>
+                    <item name="android:textStyle">
+bold
+                    </item>
+                    <item name="android:layout_weight">
+1
+                    </item>
+                </style>
+
+                <style
+                    name="AppBaseTheme"
+                    parent="android:Theme.Light" >
+
+                    <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+                    -->
+                </style>
+
+                <style name="dialog_header" >
+                    <item name="android:layout_width">
+match_parent
+                    </item>
+                    <item name="android:layout_height">
+wrap_content
+                    </item>
+                    <item name="android:layout_marginLeft">
+15dp
+                    </item>
+                    <item name="android:layout_marginRight">
+15dp
+                    </item>
+                    <item name="android:textSize">
+16sp
+                    </item>
+                </style>
+
+                <style name="dialog_who_textContent" >
+                    <item name="android:layout_width">
+match_parent
+                    </item>
+                    <item name="android:layout_height">
+wrap_content
+                    </item>
+                    <item name="android:layout_marginRight">
+15dp
+                    </item>
+                    <item name="android:layout_weight">
+3
+                    </item>
+                </style>
+
+                <style
+                    name="AppTheme"
+                    parent="AppBaseTheme" >
+
+                    <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+                </style>
+            </file>
+            <file
+                path="C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\res\values-no\strings.xml"
+                qualifiers="no" >
+                <string name="setDialog_userEdit_password" >Passord
+                </string>
+                <string name="dialog_who_channels" >Kanal(er)
+                </string>
+                <string name="settings_notificationsOn" >Skru på notifikasjoner
+                </string>
+                <string name="dataSync" >Data og Synk
+                </string>
+                <string name="settings_notificationsPM" >Notifiser meg når jeg får en PM
+                </string>
+                <string name="dialog_who_signedOn" >Kom på
+                </string>
+                <string name="context_disconnect" >Koblet fra
+                </string>
+                <string name="settings_userEditServers" >Velg server
+                </string>
+                <string name="dialog_who_name" >Navn
+                </string>
+                <string name="userKicked" > ble sparket fra kanalen
+                </string>
+                <string name="dialog_who_server" >Server
+                </string>
+                <string name="context_remove" >Slett
+                </string>
+                <string name="othersAwayStatus" > er nå listet som BORTE
+                </string>
+                <string name="topic" > %s
+                </string>
+                <string name="disconnected" >Koblet fra
+                </string>
+                <string name="userBanned" > ble bannlyst av
+                </string>
+                <string name="user" >Bruker
+                </string>
+                <string name="settings_userDelete" >Slett bruker data
+                </string>
+                <string name="setDialog_userEdit_name_hint" >Ditt navn (valgfritt)
+                </string>
+                <string name="setDialog_userEdit_nick_hint" >Ditt kallenavn
+                </string>
+                <string name="reconnectServer" >Koble til på bytt
+                </string>
+                <string name="setDialog_userDeleteWarning" >ADVARSEL! All brukerdata vil bli slettet. Er du sikker?
+                </string>
+                <string name="setDialog_userEdit_nickThree" >Tertiært kallenavn
+                </string>
+                <string name="context_connect" >Koblet til
+                </string>
+                <string name="yourNick" >Kallenavnet ditt 
+                </string>
+                <string name="userPromoted" > ble forfremmet til 
+                </string>
+                <string name="dialog_who_idle" >Står stille
+                </string>
+                <string name="alternateNick2" >Sekundært kallenavn
+                </string>
+                <string name="port" >Port (f.eks 6667)
+                </string>
+                <string name="name" >Virkelig navn (f.eks Dave)
+                </string>
+                <string name="userJoinChannel" > har kommet inn i kanalen
+                </string>
+                <string name="alternateNick3" >Tertiært kallenavn
+                </string>
+                <string name="settings_userCat" >Bruker info
+                </string>
+                <string name="userChangeName" > er nå kjent som
+                </string>
+                <string name="action_settings" >Instillinger
+                </string>
+                <string name="setDialog_userEdit_nick" >Kallenavn
+                </string>
+                <string name="dialog_who_nick" >Kallenavn
+                </string>
+                <string name="changedNick" > har endret kallenavn til 
+                </string>
+                <string name="networkList" >Nettverkliste
+                </string>
+                <string name="setDialog_userEdit_nickTwo" >Sekundært kallenavn
+                </string>
+                <string name="menu_networks" >Nettverk
+                </string>
+                <string name="isInvalid" > er ugyldig. Bytter til 
+                </string>
+                <string name="hostname" >Hostnavn (f.eks irc.quakenet.org)
+                </string>
+                <string name="awayStatus" >Du er nå listet som BORTE
+                </string>
+                <string name="diconnectServer" >Koble fra
+                </string>
+                <string name="enterChannel" >Du snakker nå i %s 
+                </string>
+                <string name="setBy" >\nSatt av 
+                </string>
+                <string name="modeSet" >Modus satt til 
+                </string>
+                <string name="more" >Mer
+                </string>
+                <string name="on" > på 
+                </string>
+                <string name="settings_options" >Valg
+                </string>
+                <string name="editNetwork" >Rediger nettverk
+                </string>
+                <string name="dialog_who_isAway" >Er borte
+                </string>
+                <string name="title_section1" >Section 1
+                </string>
+                <string name="title_section2" >Section 2
+                </string>
+                <string name="changedTopic" >%s byttet tema til
+                </string>
+                <string name="title_section3" >Section 3
+                </string>
+                <string name="drawer_open" >Åpne navigerings-skuff
+                </string>
+                <string name="sendMessage" >Send en beskjed
+                </string>
+                <string name="settings_userEdit" >Rediger bruker info
+                </string>
+                <string name="action_servers" >Koble til server
+                </string>
+                <string name="servername" >Netverks navn (f.eks QuakeNet)
+                </string>
+                <string name="dialog_invite_recieved" ><b>
+%1$s
+                    </b> inviterte deg til å bli med i #
+<b>
+%2$s
+                    </b></string>
+                <string name="connected" >Tilkoblet
+                </string>
+                <string name="nick" >Kallenavn (f.eks HotVanilla44)
+                </string>
+                <string name="dialog_who_serverInfo" >Serverinformasjon
+                </string>
+                <string name="menu_settings" >Instillinger
+                </string>
+                <string name="channelTopic" >Tema for %s :
+                </string>
+                <string name="settings_notifications" >Notifikasjoner
+                </string>
+                <string name="userLeftChannel" > har avsluttet
+                </string>
+                <string name="settings_userDeleteSum" >Sletter all bruker data
+                </string>
+                <string name="othersNoLongerAway" > er ikke lenger listet som BORTE
+                </string>
+                <string name="channel" >Kanal
+                </string>
+                <string name="Help" >Hjelp
+                </string>
+                <string name="quit" >Avslutt
+                </string>
+                <string name="noLongerAway" >Du er ikke lenger listet som BORTE
+                </string>
+                <string name="channelList" >Få kanal-liste
+                </string>
+                <string name="settings_systemCat" >System
+                </string>
+                <string name="addNetwork" >Legg til nettverk
+                </string>
+                <string name="joinChannel" >Bli med i kanal
+                </string>
+                <string name="displayName" >Visningsnavn
+                </string>
+                <string name="joinNetwork" >Bli med i nettverk
+                </string>
+                <string name="app_name" >WHIRC
+                </string>
+                <string name="setDialog_userEdit_name" >Virkelig navn
+                </string>
+                <string name="context_edit" >Rediger
+                </string>
+                <string name="drawer_close" >Lukk navigerings-skuff
+                </string>
+            </file>
+            <file
+                path="C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\res\values-sw720dp-land\dimens.xml"
+                qualifiers="sw720dp-land" >
+                <dimen name="activity_horizontal_margin" >128dp
+                </dimen>
+            </file>
+            <file
+                path="C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\res\values-v11\styles.xml"
+                qualifiers="v11" >
+
+                <style
+                    name="AppBaseTheme"
+                    parent="android:Theme.Holo.Light" >
+
+                    <!-- API 11 theme customizations can go here. -->
+                </style>
+            </file>
+            <file
+                path="C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\res\values-v14\styles.xml"
+                qualifiers="v14" >
+
+                <style
+                    name="AppBaseTheme"
+                    parent="android:Theme.Holo.Light.DarkActionBar" >
+
+                    <!-- API 14 theme customizations can go here. -->
+                </style>
+            </file>
+            <file
+                name="preferences"
+                path="C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\res\xml\preferences.xml"
+                qualifiers=""
+                type="xml" />
+        </source>
+        <source path="C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\build\res\rs\debug" />
+    </dataSet>
+    <dataSet config="debug" >
+        <source path="C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\build-types\debug\res" />
+    </dataSet>
+
+</merger>

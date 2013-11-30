@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="jerklib">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/libs/jerklib.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

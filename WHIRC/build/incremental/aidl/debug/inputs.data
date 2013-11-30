@@ -1,0 +1,25 @@
+# incremental data. DO NOT EDIT.
+# format is <lastModified> <length> <SHA-1> <path>
+# Encoding is UTF-8
+1385731667205 13526 6e0f6ff9343783d38aa63da2fce7c692f9b761b6 C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\src\no\whg\whirc\models\Conversation.java
+1385704526636 2805 c468862d800b775348a2d83ce7f8b49f2b28483c C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\src\no\whg\whirc\helpers\ServerListDownload.java
+1385732497462 4527 f096398a95b75eae213ff0a17035ece5ab00f89f C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\src\no\whg\whirc\fragments\ConnectionFragment.java
+1385727898970 2188 31a2c78560a03c20a7ba07419db912c581541334 C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\src\no\whg\whirc\dialogs\InviteDialog.java
+1384731820637 418 71e5e79bf7ff08e93abc0d23390174290150682b C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\src\no\whg\whirc\helpers\ConnectionServiceBinder.java
+1385726363180 1194 57dd411fcbbed2d43895d60d7d0c44ff42914bbc C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\src\no\whg\whirc\models\Message.java
+1385731624975 2568 090c2d83bd553ebabe6aba8bdabf03ae29952df5 C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\src\no\whg\whirc\adapters\ConnectionListAdapter.java
+1385727898973 986 72939fdcde8af20352d722e69f6a4e22d361f8ed C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\src\no\whg\whirc\preferenceDialogs\UserDeleteDialog.java
+1385606648129 775 f3f6e065db8ba16a3aeaa5f24d187997387e0aa6 C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\src\no\whg\whirc\adapters\ConnectionPagerAdapter.java
+1385727898969 3824 f3550f053ee5bb6517545af5184221f85b25d6da C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\src\no\whg\whirc\activities\SettingsActivity.java
+1385732832342 32438 442a82c13eef162371a3bfb4bce4d65343e64e2e C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\src\no\whg\whirc\activities\MainActivity.java
+1385727898972 7449 f4b56da71d1a5c807f8c9a2f8b1c7d690b290e2b C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\src\no\whg\whirc\helpers\WhircDB.java
+1385704526636 1679 eb288f8f85c3949329e22bcf6b2c7700df234f30 C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\src\no\whg\whirc\helpers\ServerParser.java
+1385727898974 3416 95d3f8d858548bf3b46c612a2551b2b05edaadee C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\src\no\whg\whirc\preferenceDialogs\UserEditDialog.java
+1385731789789 7850 2fb793b7a263badd095937fcdf3f943e76ac75ea C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\src\no\whg\whirc\fragments\ConversationFragment.java
+1385726363181 5638 2db3443ae2571cd899a8a59d18358f368ab83ca5 C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\src\no\whg\whirc\models\Server.java
+1385727898971 5149 6911b283a2c66f7a26abd9d819e74f24f4cf4a7d C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\src\no\whg\whirc\dialogs\WhoDialog.java
+1385727898970 3122 d1ed98d9d2fae952c3388d79d336d5710a7517f4 C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\src\no\whg\whirc\adapters\LeftMenuAdapter.java
+1385703608084 6022 18fbe0c909c921e37a0be30e2b73c672b0602240 C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\src\no\whg\whirc\dialogs\ServerDialog.java
+1385722151440 18620 f087b14069a8b47e16c621d45b66ffe6cc370c47 C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\src\no\whg\whirc\helpers\ConnectionService.java
+1385103335080 1548 aec7f59665a85788a2706b6f91c80df4f9866a1e C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\src\no\whg\whirc\adapters\MessageAdapter.java
+1385728746647 3589 7487bab89ed6a6fb0f2fb02a54b80931d0f9455e C:\Users\Fredrik\Documents\GitHub\Codename-WHIRC\WHIRC\src\no\whg\whirc\adapters\ConversationPagerAdapter.java

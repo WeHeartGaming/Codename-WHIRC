@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    
+    <PreferenceCategory 
+        android:title="@string/settings_userCat"
+        android:key="settings_userCat">
+    
+        <PreferenceScreen
+            android:title="@string/settings_userEdit"
+            android:key="settings_userEditScreen">
+            
+            <PreferenceCategory 
+            	android:title="@string/settings_userEditServers"
+            	android:key="settings_userEditCat">
+                
+                <!-- The contents of this group is generated programmatically
+                     See the populateServerList method in SettingsActivity.java for more information. -->
+                
+            </PreferenceCategory>
+            
+        </PreferenceScreen>
+        
+ 		<no.whg.whirc.preferenceDialogs.UserDeleteDialog 
+ 		    android:title="@string/settings_userDelete"
+ 		    android:key="settings_userDelete"
+ 		    android:summary="@string/settings_userDeleteSum"/>
+    
+    </PreferenceCategory>
+    
+    <PreferenceCategory
+        android:title="@string/settings_systemCat"
+        android:key="settings_systemCat">
+        
+        <PreferenceScreen 
+            android:title="@string/settings_notifications"
+            android:key="settings_notifications">
+            
+            <CheckBoxPreference 
+                android:title="@string/settings_notificationsOn"
+                android:key="settings_notificationsOn"
+                android:defaultValue="true"/>
+            
+            <PreferenceCategory 
+                android:title="@string/settings_options"
+                android:key="settings_notificationOptions">
+                
+                <CheckBoxPreference 
+	                android:title="@string/settings_notificationsPM"
+	                android:key="settings_notificationsPM"
+	                android:defaultValue="true"
+	                android:dependency="settings_notificationsOn"/>
+                
+            </PreferenceCategory>
+
+        </PreferenceScreen>
+        
+    </PreferenceCategory>
+
+</PreferenceScreen><!-- From: file:/C:/Users/Fredrik/Documents/GitHub/Codename-WHIRC/WHIRC/res/xml/preferences.xml -->
