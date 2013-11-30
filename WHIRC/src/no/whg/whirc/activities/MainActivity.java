@@ -343,7 +343,7 @@ public class MainActivity extends FragmentActivity implements ServiceConnection,
 		Log.d(TAG, "onServiceConnected()");
 		cService = ((ConnectionServiceBinder) binder).getService();
 		if (cService.getSessions().isEmpty()){
-			connect("irc.quakenet.org");
+			connect("irc.freenode.net");
 			Log.e(TAG, "onServiceConnected(): Forced a connection to quakenet for debug purposes.");
 		} 
 		
