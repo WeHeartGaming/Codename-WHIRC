@@ -45,3 +45,8 @@ local.properties
 
 # PDT-specific
 .buildpath
+
+# ANDROID STUDIO
+workspace.xml
+tasks.xml
+*.iws
